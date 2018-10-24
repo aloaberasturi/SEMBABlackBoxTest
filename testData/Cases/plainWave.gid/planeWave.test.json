@@ -1,0 +1,13 @@
+{
+    "_format": "SembaTest Data File in JSON format",
+    "_version": "0.14",
+
+    "filters": {
+      "size" : 6,
+      "keyWords" : [2,9]
+    },
+    
+    "flags": {
+      "comparison" : "equality"
+  }
+}

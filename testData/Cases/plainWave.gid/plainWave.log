@@ -1,0 +1,91 @@
+Path to command: 
+/home/alejandra/GiD/v14.01/problemtypes/semba.gid/bin/semba
+Project name:  plainWave
+Project path:  /home/alejandra/workspace/sembabbt/testData/Cases/plainWave.gid
+Problem type path:  /home/alejandra/GiD/v14.01/problemtypes/semba.gid
+/home/alejandra/GiD/v14.01/problemtypes/semba.gid/bin/semba -i /home/alejandra/workspace/sembabbt/testData/Cases/plainWave.gid/plainWave.dat
+========================================================
+                -=- semba -=-               
+========================================================
+ This is a proprietary software of:                     
+             The University of Granada                  
+                     www.ugr.es                         
+  Authors: S. G. Garcia           ( salva@ugr.es )      
+           L. D. Angulo           ( lm@diazangulo.com ) 
+           Miguel Ruiz-Cabello N. ( mcabello@ugr.es )   
+           Daniel Mateos          ( damarro@gmail.com ) 
+========================================================
+ - Version 0.13 on Sep 19 2018 18:12:34
+ - Compiled with: GNU C++ 5.4.0
+========================================================
+Parser GiD-JSON
+Project folder: /home/alejandra/workspace/sembabbt/testData/Cases/plainWave.gid/
+ZMesher started:
+ ZMesher insertion started:
+  Coordinates
+  Groups
+  Elements
+  Volumes
+ ZMesher insertion ended
+ ZMesher mesh started:
+  Preprocess:
+   Enlarging
+   Converting
+  Coordinates:
+   Meshing
+  Nodes:
+   Meshing
+  Lines:
+   Meshing
+  Surfaces:
+   Meshing
+  Cleaner:
+   Joining
+   Nodes
+   Lines
+  Volumes:
+   Joining
+   Meshing
+   Writing
+   Cleaning
+  Cleaner:
+   Elements
+   Coordinates
+ ZMesher mesh ended
+ ZMesher mesh time elapsed: 0 h, 0 m, 0 s
+ ZMesher Unwanted Connections Detection started:
+  Nodes:
+   Getting
+   Writting
+  Lines:
+   Getting
+   Writting
+  Surfaces:
+   Getting
+   Writting
+  Volumes:
+   Getting
+   Writting
+ ZMesher Unwanted Connections Detection ended
+ ZMesher Compressor started:
+  Compressor:
+   Elements
+  Cleaner:
+   Coordinates
+ ZMesher Compressor ended
+ ZMesher extraction started:
+  Coordinates
+  Box Elements
+  Map
+ ZMesher extraction ended
+ZMesher ended
+Mesher::Lines started:
+ Nodes
+Mesher::Lines ended
+- Exporting to NFDE format... [OK]
+- Exporting SMB data in GiD format... [OK]
+- Exporting NFDE data in GiD format... [OK]
+[UGRFDTD] INIT Reading file plainWave.nfde
+[UGRFDTD] [OK]
+[UGRFDTD] INIT interpreting geometrical data from plainWave.nfde
+-- semba finished succesfully --

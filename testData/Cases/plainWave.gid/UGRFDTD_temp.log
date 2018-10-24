@@ -1,0 +1,22 @@
+UGRFDTD Version W-348-g5c6e5b6 Built on 15-10-2018  14:33
+__________________________________________
+__________________________________________
+UGRFDTD (http://www.sembahome.org)
+  By Salvador G. Garcia (salva@ugr.es)
+                with contributions by Jesus G. Alvarez  (jesus@ieee.org)
+  Testing by: Guadalupe Gutierrez  (guadalupe.gutierrez@airbus.com)
+              Enrique Pascual Gil  (enrique.pascual@airbus.com)
+  Developers:        Luis D. Angulo    (lm@diazangulo.com )
+                     Miguel R. Cabello (mcabello@ugr.es)
+                     Daniel M. Romero  (damarro@correo.ugr.es)
+  THz Hybrid solver: Mario F. Pantoja  (mario@ugr.es)
+INCLUDES ADE ROUTINES FOR COMPOSITES FROM UGR
+INCLUDES ADE-MUR-CONFORMAL ROUTINES FOR COMPOSITES FROM UGR
+INCLUDES DMMA ROUTINES FOR THIN-SLOTS FROM AIRBUS
+__________________________________________
+Its use has been licensed until 31/12/2999
+under the EULA stated by executing this code with the -eula switch
+__________________________________________
+INIT Reading file ./ugrfdtd/plainWave.nfde
+[OK]
+INIT interpreting geometrical data from ./ugrfdtd/plainWave.nfde

@@ -1,0 +1,13 @@
+WARNING @ Solver: No materials were detected.
+WARNING @ Solver: No materials were assigned to elements.
+forrtl: severe (59): list-directed I/O syntax error, unit -5, file Internal List-Directed Read
+Image              PC                Routine            Line        Source             
+ugrfdtd            0000000000E0AA87  Unknown               Unknown  Unknown
+ugrfdtd            0000000000E0930F  Unknown               Unknown  Unknown
+ugrfdtd            0000000000CF0EE1  Unknown               Unknown  Unknown
+ugrfdtd            0000000000C84EDB  Unknown               Unknown  Unknown
+ugrfdtd            0000000000422322  Unknown               Unknown  Unknown
+ugrfdtd            0000000000406E0F  Unknown               Unknown  Unknown
+ugrfdtd            00000000004044B6  Unknown               Unknown  Unknown
+libc.so.6          00007F00B4512830  Unknown               Unknown  Unknown
+ugrfdtd            0000000000404399  Unknown               Unknown  Unknown
