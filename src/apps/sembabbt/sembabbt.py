@@ -7,15 +7,16 @@ import json
 import shutil
 import unittest
 import sys
+import pathlib
 
 sys.path.insert(0,'/home/alejandra/workspace/sembabbt/src/apps/test')
 
 import SembaTest as semba
 
 def removeFolders():
-    path = "/home/alejandra/workspace/sembabbt/testData/" #TODO: USAR LIBRERIA DE PATHS   
-    if os.path.exists( path + "testing"):
-        shutil.rmtree( path + "testing")
+    folder = pathlib.Path("home/alejandra/workspace/sembabbt/testData/testing")
+    if folder.is_dir():
+        shutil.rmtree(folder)
 
 
 
@@ -40,23 +41,23 @@ testOptions = {
 
 def callSemba(fileName):
     try:
-        args = '/home/alejandra/workspace/semba/build/bin/semba -i ' + fileName
-        os.system(args)
+        folder = pathlib.Path('home/alejandra/workspace/semba/build/bin/semba/')
+        os.system(folder + " -i" +fileName)
     except: RuntimeError("Unable to launch semba")
 
 def makeDirs(paths):
     for oldDir in paths: 
 
-        aux = oldDir.split("/Cases/")[1]
-        projectName = aux.split(".")[0]
-        newDir = "/home/alejandra/workspace/sembabbt/testData/testing/" + \
-        projectName + "/"       
+        aux1 = oldDir.split("/Cases/")[1]
+        projectName = aux1.split(".")[0]
+        oldDir = pathlib.Path(oldDir)
+        aux2 = pathlib.Path("home/alejandra/workspace/sembabbt/testData/testing/")
+        newDir = aux2 / projectName / "/"
         os.makedirs(newDir)
 
-        fileName = projectName + ".dat"    
-       
-        shutil.copyfile(oldDir + fileName, newDir + fileName)
-        callSemba(newDir + fileName)
+        shutil.copyfile(oldDir / projectName / ".dat", \
+                        newDir / projectName / ".dat")
+        callSemba(newDir /projectName / ".dat")
         
 
 def openOutputs(paths):
@@ -65,9 +66,10 @@ def openOutputs(paths):
     for oldDir in paths:
         aux = oldDir.split("/Cases/")[1]
         projectName = aux.split(".")[0]
-        newDir = "/home/alejandra/workspace/sembabbt/testData/testing/" + \
-        projectName + "/ugrfdtd/" 
-        oldDir += "ugrfdtd/"
+        newDir = pathlib.Path("/home/alejandra/workspace/\
+                 sembabbt/testData/testing/") / projectName / "ugrfdtd/"
+
+        oldDir = pathlib.Path(oldDir) / "ugrfdtd/"
         for (dp,dn,fn) in os.walk(newDir):
             for f in fn:
                 if "_Outputrequests_" in f:
@@ -79,7 +81,7 @@ def openOutputs(paths):
                            line = line.split("\n")[0]
                            outputFiles.append(line)
         for file in outputFiles:
-            outputPaths.append((oldDir + file, newDir + file))
+            outputPaths.append((oldDir / file, newDir / file))
     return outputPaths
 
 
@@ -109,24 +111,21 @@ def launchTests(outputs,cast=float):
                     
 def searchMatchingProjects(test):#TODO: en vez de crear un vector de casos, ir caso por caso lanzando semba
     casesPaths = []
-    path = "/home/alejandra/workspace/sembabbt/testData/Cases/"
-    for (dp,dn,fn) in os.walk(path):
-        for f in fn:
-            if f.endswith("test.json"): 
-                dir = dp + "/" 
-                with open(dir +f ,"r") as jsonFile:
-                    caseOptions = json.loads(jsonFile.read())
-                jsonFile.close()
+    path = pathlib.Path("home/alejandra/workspace/sembabbt/testData/Cases/")
+    for file in path.glob('**/*.test.json'):   
+        with open(file,"r") as jsonFile:
+            caseOptions = json.loads(jsonFile.read())
+            jsonFile.close()
 
-                assert caseOptions["filters"].keys() == \
-                testOptions["filters"].keys(), "filters don't match"
+            assert caseOptions["filters"].keys() == \
+            testOptions["filters"].keys(), "filters don't match"
           
-                if (set(caseOptions["filters"]["keyWords"]) & \
-                set(test["filters"]["keyWords"]) != set() and 
-                caseOptions["filters"]["size"] <= \
-                test["filters"]["size"] ):
-                    casesPaths.append(dir)
-                    parseComparison(caseOptions)
+            if (set(caseOptions["filters"]["keyWords"]) & \
+            set(test["filters"]["keyWords"]) != set() and 
+            caseOptions["filters"]["size"] <= \
+            test["filters"]["size"] ):
+                casesPaths.append(dir)
+                parseComparison(caseOptions)
 
     return casesPaths
 
