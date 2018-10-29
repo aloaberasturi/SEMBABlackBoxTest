@@ -1,0 +1,176 @@
+{
+    "_format": "Semba Data File in JSON format",
+    "_version": "0.13",
+
+    "solverOptions": {
+        "solver": "ugrfdtd",
+        "runSimulation": true,
+        "finalTime": 80e-8,
+        "timeStep": 0.0,
+        "cfl": 0.8,
+        "defaultSamplingPeriod": 1e-12,
+        "forceRestarting": false,
+        "resumeSimulation": false,
+        "flush": 0,
+        "geometryScalingFactor": 1.0,
+        "compositesModel": "MIBC",
+        "wiresFlavor": "holland",
+        "mtln": false,
+        "minDistanceWires": 0.5,
+        "mapVTK": false,
+        "mesherOptions": {
+            "lowerXBound": "PML",
+            "lowerYBound": "PML",
+            "lowerZBound": "PML",
+            "upperXBound": "PML",
+            "upperYBound": "PML",          
+            "upperZBound": "PML",
+            "mesher": "ZMesher",
+            "vtkExport": false,
+            "postmshExport": true,
+            "mode": "Structured",
+            "forbiddenLength": 0.0,
+            "slantedWires": false,
+            "slantedThreshold": 1.0
+        }
+    },
+    
+    "materials": [
+    ],
+
+    "grids": [
+        {
+            "gridType": "gridCondition",
+            "layerBox": "{125.00000002875824 125.00000002875824 150.0 -125.00000002875824 -125.00000002875824 -100.00000000000001}",
+            "type": "by_number_of_cells",
+            "directions": "{100 100 100}",
+            "boundaryPaddingType": "by_distance",
+            "upperPadding": "{0.0 0.0 0.0}",
+            "lowerPadding": "{0.0 0.0 0.0}",
+            "upperPaddingMeshSize": "{0.0 0.0 0.0}",
+            "lowerPaddingMeshSize": "{0.0 0.0 0.0}"
+        }
+
+    ],
+
+    "layers": [
+        {"id": 1, "name": "grid"},
+        {"id": 3, "name": "probes"},
+        {"id": 4, "name": "sources"}
+    ],
+
+    "coordinates": [
+        "      1  -1.25000000e+02  +1.25000000e+02  +1.50000000e+02",
+        "      2  -7.50000000e+01  +7.50000000e+01  +1.00000000e+02",
+        "      3  -7.50000000e+01  +7.50000000e+01  -5.00000000e+01",
+        "      4  -7.50000000e+01  -7.50000000e+01  +1.00000000e+02",
+        "      5  +7.50000000e+01  +7.50000000e+01  +1.00000000e+02",
+        "      6  +0.00000000e+00  +0.00000000e+00  +2.50000000e+01",
+        "      7  -1.25000000e+02  +1.25000000e+02  -1.00000000e+02",
+        "      8  -1.25000000e+02  -1.25000000e+02  +1.50000000e+02",
+        "      9  +1.25000000e+02  +1.25000000e+02  +1.50000000e+02",
+        "     10  -7.50000000e+01  -7.50000000e+01  -5.00000000e+01",
+        "     11  +7.50000000e+01  +7.50000000e+01  -5.00000000e+01",
+        "     12  +7.50000000e+01  -7.50000000e+01  +1.00000000e+02",
+        "     13  +7.50000000e+01  -7.50000000e+01  -5.00000000e+01",
+        "     14  -1.25000000e+02  -1.25000000e+02  -1.00000000e+02",
+        "     15  +1.25000000e+02  +1.25000000e+02  -1.00000000e+02",
+        "     16  +1.25000000e+02  -1.25000000e+02  +1.50000000e+02",
+        "     17  +1.25000000e+02  -1.25000000e+02  -1.00000000e+02"
+    ],
+
+    "elements": {
+        "hexahedra": [
+        ],
+        "tetrahedra": [
+        ],
+        "quadrilateral": [
+        ],
+        "triangle": [
+        "       1    0    4       10       13       11",
+        "       2    0    4       11        3       10",
+        "       3    0    4       10       13       12",
+        "       4    0    4       12        4       10",
+        "       5    0    4       13       11        5",
+        "       6    0    4        5       12       13",
+        "       7    0    4        3       11        5",
+        "       8    0    4        5        2        3",
+        "       9    0    4       10        3        2",
+        "      10    0    4        2        4       10",
+        "      11    0    4        4       12        5",
+        "      12    0    4        5        2        4",
+        "      13    0    1       14       17       15",
+        "      14    0    1       15        7       14",
+        "      15    0    1       14       17       16",
+        "      16    0    1       16        8       14",
+        "      17    0    1       17       15        9",
+        "      18    0    1        9       16       17",
+        "      19    0    1        7       15        9",
+        "      20    0    1        9        1        7",
+        "      21    0    1       14        7        1",
+        "      22    0    1        1        8       14",
+        "      23    0    1        8       16        9",
+        "      24    0    1        9        1        8"
+        ],
+        "line": [
+        "      25    0    4       10       13",
+        "      26    0    4       13       11",
+        "      27    0    4        3       11",
+        "      28    0    4       10        3",
+        "      29    0    4        4       12",
+        "      30    0    4       12        5",
+        "      31    0    4        2        5",
+        "      32    0    4        4        2",
+        "      33    0    4       10        4",
+        "      34    0    4       13       12",
+        "      35    0    4       11        5",
+        "      36    0    4        3        2",
+        "      37    0    1       14       17",
+        "      38    0    1       17       15",
+        "      39    0    1        7       15",
+        "      40    0    1       14        7",
+        "      41    0    1        8       16",
+        "      42    0    1       16        9",
+        "      43    0    1        1        9",
+        "      44    0    1        8        1",
+        "      45    0    1       14        8",
+        "      46    0    1       17       16",
+        "      47    0    1       15        9",
+        "      48    0    1        7        1"
+        ]
+    },
+
+    "sources": [
+        {
+            "sourceType": "planewave", 
+            "definitionMode": "by_vectors",
+            "directionVector": "{0.0 0.0 1.0}", 
+            "polarizationVector": "{1.0 0.0 0.0}",
+            "magnitude": {
+                "type": "Gaussian",
+                "gaussianSpread": 2e-8,
+                "gaussianDelay": 10e-8
+            },
+            "layerBox": "{75.00000002875822 75.00000002875822 100.00000000000001 -75.00000002875822 -75.00000002875822 -50.00000000000001}"
+        }
+    ],
+ 
+    "outputRequests": [
+        {
+            "gidOutputType": "OutRq_on_point",
+            "name":      "Unnamed_point_outRq",
+            "type":      "electricField",
+            "domain": {
+                "initialTime":    0.0,
+                "finalTime":      0.0,
+                "samplingPeriod": 0.0
+            },
+            "elemIds": [
+                6
+            ]
+        }
+
+
+
+    ]
+}

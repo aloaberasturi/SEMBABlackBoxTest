@@ -1,11 +1,10 @@
 #! /usr/bin/env python
 
-import unittest
-
-class EqualityTest(unittest.TestCase):
+class EqualityTest:
     def test(self,a,b):
-        self.assertEqual(a,b)
+        assert a == b
+        print ("hola")
 
-class AlmostEqualityTest(unittest.TestCase):
+class AlmostEqualityTes:
     def test(self,a,b,tolerance):
-        self.assertAlmostEqual(a,b,delta = tolerance)
+        assert abs(a-b)/a <= tolerance
