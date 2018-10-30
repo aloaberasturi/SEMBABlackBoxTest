@@ -19,7 +19,7 @@ under the EULA stated by executing this code with the -eula switch
 __________________________________________
 Compiled with Single Precision (real*4)
 __________________________________________
-Launched on              10/29/2018 17:06
+Launched on              10/30/2018 11:21
 __________________________________________
 Launched with total options
 -mibc -wiresflavor holland -i plainWave.nfde
@@ -104,7 +104,7 @@ Flushing observation DATA every      10000000 minutes and every         1024 ste
 Reporting simulation info every             1 minutes
 __________________________________________
 Simulation from n=           0 to n=         208
-Date/time 29/10   17:06:51
+Date/time 30/10   11:21:27
 __________________________________________
 Closing warning file. Number of messages:          172
 __________________________________________
@@ -149,7 +149,7 @@ __________________________________________
 Its use has been licensed until 31/12/2999
 under the EULA stated by executing this code with the -eula switch
 __________________________________________
-BEGUN plainWave at 10/29/2018 , 17:06
-ENDED plainWave at 10/29/2018 , 17:07
+BEGUN plainWave at 10/30/2018 , 11:21
+ENDED plainWave at 10/30/2018 , 11:21
 __________________________________________
 __________________________________________
