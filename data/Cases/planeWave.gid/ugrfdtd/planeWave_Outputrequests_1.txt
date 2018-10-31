@@ -1,4 +1,0 @@
-planeWave_Unnamed_point_outRq_Ex_50_50_50.dat
-planeWave_Unnamed_point_outRq_Ey_50_50_50.dat
-planeWave_Unnamed_point_outRq_Ez_50_50_50.dat
-!END 
