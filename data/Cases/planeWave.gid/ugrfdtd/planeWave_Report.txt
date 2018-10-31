@@ -19,10 +19,10 @@ under the EULA stated by executing this code with the -eula switch
 __________________________________________
 Compiled with Single Precision (real*4)
 __________________________________________
-Launched on              10/30/2018 11:21
+Launched on              10/31/2018 11:53
 __________________________________________
 Launched with total options
--mibc -wiresflavor holland -i plainWave.nfde
+-mibc -wiresflavor holland -i planeWave.nfde
 If later resuming use compulsory options
 mpirun -n    1 -mibc -wiresflavor holland
 INIT conversion internal ASCII => Binary
@@ -104,7 +104,7 @@ Flushing observation DATA every      10000000 minutes and every         1024 ste
 Reporting simulation info every             1 minutes
 __________________________________________
 Simulation from n=           0 to n=         208
-Date/time 30/10   11:21:27
+Date/time 31/10   11:53:39
 __________________________________________
 Closing warning file. Number of messages:          172
 __________________________________________
@@ -128,7 +128,7 @@ No FINAL .vtk snapshots found to be flushed
 __________________________________________
 END FINAL POSTPROCESSING at n=          208
 __________________________________________
-DONE :  plainWave UNTIL n=         208
+DONE :  planeWave UNTIL n=         208
 __________________________________________
 UGRFDTD Version W-348-g5c6e5b6 Built on 15-10-2018  14:33
 __________________________________________
@@ -149,7 +149,7 @@ __________________________________________
 Its use has been licensed until 31/12/2999
 under the EULA stated by executing this code with the -eula switch
 __________________________________________
-BEGUN plainWave at 10/30/2018 , 11:21
-ENDED plainWave at 10/30/2018 , 11:21
+BEGUN planeWave at 10/31/2018 , 11:53
+ENDED planeWave at 10/31/2018 , 11:53
 __________________________________________
 __________________________________________

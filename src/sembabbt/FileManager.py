@@ -4,7 +4,7 @@ import pathlib
 import shutil
 
 class FileManager:
-    def __init__(self, path, projectName):
+    def __init__(self, path, projectName = 'none'):
         self.mainFolder = pathlib.Path(path)
         self.projectFolder = self.mainFolder / projectName
         self.ugrfdtdFolder = self.projectFolder / "ugrfdtd"

@@ -53,7 +53,7 @@ class SembaBBT:
                     for line in lines:
                         if "!END" in line: 
                             break
-                        line = line.split("\n")[0]
+                        line = case.ugrfdtdFolder / line.split("\n")[0]
                         OptRqs["case"].append(pathlib.Path(line))
         for i in test.ugrfdtdFolder.glob('**/*_Outputrequests_*'):   
                 with i.open("r") as listOfOutputs:
@@ -61,7 +61,7 @@ class SembaBBT:
                     for line in lines:
                         if "!END" in line: 
                             break
-                        line = line.split("\n")[0]
+                        line = test.ugrfdtdFolder / line.split("\n")[0]
                         OptRqs["test"].append(pathlib.Path(line))
         return OptRqs
 
@@ -74,8 +74,10 @@ class SembaBBT:
 
         #----------------------------------------------------------------------
         assert len(OptRqs["case"]) == len(OptRqs["test"]), "number of " \
-        "outputRqs is different in Testing and Cases folder. Unable to launch tests"        
-        for i in range (0, len(OptRqs["case"])-1): #TODO: añadir todo el path, no lo encuentra por el nombre solo xd
+        "outputRqs is different in Testing and Cases folder. Please make sure" \
+        "you are calling Semba from the right directory and testcase." \
+        "Unable to launch tests"        
+        for i in range (0, len(OptRqs["case"])-1):
             with open(OptRqs["case"][i]) as caseOutput:
                 with open(OptRqs["test"][i]) as testOutput:
                     try:
@@ -101,6 +103,7 @@ class SembaBBT:
                         testOutput.close()        
                         
                     except: EOFError("Case output-requests files have " \
-                    "different size to Testing output-requests files. Unable" \
-                    "to launch tests")
+                    "different size to Testing output-requests files, so they" \
+                    "can't be compared. Please make sure you are calling Semba" \
+                    "from the right directory and testcase. Unable to launch tests")
                 
