@@ -1,18 +1,18 @@
 #! /usr/bin/env python
 
 import sys
-import pathlib
-sys.path.insert(0,'/home/alejandra/workspace/sembabbt/src/sembabbt')
 
-import SembaClass as SC
-import FileManager as FM 
+sys.path.insert(0,'/home/alejandra/workspace')
+import sembabbt.src.core.sembabbt as BBT
+import sembabbt.src.core.filemanager as FM 
+import pathlib
 
 casesPaths = pathlib.Path("/home/alejandra/workspace/sembabbt/data/Cases/")
 test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Testing/")
 test.removeFolders()
 for file in casesPaths.glob("**/*.test.json"):
     case = FM.FileManager(casesPaths,file.parent.name)
-    blackBoxTest = SC.SembaBBT()
+    blackBoxTest = BBT.SembaBBT()#change this though it's not a class anymore
     if blackBoxTest.searchMatchingProject(file):
         test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Testing/" \
         , file.parent.name.split(".")[0])
@@ -26,5 +26,3 @@ for file in casesPaths.glob("**/*.test.json"):
     else : 
         continue
 
-
-    #TODO: AÑADIR REMOVEFOLDERS()
