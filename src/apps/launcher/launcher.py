@@ -1,8 +1,4 @@
 #! /usr/bin/env python
-
-import sys
-
-sys.path.insert(0,'/home/alejandra/workspace')
 import sembabbt.src.core.sembabbt as BBT
 import sembabbt.src.core.filemanager as FM 
 import pathlib

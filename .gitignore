@@ -1,2 +1,8 @@
 #generals
 data/
+src/__pycache__/
+src/core/__pycache__/
+src/apps/__pycache__/
+src/apps/test/__pycache__/
+
+

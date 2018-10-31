@@ -1,6 +1,4 @@
 #! /usr/bin/env python
-import sys
-sys.path.insert(0,'/home/alejandra/workspace')
 import sembabbt.src.core.filemanager as FM 
 import sembabbt.src.apps.test.filters as filters
 import sembabbt.src.apps.test.family as testFamily
