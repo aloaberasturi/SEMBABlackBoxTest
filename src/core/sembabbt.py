@@ -1,15 +1,14 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 import sembabbt.src.core.filemanager as FM 
 import sembabbt.src.apps.test.filters as filters
-import sembabbt.src.apps.test.family as testFamily
-from termcolor import cprint,colored
+import sembabbt.src.apps.test.comparison as comparison
+import colored
+from colored import stylize
 import json
 import pathlib
 import subprocess
 
 
-testOptions = filters.Filters(200, [2,3]) 
-caseOptions = ()
 
 def searchMatchingProject(caseFile):
     global caseOptions
@@ -17,7 +16,7 @@ def searchMatchingProject(caseFile):
         j = json.loads(jsonFile.read())
         caseOptions = filters.Filters(j["filters"]["size"],\
         j["filters"]["keyWords"],j["filters"]["comparison"])
-
+        caseOptions.keyWords = [x.upper() for x in caseOptions.keyWords]
           
     if ((set(caseOptions.keyWords) &  set(testOptions.keyWords))!= set() and 
         (caseOptions.size <= testOptions.size)):
@@ -46,8 +45,11 @@ def storeOutputs():
     return OptRqs
 def launchTest(OptRqs, cast = float):
 
+    red = colored.fg(1)
+    green = colored.fg(82)
+
     passes = []
-    print(colored("[==========]","green"),"Running ", \
+    print(stylize("[==========]",green),"Running ", \
     len(OptRqs)," cases")
     for i in range (0, len(OptRqs)):
         with open(OptRqs[i]) as caseOutput:
@@ -55,9 +57,9 @@ def launchTest(OptRqs, cast = float):
                 passes.append(True)    
 
                 try:                    
-                    print(colored("[----------]","green"), "Testing", \
+                    print(stylize("[----------]",green), "Testing", \
                     OptRqs[i].name)
-                    print(colored("[ RUN      ]","green"), \
+                    print(stylize("[ RUN      ]",green), \
                     caseOptions.comparison, "test")
 
                     for j in caseOutput:
@@ -67,23 +69,24 @@ def launchTest(OptRqs, cast = float):
                         if ((caseOptions.comparison).upper() == "ISEQUAL") : 
                             try:   
 
-                                if testFamily.IsEqual(cast(modelLine[1]),\
+                                if comparison.IsEqual(cast(modelLine[1]),\
                                 cast(testLine[1])) == False:
                                     passes[i] = False
                             except ValueError: continue
 
                         elif ((caseOptions.comparison).upper() == "ISALMOSTEQ"):
                             try:
-                                if testFamily.IsAlmostEqual(cast(modelLine[1]), \
-                                cast(testLine[1]),tolerance) == False:
+                                if comparison.IsAlmostEqual(cast(modelLine[1]), \
+                                cast(testLine[1]),relTolerance,absTolerance) == False:
                                     passes[i] = False
                             except ValueError: continue
 
                     if passes[i] ==True:
-                        print(colored("[       OK ]","green"), \
+                        print(stylize("[       OK ]",green), \
                         caseOptions.comparison, "test")
+                        print(stylize("[----------]",green))
                     else:
-                        print(colored("[  FAILED  ]","red"), \
+                        print(stylize("[  FAILED  ]",red), \
                         caseOptions.comparison, "test")
 
 
@@ -92,11 +95,11 @@ def launchTest(OptRqs, cast = float):
             testOutput.close() 
         caseOutput.close()
 
-    print(colored("[==========]","green"))           
-    print(colored("[  PASSED  ]", "green"), sum(passes), "cases")
+    print(stylize("[==========]",green))           
+    print(stylize("[  PASSED  ]", green), sum(passes), "cases")
 
     if sum(passes)!=len(OptRqs):        
-        print(colored("[  FAILED  ]", "red"), len(OptRqs)-sum(passes), "cases")
+        print(stylize("[  FAILED  ]", red), len(OptRqs)-sum(passes), "cases")
         print(len(OptRqs)-sum(passes),"FAILED CASE")
                        
                   
