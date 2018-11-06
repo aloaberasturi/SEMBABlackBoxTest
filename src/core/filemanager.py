@@ -11,10 +11,14 @@ class FileManager:
 
     def makeFolders(self):
         self.projectFolder.mkdir(parents=True, exist_ok = True)
+
     def removeFolders(self):
-        if self.mainFolder.exists:
-            shutil.rmtree(str(self.mainFolder))
-        
+        try:
+            if self.mainFolder.exists:
+                shutil.rmtree(str(self.mainFolder))
+        except FileNotFoundError: 
+            return
+                       
     @staticmethod
     def copyFiles(orgn,dst):
         shutil.copyfile(str(orgn), str(dst))

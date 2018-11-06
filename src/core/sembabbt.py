@@ -2,50 +2,38 @@
 import sembabbt.src.core.filemanager as FM 
 import sembabbt.src.apps.test.filters as filters
 import sembabbt.src.apps.test.family as testFamily
+from termcolor import cprint,colored
 import json
 import pathlib
 import subprocess
 
 
+testOptions = filters.Filters(200, [2,3]) 
+caseOptions = ()
 
-testOptions = {
-    "filters": {#hacer una clase Options en vez de un dict
-    "size" : 200,
-    "keyWords" : [2,3]
-    }
-    
-}
-caseOptions = {}
-comparison = "equality"
-def searchMatchingProject(self, caseFile):
+def searchMatchingProject(caseFile):
+    global caseOptions
     with caseFile.open("r") as jsonFile:
-        filters.caseOptions = json.loads(jsonFile.read())
-        jsonFile.close()
+        j = json.loads(jsonFile.read())
+        caseOptions = filters.Filters(j["filters"]["size"],\
+        j["filters"]["keyWords"],j["filters"]["comparison"])
 
-    assert filters.caseOptions["filters"].keys() == \
-    filters.testOptions["filters"].keys(), "filters don't match"
-      
-    if (set(filters.caseOptions["filters"]["keyWords"]) & \
-    set(filters.testOptions["filters"]["keyWords"]) != set() and 
-    filters.caseOptions["filters"]["size"] <= \
-    filters.testOptions["filters"]["size"] ):
+          
+    if ((set(caseOptions.keyWords) &  set(testOptions.keyWords))!= set() and 
+        (caseOptions.size <= testOptions.size)):
         return True
 
     else : 
         return False
 
-def callSemba(self,fileName):#meter ubicacion del ejecutable desde el launcher
+def callSemba(exePath, fileName):
     try:
-        folder = pathlib.Path('/home/alejandra/workspace/semba/build/bin/semba/')
-        subprocess.run([str(folder),"-i",str(fileName)])
+        subprocess.run([str(exePath),"-i",str(fileName)])
     except: RuntimeError("Unable to launch semba")
 
 
-def storeOutputs(self, case, test):#asegurarme de que comparo los mismos archivos. Pasar optrqs solo del caso qe estoy testeando
-    OptRqs = {
-        "case" : [],
-        "test" : []
-    }
+def storeOutputs():
+    OptRqs = []
     for i in case.ugrfdtdFolder.glob('**/*_Outputrequests_*'):   
             with i.open("r") as listOfOutputs:
                 lines = listOfOutputs.readlines()
@@ -53,51 +41,63 @@ def storeOutputs(self, case, test):#asegurarme de que comparo los mismos archivo
                     if "!END" in line: 
                         break
                     line = case.ugrfdtdFolder / line.split("\n")[0]
-                    OptRqs["case"].append(pathlib.Path(line))
-    for i in test.ugrfdtdFolder.glob('**/*_Outputrequests_*'):   
-            with i.open("r") as listOfOutputs:
-                lines = listOfOutputs.readlines()
-                for line in lines:
-                    if "!END" in line: 
-                        break
-                    line = test.ugrfdtdFolder / line.split("\n")[0]
-                    OptRqs["test"].append(pathlib.Path(line))
-    return OptRqs
-def launchTest(self, OptRqs, cast = float):
-#-------Change this parameter to set Almost-Equality preferences-------
+                    OptRqs.append(pathlib.Path(line))
 
-    tolerance = 0.0 
-#----------------------------------------------------------------------
-    assert len(OptRqs["case"]) == len(OptRqs["test"]), "number of " \
-    "outputRqs is different in Testing and Cases folder. Please make sure" \
-    "you are calling Semba from the right directory and testcase." \
-    "Unable to launch tests"        
-    for i in range (0, len(OptRqs["case"])-1):
-        with open(OptRqs["case"][i]) as caseOutput:
-            with open(OptRqs["test"][i]) as testOutput:
-                try:
-                    for i in range(0, len(OptRqs["case"])):
-                        modelLine = (caseOutput.readline()).split("\n")[0]
-                        testLine = (testOutput.readline()).split("\n")[0]
-                        modelLine = modelLine.split()
-                        testLine = testLine.split()
-                        if (filters.caseOptions["flags"]["comparison"] \
-                        == "equality") : 
-                            try:                           
-                                (SembaTest.EqualityTest())\
-                                .test(cast(modelLine[2]), cast(testLine[2]))
-                            except: continue
-                        elif (filters.caseOptions["flags"]["comparison"] \
-                        == "almostEq"):
+    return OptRqs
+def launchTest(OptRqs, cast = float):
+
+    passes = []
+    print(colored("[==========]","green"),"Running ", \
+    len(OptRqs)," cases")
+    for i in range (0, len(OptRqs)):
+        with open(OptRqs[i]) as caseOutput:
+            with open(test.ugrfdtdFolder / OptRqs[i].name) as testOutput:
+                passes.append(True)    
+
+                try:                    
+                    print(colored("[----------]","green"), "Testing", \
+                    OptRqs[i].name)
+                    print(colored("[ RUN      ]","green"), \
+                    caseOptions.comparison, "test")
+
+                    for j in caseOutput:
+                        modelLine = (j.split("\n")[0]).split()
+                        testLine = ((testOutput.readline()).split("\n")[0]).split()
+
+                        if ((caseOptions.comparison).upper() == "ISEQUAL") : 
+                            try:   
+
+                                if testFamily.IsEqual(cast(modelLine[1]),\
+                                cast(testLine[1])) == False:
+                                    passes[i] = False
+                            except ValueError: continue
+
+                        elif ((caseOptions.comparison).upper() == "ISALMOSTEQ"):
                             try:
-                                SembaTest.AlmostEqualityTest.test( \
-                                cast(modelLine[2]), cast(testLine[2]),tolerance)
-                            except TypeError: continue
-                    caseOutput.close()
-                    testOutput.close()        
+                                if testFamily.IsAlmostEqual(cast(modelLine[1]), \
+                                cast(testLine[1]),tolerance) == False:
+                                    passes[i] = False
+                            except ValueError: continue
+
+                    if passes[i] ==True:
+                        print(colored("[       OK ]","green"), \
+                        caseOptions.comparison, "test")
+                    else:
+                        print(colored("[  FAILED  ]","red"), \
+                        caseOptions.comparison, "test")
+
+
+                except IndexError: "Test and case files don't have the same"\
+                " length. Please check that semba compiled correctly"
+            testOutput.close() 
+        caseOutput.close()
+
+    print(colored("[==========]","green"))           
+    print(colored("[  PASSED  ]", "green"), sum(passes), "cases")
+
+    if sum(passes)!=len(OptRqs):        
+        print(colored("[  FAILED  ]", "red"), len(OptRqs)-sum(passes), "cases")
+        print(len(OptRqs)-sum(passes),"FAILED CASE")
+                       
                   
-                except: EOFError("Case output-requests files have " \
-                "different size to Testing output-requests files, so they" \
-                "can't be compared. Please make sure you are calling Semba" \
-                "from the right directory and testcase. Unable to launch tests")
-              
+                            
