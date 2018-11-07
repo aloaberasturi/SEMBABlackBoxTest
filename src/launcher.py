@@ -29,21 +29,21 @@ BBT.relTolerance = 2.0 #--- for AlmostEquality tests that can use relative error
                       
                         
                         #---Change this parameter if desired another tolerance--
-BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that use relative error--- 
-                        #--(i.e.: when true value IS zero)----------------------
+BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
+                        #--- error (i.e.: when true value IS zero)--------------
 
 
 #-----Uncomment if command line arguments are desired during program call------
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("size",type = int)
-# parser.add_argument("keyWords", nargs = '+', default = [])
-# args = parser.parse_args()
-# BBT.testOptions = filters.Filters(args.size, args.keyWords)
+parser = argparse.ArgumentParser()
+parser.add_argument("size",type = int)
+parser.add_argument("keyWords", nargs = '+', default = [])
+args = parser.parse_args()
+BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #-----------------------------------------------------------------------------
 
-BBT.testOptions = filters.Filters(200, ["sphere","holii"]) # Comment if argparse is used
+#BBT.testOptions = filters.Filters(200, ["sphere","holii"]) # Comment if argparse is used
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 BBT.caseOptions = ()
 for file in casesPaths.glob("**/*.test.json"):
