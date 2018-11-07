@@ -39,6 +39,7 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 parser = argparse.ArgumentParser()
 parser.add_argument("size",type = int)
 parser.add_argument("keyWords", nargs = '+', default = [])
+
 args = parser.parse_args()
 BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
@@ -50,7 +51,8 @@ for file in casesPaths.glob("**/*.test.json"):
     BBT.case = FM.FileManager(casesPaths,file.parent.name)
 
     if BBT.searchMatchingProject(file):
-        BBT.test = FM.FileManager(str(BBT.test), file.parent.name.split(".")[0])
+        BBT.test = FM.FileManager(str(BBT.test.mainFolder),\
+        file.parent.name.split(".")[0])
 
         BBT.test.makeFolders()
 
