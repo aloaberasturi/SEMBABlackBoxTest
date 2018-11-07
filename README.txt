@@ -4,3 +4,5 @@
 
 PYTHONPATH="${PYTHONPATH}:path/to/folder/containing/sembabbt"
 export PYTHONPATH
+
+#Comparison filter's syntax: IsEqual or IsAlmostEqual

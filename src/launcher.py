@@ -9,16 +9,15 @@ from colored import stylize
 
 
 blue = colored.fg(38)
-purple2 = colored.fg(147)
+yellow = colored.fg(214)
+#purple2 = colored.fg(147)
 #purple = colored.fg(177)
-
-
 
 print(stylize("Welcome to sembaBlackBoxTest.\nPlease insert size of the case"+
 " file to be tested as well as the keywords.\nThese inputs will be used in order"+ 
 " to find any projects matching your requests.", blue))
 print(stylize("\n \nSyntax: \n \npython3",blue),stylize("<program_name.py> <size> " + 
-"<1st_kW> <2nd_kW> ... <n-th kW>", purple2))
+"<1st_kW> <2nd_kW> ... <n-th kW>", yellow))
 
 sembaPath = pathlib.Path('/home/alejandra/workspace/semba/build/bin/semba/')
 casesPaths = pathlib.Path("/home/alejandra/workspace/sembabbt/data/Cases/")

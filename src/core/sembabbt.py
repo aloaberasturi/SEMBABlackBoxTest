@@ -32,22 +32,22 @@ def callSemba(exePath, fileName):
 
     blue = colored.fg(38)
     try:
-        print(stylize("--------------------------------------------------------",\
-        blue))
+        print(stylize("--------------------------------------------------------"+
+        "---------", blue))
         print("\n")
-        cprint("                     Executing SEMBA","blue",attrs=["blink"])
+        cprint("                        Executing SEMBA","blue",\
+        attrs=["blink","bold"])
         print("\n")
-        print(stylize("--------------------------------------------------------",\
-        blue))
-        #-----------Please comment if you want to display SEMBA std output------
+        print(stylize("--------------------------------------------------------"+
+        "---------", blue))
+        #--------------Please comment to display SEMBA's std output-------------
 
         process = Popen([str(exePath),"-i",str(fileName)],stdout = PIPE)
         process.communicate() 
 
-        #-----------Uncomment to display SEMBA std output----------------------- 
-
+        #-----------Uncomment to display SEMBA's std output---------------------
         #subprocess.run([str(exePath),"-i",str(fileName)])
-        # print(chr(27) + "[2J")
+        
         os.system('cls' if os.name == 'nt' else 'clear')
     except: RuntimeError("Unable to launch semba")
 

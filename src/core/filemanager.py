@@ -2,7 +2,6 @@
 
 import pathlib
 import shutil
-
 class FileManager:
     def __init__(self, path, projectName = 'none'):
         self.mainFolder = pathlib.Path(path)
@@ -20,6 +19,6 @@ class FileManager:
             return
                        
     @staticmethod
-    def copyFiles(orgn,dst):
-        shutil.copyfile(str(orgn), str(dst))
+    def copyFiles(orgn,dstn):
+        shutil.copyfile(str(orgn), str(dstn))
 

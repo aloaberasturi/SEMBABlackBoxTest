@@ -9,8 +9,7 @@ def IsEqual(a,b):
     except AssertionError: 
         print("family.py: error: Expected: ",a," \n" + "to be equal to:",b,"\n"+
         "Actual: False")
-        return False
- 
+        return False 
       
 
 
