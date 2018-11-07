@@ -2,12 +2,15 @@
 import sembabbt.src.core.filemanager as FM 
 import sembabbt.src.core.filters as filters
 import sembabbt.src.core.comparison as comparison
-import colored
+import colored as colored
 from colored import stylize
+from termcolor import colored as clrd
+from termcolor import cprint
 import json
 import pathlib
 import subprocess
-
+from subprocess import Popen,PIPE
+import os
 
 
 def searchMatchingProject(caseFile):
@@ -26,8 +29,26 @@ def searchMatchingProject(caseFile):
         return False
 
 def callSemba(exePath, fileName):
+
+    blue = colored.fg(38)
     try:
-        subprocess.run([str(exePath),"-i",str(fileName)])
+        print(stylize("--------------------------------------------------------",\
+        blue))
+        print("\n")
+        cprint("                     Executing SEMBA","blue",attrs=["blink"])
+        print("\n")
+        print(stylize("--------------------------------------------------------",\
+        blue))
+        #-----------Please comment if you want to display SEMBA std output------
+
+        process = Popen([str(exePath),"-i",str(fileName)],stdout = PIPE)
+        process.communicate() 
+
+        #-----------Uncomment to display SEMBA std output----------------------- 
+
+        #subprocess.run([str(exePath),"-i",str(fileName)])
+        # print(chr(27) + "[2J")
+        os.system('cls' if os.name == 'nt' else 'clear')
     except: RuntimeError("Unable to launch semba")
 
 

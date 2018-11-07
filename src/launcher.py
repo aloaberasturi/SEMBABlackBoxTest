@@ -7,6 +7,7 @@ import argparse
 import colored
 from colored import stylize
 
+
 blue = colored.fg(38)
 purple2 = colored.fg(147)
 #purple = colored.fg(177)
