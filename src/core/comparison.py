@@ -25,7 +25,7 @@ def IsAlmostEqual(a,b,relTolerance,absTolerance):
     except ZeroDivisionError:     
         if b != 0.0:
             try:
-                assert (abs(a-b) <= absTolerance)
+                assert (abs(b) <= absTolerance)
                 return True
             except AssertionError:
                 print("family.py: error: Expected: ",a," \n" + "to be" +

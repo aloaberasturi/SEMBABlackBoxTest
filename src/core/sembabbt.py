@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 import sembabbt.src.core.filemanager as FM 
-import sembabbt.src.apps.test.filters as filters
-import sembabbt.src.apps.test.comparison as comparison
+import sembabbt.src.core.filters as filters
+import sembabbt.src.core.comparison as comparison
 import colored
 from colored import stylize
 import json

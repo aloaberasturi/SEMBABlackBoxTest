@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 import sembabbt.src.core.sembabbt as BBT
-import sembabbt.src.apps.test.filters as filters
+import sembabbt.src.core.filters as filters
 import sembabbt.src.core.filemanager as FM 
 import pathlib
 import argparse
@@ -8,8 +8,9 @@ import colored
 from colored import stylize
 
 blue = colored.fg(38)
-purple = colored.fg(177)
 purple2 = colored.fg(147)
+#purple = colored.fg(177)
+
 
 
 print(stylize("Welcome to sembaBlackBoxTest.\nPlease insert size of the case"+
@@ -20,7 +21,7 @@ print(stylize("\n \nSyntax: \n \npython3",blue),stylize("<program_name.py> <size
 
 sembaPath = pathlib.Path('/home/alejandra/workspace/semba/build/bin/semba/')
 casesPaths = pathlib.Path("/home/alejandra/workspace/sembabbt/data/Cases/")
-BBT.test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Testing/")
+BBT.test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Temp/")
 BBT.test.removeFolders()
 
                        #---Change this parameter if desired another tolerance---
@@ -41,17 +42,15 @@ parser.add_argument("keyWords", nargs = '+', default = [])
 args = parser.parse_args()
 BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
-#-----------------------------------------------------------------------------
-
-#BBT.testOptions = filters.Filters(200, ["sphere","holii"]) # Comment if argparse is used
+#------Comment if command line arguments are being used------------------------
+#BBT.testOptions = filters.Filters(200, ["kw1","kw2"])
+                                                  
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
-BBT.caseOptions = ()
 for file in casesPaths.glob("**/*.test.json"):
     BBT.case = FM.FileManager(casesPaths,file.parent.name)
 
     if BBT.searchMatchingProject(file):
-        BBT.test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Testing/" \
-        , file.parent.name.split(".")[0])
+        BBT.test = FM.FileManager(str(BBT.test), file.parent.name.split(".")[0])
 
         BBT.test.makeFolders()
 
