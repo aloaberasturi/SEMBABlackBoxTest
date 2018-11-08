@@ -21,7 +21,7 @@ print(stylize("Welcome to sembaBlackBoxTest.\nPlease insert size of the case"+
 print(stylize("\n \nSyntax: \n \npython3",blue),stylize("<program_name.py> <size> " + 
 "<1st_kW> <2nd_kW> ... <n-th kW>", yellow))
 
-sembaPath = pathlib.Path('./bin/semba.exe')#change this
+sembaPath = pathlib.Path('../bin/semba')#change this
 casesPaths = pathlib.Path("../data/Cases/")
 BBT.test = FM.FileManager("../data/Temp/")
 BBT.test.removeFolders()
