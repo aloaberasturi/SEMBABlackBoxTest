@@ -1,7 +1,9 @@
 #! /usr/bin/env python3
-import sembabbt.src.core.sembabbt as BBT
-import sembabbt.src.core.filters as filters
-import sembabbt.src.core.filemanager as FM 
+
+import sembabbt.common as BBT
+import sembabbt.filters as filters
+import sembabbt.filemanager as FM 
+
 import pathlib
 import argparse
 import colored
@@ -19,9 +21,9 @@ print(stylize("Welcome to sembaBlackBoxTest.\nPlease insert size of the case"+
 print(stylize("\n \nSyntax: \n \npython3",blue),stylize("<program_name.py> <size> " + 
 "<1st_kW> <2nd_kW> ... <n-th kW>", yellow))
 
-sembaPath = pathlib.Path('/home/alejandra/workspace/semba/build/bin/semba/')
-casesPaths = pathlib.Path("/home/alejandra/workspace/sembabbt/data/Cases/")
-BBT.test = FM.FileManager("/home/alejandra/workspace/sembabbt/data/Temp/")
+sembaPath = pathlib.Path('./bin/semba.exe')
+casesPaths = pathlib.Path("./data/Cases/")
+BBT.test = FM.FileManager("./data/Temp/")
 BBT.test.removeFolders()
 
                        #---Change this parameter if desired another tolerance---
@@ -56,13 +58,18 @@ for file in casesPaths.glob("**/*.test.json"):
 
         BBT.test.makeFolders()
 
-        FM.FileManager.copyFiles(BBT.case.projectFolder / (file.parent.name.split\
-        (".")[0] + ".dat"),BBT.test.projectFolder / (file.parent.name.split(".")[0] \
-         + ".dat"))
+        FM.FileManager.copyFiles( \
+            BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),\
+            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") \
+        )
 
-        BBT.callSemba(sembaPath, BBT.test.projectFolder / (
-        file.parent.name.split(".")[0] + ".dat"))
+        BBT.callSemba( 
+            sembaPath, \
+            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") \
+        )
         BBT.launchTest(BBT.storeOutputs())
     else : 
         continue
+
+print("SEMBA BBT Finished")
 

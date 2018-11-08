@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
-import sembabbt.src.core.filemanager as FM 
-import sembabbt.src.core.filters as filters
-import sembabbt.src.core.comparison as comparison
-import colored as colored
+
+from . import filemanager as FM
+from . import filters
+from . import comparison
+import colored
 from colored import stylize
 from termcolor import colored as clrd
 from termcolor import cprint
@@ -32,8 +33,9 @@ def callSemba(exePath, fileName):
 
     blue = colored.fg(38)
     try:
-        print(stylize("--------------------------------------------------------"+
-        "---------", blue))
+        print(stylize( \
+         "-----------------------------------------------------------------", \
+         blue))
         print("\n")
         cprint("                        Executing SEMBA","blue",\
         attrs=["blink","bold"])
