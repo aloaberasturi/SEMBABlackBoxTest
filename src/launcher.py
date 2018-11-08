@@ -21,9 +21,9 @@ print(stylize("Welcome to sembaBlackBoxTest.\nPlease insert size of the case"+
 print(stylize("\n \nSyntax: \n \npython3",blue),stylize("<program_name.py> <size> " + 
 "<1st_kW> <2nd_kW> ... <n-th kW>", yellow))
 
-sembaPath = pathlib.Path('./bin/semba.exe')
-casesPaths = pathlib.Path("./data/Cases/")
-BBT.test = FM.FileManager("./data/Temp/")
+sembaPath = pathlib.Path('./bin/semba.exe')#change this
+casesPaths = pathlib.Path("../data/Cases/")
+BBT.test = FM.FileManager("../data/Temp/")
 BBT.test.removeFolders()
 
                        #---Change this parameter if desired another tolerance---
@@ -38,38 +38,40 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 
 #-----Uncomment if command line arguments are desired during program call------
 
-parser = argparse.ArgumentParser()
-parser.add_argument("size",type = int)
-parser.add_argument("keyWords", nargs = '+', default = [])
+# parser = argparse.ArgumentParser()
+# parser.add_argument("size",type = int)
+# parser.add_argument("keyWords", nargs = '+', default = [])
 
-args = parser.parse_args()
-BBT.testOptions = filters.Filters(args.size, args.keyWords)
+# args = parser.parse_args()
+# BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #------Comment if command line arguments are being used------------------------
-#BBT.testOptions = filters.Filters(200, ["kw1","kw2"])
+BBT.testOptions = filters.Filters(200, ["patata","caca"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 for file in casesPaths.glob("**/*.test.json"):
     BBT.case = FM.FileManager(casesPaths,file.parent.name)
 
     if BBT.searchMatchingProject(file):
-        BBT.test = FM.FileManager(str(BBT.test.mainFolder),\
-        file.parent.name.split(".")[0])
+        BBT.test = FM.FileManager(
+            str(BBT.test.mainFolder),
+            file.parent.name.split(".")[0] \
+        )
 
         BBT.test.makeFolders()
 
-        FM.FileManager.copyFiles( \
-            BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),\
-            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") \
+        FM.FileManager.copyFiles(
+            BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
+            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
         )
 
         BBT.callSemba( 
-            sembaPath, \
-            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") \
+            sembaPath, 
+            BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
         )
         BBT.launchTest(BBT.storeOutputs())
     else : 
         continue
 
-print("SEMBA BBT Finished")
+print("SEMBA BlackBoxTest Finished")
 
