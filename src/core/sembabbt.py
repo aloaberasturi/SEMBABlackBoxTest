@@ -105,6 +105,7 @@ def launchTest(OptRqs, cast = float):
                     if passes[i] ==True:
                         print(stylize("[       OK ]",green), \
                         caseOptions.comparison, "test")
+                        
                         print(stylize("[----------]",green))
                     else:
                         print(stylize("[  FAILED  ]",red), \
