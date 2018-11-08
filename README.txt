@@ -40,6 +40,8 @@
 #     thinWire" or "dipole"
 #
 #    -[filters][keyWords][mesh] can either have value "conformal" or "staircased"
+
+#    -[filters][keyWords][boundaryConditions] can either be "PMLBC" or "PECBC"
 #
 #These filters can be changed directly in data/Cases/case.gid/case.test.json , 
 #under the [filters][comparison] flag and [filters][keyWords] flag respectively.
