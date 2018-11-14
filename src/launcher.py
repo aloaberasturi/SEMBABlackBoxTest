@@ -24,6 +24,8 @@ import sembabbt.common as BBT
 import sembabbt.filters as filters
 import sembabbt.filemanager as FM 
 import pathlib
+import shutil
+import os
 import argparse
 import colored
 from colored import stylize
@@ -31,8 +33,9 @@ from colored import stylize
 
 blue = colored.fg(38)
 yellow = colored.fg(214)
+purple = colored.fg(177)
 #purple2 = colored.fg(147)
-#purple = colored.fg(177)
+
 
 print(
     stylize(
@@ -49,7 +52,7 @@ print(
 )
 
 sembaPath = pathlib.Path("../bin/semba")
-# casesPaths = pathlib.Path("../data/Cases/")
+ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
 BBT.case = FM.FileManager("../data/Cases/")
 BBT.test = FM.FileManager("../data/Temp/")
 BBT.test.removeFolders()
@@ -66,18 +69,19 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 
 #-----Uncomment if command line arguments are desired during program call------
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("size",type = int)
-# parser.add_argument("keyWords", nargs = '+', default = [])
+parser = argparse.ArgumentParser()
+parser.add_argument("size",type = int)
+parser.add_argument("keyWords", nargs = '+', default = [])
 
-# args = parser.parse_args()
-# BBT.testOptions = filters.Filters(args.size, args.keyWords)
+args = parser.parse_args()
+BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #------Comment if command line arguments are being used------------------------
-BBT.testOptions = filters.Filters(200, ["SGBC","planeWave","conformal"])
+#BBT.testOptions = filters.Filters(140610, ["PEC","planeWave","conformal"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 for file in BBT.case.mainFolder.glob("**/*.test.json"):
+
     BBT.case = FM.FileManager(str(BBT.case.mainFolder),file.parent.name)
 
     if BBT.searchMatchingProject(file):
@@ -88,15 +92,37 @@ for file in BBT.case.mainFolder.glob("**/*.test.json"):
         FM.FileManager.copyFiles(
             BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
             BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-        )
+        )   
+
+
 
         BBT.callSemba( 
             sembaPath, 
             BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
         )
+        
+        FM.FileManager.copyFiles(
+            ugrfdtdPath, 
+            (BBT.test.ugrfdtdFolder / "ugrfdtd")
+        )
+
+        outList = (BBT.test.ugrfdtdFolder).glob('**/*_Outputrequests_*')
+
+        if outList.gi_running == False:
+
+            BBT.callUGRFDTD( 
+                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+            )
+
         BBT.launchTest(BBT.storeOutputs())
+
+        print(stylize("press Enter to continue with next test case...",purple))
+        input()
+
+        os.system('cls' if os.name == 'nt' else 'clear')
     else : 
         continue
+    
 
-print("SEMBA BlackBoxTest Finished")
+print("                        SEMBA BlackBoxTest Finished")
 

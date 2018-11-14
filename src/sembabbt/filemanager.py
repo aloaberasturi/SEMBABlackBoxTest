@@ -22,6 +22,8 @@
 
 import pathlib
 import shutil
+import fileinput
+import sys
 class FileManager:
     def __init__(self, path, projectName = 'none'):
         self.mainFolder = pathlib.Path(path)
@@ -40,5 +42,16 @@ class FileManager:
                        
     @staticmethod
     def copyFiles(orgn,dstn):
-        shutil.copyfile(str(orgn), str(dstn))
+        shutil.copy(str(orgn), str(dstn))
+    
+    # @staticmethod
+    # def modifyTextFile(file, extension):
+    #     for line in fileinput.input(str(file), inplace = 1):
+    #         if extension in line:
+    #             newLine = file.parent / line
+    #             line = line.replace(line, str(newLine))
+    #         sys.stdout.write(line)
+
+    #     return
+                                      
 

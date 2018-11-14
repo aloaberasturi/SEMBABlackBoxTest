@@ -33,6 +33,7 @@ import pathlib
 import subprocess
 from subprocess import Popen,PIPE
 import os
+import shutil
 
 
 def searchMatchingProject(caseFile):
@@ -60,6 +61,13 @@ def searchMatchingProject(caseFile):
 def callSemba(exePath, fileName):
 
     blue = colored.fg(38)
+    purple = colored.fg(177)
+
+    print(stylize(
+            "Entering project " + str(test.projectFolder.name),
+            purple)
+    )
+
     try:
         print(stylize(
             "-----------------------------------------------------------------", 
@@ -69,7 +77,32 @@ def callSemba(exePath, fileName):
         print("\n")
 
         cprint(
-            "                        Executing SEMBA",
+            "                        1. Executing SEMBA",
+            "blue",
+            attrs=["blink","bold"]
+        )
+
+        #--------------Please comment to display SEMBA's std output-------------
+
+        process = Popen([str(exePath),"-i",str(fileName)],stdout = PIPE)
+        process.communicate() 
+
+        #--------------Please uncomment to display SEMBA's std output-----------
+
+        #subprocess.run([str(exePath),"-i",str(fileName)])      
+
+
+    except: RuntimeError("Unable to launch semba")
+
+
+
+def callUGRFDTD(nfde):
+    blue = colored.fg(38)
+    try:
+        print("\n")
+
+        cprint(
+            "                        2. Executing UGRFDTD",
             "blue",
             attrs=["blink","bold"]
         )
@@ -81,18 +114,20 @@ def callSemba(exePath, fileName):
             blue)
         )
 
-        #--------------Please comment to display SEMBA's std output-------------
-
-        process = Popen([str(exePath),"-i",str(fileName)],stdout = PIPE)
+   
+#----------------Please comment to display UGRFDTD's std output-----------------
+   
+        process = Popen(["./ugrfdtd","-i",str(nfde.name)],stdout = PIPE, cwd = nfde.parent)
         process.communicate() 
 
-        #--------------Please uncomment to display SEMBA's std output-----------
+#----------------Please uncomment to display UGRFDTD's std output---------------
 
-        #subprocess.run([str(exePath),"-i",str(fileName)])
-        
+    #subprocess.call(["./ugrfdtd","-i",str(nfde.name)], cwd = str(nfde.parent))
+
         os.system('cls' if os.name == 'nt' else 'clear')
+        os.remove(str(nfde.parent / "ugrfdtd"))
 
-    except: RuntimeError("Unable to launch semba")
+    except: RuntimeError("Unable to launch UGRFDTD")
 
 
 def storeOutputs():
