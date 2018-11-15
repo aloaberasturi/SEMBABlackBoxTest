@@ -67,28 +67,28 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 
 #-----Uncomment if command line arguments are desired during program call------
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("-s","--size",type = int)
-# parser.add_argument("-k","--keyWords", nargs = '+', default = [])
-# args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument("-s","--size",type = int)
+parser.add_argument("-k","--keyWords", nargs = '+', default = [])
+args = parser.parse_args()
+BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
-# if args.size is None or args.keyWords is None:
+if args.size is None or args.keyWords is None:
     
-#     parser.error(
-#         print(
-#             stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
-#             stylize(
-#             "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
-#             yellow
-#             )   
-#         )
-#     )
-    
+    parser.error(
+        print(
+            stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
+            stylize(
+            "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
+            yellow
+            )   
+        )
+    )
+#------------------------------------------------------------------------------    
 
-# BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #------Comment if command line arguments are being used------------------------
-BBT.testOptions = filters.Filters(160000, ["planewave","conformal","PEC"])
+#BBT.testOptions = filters.Filters(160000, ["planewave","conformal","PEC"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 
