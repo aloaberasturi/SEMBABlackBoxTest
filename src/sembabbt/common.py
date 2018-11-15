@@ -64,7 +64,7 @@ def callSemba(exePath, fileName):
     purple = colored.fg(177)
 
     print(stylize(
-            "Entering project " + str(test.projectFolder.name),
+            "                 Entering project " + str(test.projectFolder.name),
             purple)
     )
 
@@ -97,7 +97,9 @@ def callSemba(exePath, fileName):
 
 
 def callUGRFDTD(nfde):
+
     blue = colored.fg(38)
+
     try:
         print("\n")
 
@@ -117,7 +119,12 @@ def callUGRFDTD(nfde):
    
 #----------------Please comment to display UGRFDTD's std output-----------------
    
-        process = Popen(["./ugrfdtd","-i",str(nfde.name)],stdout = PIPE, cwd = nfde.parent)
+        process = Popen(
+            ["./ugrfdtd","-i",str(nfde.name)],
+            stdout = PIPE, 
+            cwd = nfde.parent
+        )
+
         process.communicate() 
 
 #----------------Please uncomment to display UGRFDTD's std output---------------
@@ -150,12 +157,6 @@ def launchTest(OptRqs, cast = float):
     green = colored.fg(82)
     passes = []
 
-    print(
-        stylize("[==========]",green),
-        "Running ",
-        len(OptRqs),
-        "cases"
-    )
     for i in range (0, len(OptRqs)):
         with open(OptRqs[i]) as caseOutput:
             with open(test.ugrfdtdFolder / OptRqs[i].name) as testOutput:
@@ -223,10 +224,6 @@ def launchTest(OptRqs, cast = float):
     print(
         stylize("[==========]",green)
     )           
-    print(
-        stylize("[  PASSED  ]", green),
-        sum(passes),
-        "cases")
 
     if sum(passes)!=len(OptRqs):       
         print(
@@ -235,6 +232,9 @@ def launchTest(OptRqs, cast = float):
             "cases")
             
         print(len(OptRqs)-sum(passes),"FAILED CASE")
+        return False
+    else:
+        return True
                        
                   
                             

@@ -29,25 +29,23 @@ import os
 import argparse
 import colored
 from colored import stylize
+from termcolor import cprint
 
 
 blue = colored.fg(38)
 yellow = colored.fg(214)
 purple = colored.fg(177)
-#purple2 = colored.fg(147)
+green = colored.fg(82)
+red = colored.fg(1)
 
-
+os.system('cls' if os.name == 'nt' else 'clear')
 print(
     stylize(
-        "Welcome to sembaBlackBoxTest.\nPlease insert size of the case file to " 
+        "             Welcome to sembaBlackBoxTest" 
+        "\n"
+        "\nPlease insert size of the case file to " 
         "be tested as well as the keywords.\nThese inputs will be used in order" 
         " to find any projects matching your requests.", blue
-    )
-)
-print(
-    stylize("\n \nSyntax: \n \npython3",blue),
-    stylize(
-        "<program_name.py> <Size> <Material> <Excitation> <Mesh>", yellow
     )
 )
 
@@ -69,22 +67,51 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 
 #-----Uncomment if command line arguments are desired during program call------
 
-parser = argparse.ArgumentParser()
-parser.add_argument("size",type = int)
-parser.add_argument("keyWords", nargs = '+', default = [])
+# parser = argparse.ArgumentParser()
+# parser.add_argument("-s","--size",type = int)
+# parser.add_argument("-k","--keyWords", nargs = '+', default = [])
+# args = parser.parse_args()
 
-args = parser.parse_args()
-BBT.testOptions = filters.Filters(args.size, args.keyWords)
+# if args.size is None or args.keyWords is None:
+    
+#     parser.error(
+#         print(
+#             stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
+#             stylize(
+#             "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
+#             yellow
+#             )   
+#         )
+#     )
+    
+
+# BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #------Comment if command line arguments are being used------------------------
-#BBT.testOptions = filters.Filters(140610, ["PEC","planeWave","conformal"])
+BBT.testOptions = filters.Filters(90, ["planewave","pito","jiji"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
-for file in BBT.case.mainFolder.glob("**/*.test.json"):
 
+numTests = 0
+for file in BBT.case.mainFolder.glob("**/*.test.json"):
+        if BBT.searchMatchingProject(file):
+            numTests += 1
+
+print(
+    stylize("[==========]",green),
+    "Running ",
+    numTests,
+    "tests",
+    )
+
+count = 0
+passedTests = 0
+failedTests = 0
+for file in BBT.case.mainFolder.glob("**/*.test.json"):
     BBT.case = FM.FileManager(str(BBT.case.mainFolder),file.parent.name)
 
     if BBT.searchMatchingProject(file):
+        count += 1
         BBT.test = FM.FileManager(str(BBT.test.mainFolder),file.parent.name)
 
         BBT.test.makeFolders()
@@ -114,15 +141,73 @@ for file in BBT.case.mainFolder.glob("**/*.test.json"):
                 BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
             )
 
-        BBT.launchTest(BBT.storeOutputs())
+        doesPass = BBT.launchTest(BBT.storeOutputs())
+        if doesPass == True:
+            passedTests += 1
+        else: 
+            failedTests += 1       
 
-        print(stylize("press Enter to continue with next test case...",purple))
+        print("\n")
+
+        if (count +1) == 2:
+            print(stylize(
+                "press Enter to continue with " +
+                str(count + 1) + "nd test case...",
+                purple
+                )
+            )
+        elif (count +1) == 3:
+            print(stylize(
+                "press Enter to continue with " + 
+                str(count + 1) + "rd test case...",
+                purple
+                )
+            )
+        elif (count == numTests): 
+            continue
+
+        else:
+            print(stylize(
+                "press Enter to continue with " + 
+                str(count + 1) + "th test case...",
+                purple
+                )
+            ) 
+
+        print("\n")
         input()
 
         os.system('cls' if os.name == 'nt' else 'clear')
     else : 
         continue
-    
 
-print("                        SEMBA BlackBoxTest Finished")
+print(
+    stylize("[  PASSED  ]", green),
+    passedTests,
+    "tests"
+)
+print(
+    stylize("[  FAILED  ]", red),
+    failedTests,
+    "tests"
+)
+
+
+    
+print(stylize(
+    "-----------------------------------------------------------------", 
+    blue)
+)
+
+cprint(
+    "                  SEMBA BlackBoxTest Finished",
+    "blue",
+    attrs=["bold"]
+)
+
+print(stylize(
+    "-----------------------------------------------------------------", 
+    blue)
+)
+print("\n")
 
