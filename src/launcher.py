@@ -88,7 +88,7 @@ BBT.absTolerance = 1e-5 #--- for AlmostEquality tests that can't use relative---
 # BBT.testOptions = filters.Filters(args.size, args.keyWords)
 
 #------Comment if command line arguments are being used------------------------
-BBT.testOptions = filters.Filters(90, ["planewave","pito","jiji"])
+BBT.testOptions = filters.Filters(160000, ["planewave","conformal","PEC"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 
