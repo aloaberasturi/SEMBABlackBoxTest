@@ -53,6 +53,7 @@ sembaPath = pathlib.Path("../bin/semba")
 ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
 BBT.case = FM.FileManager("../data/Cases/")
 BBT.test = FM.FileManager("../data/Temp/")
+
 BBT.test.removeFolders()
 
                        #---Change this parameter if desired another tolerance---
@@ -88,7 +89,7 @@ if args.size is None or args.keyWords is None:
 
 
 #------Comment if command line arguments are being used------------------------
-#BBT.testOptions = filters.Filters(160000, ["planewave","conformal","PEC"])
+#BBT.testOptions = filters.Filters(10, ["planewave","conformal","PEC"])
                                                   
 BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 
@@ -119,12 +120,21 @@ for file in BBT.case.mainFolder.glob("**/*.test.json"):
         FM.FileManager.copyFiles(
             BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
             BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-        )   
-
-
-
-        BBT.callSemba( 
+        )  
+        try: 
+            for genFile in BBT.case.projectFolder.glob("./*.gen"):
+                FM.FileManager.copyFiles(
+                    genFile,
+                    (BBT.test.projectFolder / genFile.name)
+                ) 
+        except: continue
+        
+        FM.FileManager.copyFiles(
             sembaPath, 
+            (BBT.test.projectFolder / "semba")
+        )
+    
+        BBT.callSemba(  
             BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
         )
         
@@ -149,7 +159,10 @@ for file in BBT.case.mainFolder.glob("**/*.test.json"):
 
         print("\n")
 
-        if (count +1) == 2:
+        if (count == numTests):
+            continue
+
+        elif (count +1) == 2:
             print(stylize(
                 "press Enter to continue with " +
                 str(count + 1) + "nd test case...",
@@ -163,9 +176,6 @@ for file in BBT.case.mainFolder.glob("**/*.test.json"):
                 purple
                 )
             )
-        elif (count == numTests): 
-            continue
-
         else:
             print(stylize(
                 "press Enter to continue with " + 

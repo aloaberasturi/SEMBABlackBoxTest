@@ -44,14 +44,5 @@ class FileManager:
     def copyFiles(orgn,dstn):
         shutil.copy(str(orgn), str(dstn))
     
-    # @staticmethod
-    # def modifyTextFile(file, extension):
-    #     for line in fileinput.input(str(file), inplace = 1):
-    #         if extension in line:
-    #             newLine = file.parent / line
-    #             line = line.replace(line, str(newLine))
-    #         sys.stdout.write(line)
-
-    #     return
-                                      
+    
 

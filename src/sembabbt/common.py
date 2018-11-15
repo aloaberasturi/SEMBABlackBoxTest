@@ -58,7 +58,7 @@ def searchMatchingProject(caseFile):
     else : 
         return False
 
-def callSemba(exePath, fileName):
+def callSemba(fileName):
 
     blue = colored.fg(38)
     purple = colored.fg(177)
@@ -84,15 +84,21 @@ def callSemba(exePath, fileName):
 
         #--------------Please comment to display SEMBA's std output-------------
 
-        process = Popen([str(exePath),"-i",str(fileName)],stdout = PIPE)
+        process = Popen(
+            ["./semba","-i",str(fileName.name)],
+            stdout = PIPE,
+            cwd = fileName.parent
+        )
         process.communicate() 
 
         #--------------Please uncomment to display SEMBA's std output-----------
 
-        #subprocess.run([str(exePath),"-i",str(fileName)])      
+        #subprocess.run([str(exePath),"-i",str(fileName)])   
+        
+        os.remove(str(fileName.parent / "semba"))   
 
 
-    except: RuntimeError("Unable to launch semba")
+    except RuntimeError:"Unable to launch semba"
 
 
 
@@ -134,7 +140,7 @@ def callUGRFDTD(nfde):
         os.system('cls' if os.name == 'nt' else 'clear')
         os.remove(str(nfde.parent / "ugrfdtd"))
 
-    except: RuntimeError("Unable to launch UGRFDTD")
+    except RuntimeError :"Unable to launch UGRFDTD"
 
 
 def storeOutputs():
