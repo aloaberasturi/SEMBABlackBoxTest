@@ -21,6 +21,9 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 import sembabbt.launcher as LN
+from LN import launcher
+from LN import case1
+from LN import case2
 import argparse
 import colored
 from colored import stylize
@@ -28,22 +31,23 @@ from colored import stylize
 blue = colored.fg(38)
 yellow = colored.fg(214)
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-s","--size",type = int)
-    parser.add_argument("-k","--keyWords", nargs = '+', default = [])
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("-s","--size",type = int)
+    # parser.add_argument("-k","--keyWords", nargs = '+', default = [])
+    # args = parser.parse_args()
    
-    if args.size is None or args.keyWords is None:    
-        parser.error(
-            print(
-           stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
-            stylize(
-                "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
-                yellow
-                )   
-            )
-        )
+    # if args.size is None or args.keyWords is None:    
+    #     parser.error(
+    #         print(
+    #        stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
+    #         stylize(
+    #             "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
+    #             yellow
+    #             )   
+    #         )
+    #     )
 
-LN.launcher(args.size,args.keyWords) 
+#LN.launcher(args.size,args.keyWords) 
+LN.launcher(16000, ["conformal", "hola"])

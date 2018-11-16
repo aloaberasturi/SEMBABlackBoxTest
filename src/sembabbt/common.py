@@ -21,9 +21,9 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 
-from . import filemanager as FM
-from . import filters
-from . import comparison
+import filemanager as FM
+import filters
+import comparison
 import colored
 from colored import stylize
 from termcolor import colored as clrd
