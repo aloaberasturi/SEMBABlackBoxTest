@@ -18,14 +18,32 @@
 # details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>. 
+# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-class Filters:
-    def __init__(self,size,keywords,comparison = "none", execution = "none"):
-        self.size = size
-        self.keyWords = keywords
-        self.comparison = comparison
-        self.execution = execution
+import sembabbt.launcher as LN
+import argparse
+import colored
+from colored import stylize
 
+blue = colored.fg(38)
+yellow = colored.fg(214)
 
-        
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s","--size",type = int)
+    parser.add_argument("-k","--keyWords", nargs = '+', default = [])
+    args = parser.parse_args()
+   
+    if args.size is None or args.keyWords is None:    
+        parser.error(
+            print(
+           stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
+            stylize(
+                "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>",
+                yellow
+                )   
+            )
+        )
+
+LN.launcher(args.size,args.keyWords) 

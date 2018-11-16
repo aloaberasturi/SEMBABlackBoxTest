@@ -45,7 +45,8 @@ def searchMatchingProject(caseFile):
                                       j["filters"]["keyWords"]["excitation"],
                                       j["filters"]["keyWords"]["mesh"]
                                     ],
-                                      j["filters"]["comparison"]
+                                      j["filters"]["comparison"],
+                                      j["filters"]["execution"]
         )
         caseOptions.keyWords = [x.upper() for x in caseOptions.keyWords]
           
