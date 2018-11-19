@@ -21,7 +21,7 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>. 
 
 class Filters:
-    def __init__(self,size,keywords,comparison = "none", execution = "none"):
+    def __init__(self, size, keywords, comparison = "none", execution = "none"):
         self.size = size
         self.keyWords = keywords
         self.comparison = comparison

@@ -31,7 +31,8 @@ class FileManager:
         self.ugrfdtdFolder = self.projectFolder / "ugrfdtd"
 
     def makeFolders(self):
-        self.projectFolder.mkdir(parents=True, exist_ok = True)
+        self.projectFolder.mkdir(parents = True, exist_ok = True)
+        self.ugrfdtdFolder.mkdir(parents = True, exist_ok = True)
 
     def removeFolders(self):
         try:

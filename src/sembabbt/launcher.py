@@ -20,9 +20,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-import common as BBT
-import filters as filters
-import filemanager as FM 
+from . import common as BBT
+from . import filters as filters
+from . import filemanager as FM 
+from functools import partial
 import pathlib
 import shutil
 import os
@@ -31,66 +32,12 @@ import colored
 from colored import stylize
 from termcolor import cprint
 
-# sembaPath = pathlib.Path("../bin/semba")
-# ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
-# BBT.case = FM.FileManager("../data/Cases/")
-# BBT.test = FM.FileManager("../data/Temp/")
-
-
-
-
-def case1(file,sembaPath,ugrfdtdPath): 
-
-    FM.FileManager.copyFiles(
-    BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
-    BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-    )  
-    for genFile in BBT.case.projectFolder.glob("./*.gen"):
-        FM.FileManager.copyFiles(
-            genFile,
-            (BBT.test.projectFolder / genFile.name)
-        ) 
-
-    FM.FileManager.copyFiles(
-    sembaPath, 
-    (BBT.test.projectFolder / "semba")
-    )
-    
-    BBT.callSemba(  
-        BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-    )
-        
-    FM.FileManager.copyFiles(
-        ugrfdtdPath, 
-        (BBT.test.ugrfdtdFolder / "ugrfdtd")
-    )
-               
-
-    BBT.callUGRFDTD( 
-        BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-    )
-                
-def case2(file,ugrfdtdPath):
-    FM.FileManager.copyFiles(
-    ugrfdtdPath, 
-    (BBT.test.ugrfdtdFolder / "ugrfdtd")
-    )
-
-    BBT.callUGRFDTD( 
-        BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-    )
-
-
-def switch(execution,file,sembaPath,ugrfdtdPath):
-    switcher = {
-        "normal": case1(file,sembaPath,ugrfdtdPath),
-        "ugrfdtd": case2(file,ugrfdtdPath)
-    }
-    switcher.get(execution, "invalid execution flag")
-
-
-
 def launcher(size,keyWords):
+
+    sembaPath = pathlib.Path("../bin/semba")
+    ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
+    BBT.case = FM.FileManager("../data/Cases/")
+    BBT.test = FM.FileManager("../data/Temp/")
 
     blue = colored.fg(38)
     yellow = colored.fg(214)
@@ -106,11 +53,7 @@ def launcher(size,keyWords):
         " to find any projects matching your requests.", blue
     )
     )
-
-    sembaPath = pathlib.Path("../../bin/semba")
-    ugrfdtdPath = pathlib.Path("../../bin/ugrfdtd")
-    BBT.case = FM.FileManager("../../data/Cases/")
-    BBT.test = FM.FileManager("../../data/Temp/")
+   
 
     BBT.test.removeFolders()
 
@@ -126,16 +69,8 @@ def launcher(size,keyWords):
                         #--- error (i.e.: when true value IS zero)--------------
 
 
-#-----Uncomment if command line arguments are desired during program call------
     
-    BBT.testOptions = filters.Filters(size, keyWords)
-
-#------Comment if command line arguments are being used------------------------
-
-    #BBT.testOptions = filters.Filters(10, ["planewave","conformal","PEC"])
-
-#------------------------------------------------------------------------------
-                                                 
+    BBT.testOptions = filters.Filters(size, keyWords)                                                 
     BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 
     numTests = 0
@@ -161,67 +96,95 @@ def launcher(size,keyWords):
             count += 1
             BBT.test = FM.FileManager(str(BBT.test.mainFolder),file.parent.name)
 
-            BBT.test.makeFolders()            
-            switch(BBT.caseOptions.execution,file,sembaPath,ugrfdtdPath)
+            BBT.test.makeFolders() 
 
-       
-            #TODO: meter aquí el switch!!a partir de aquí se ramifica
+          
+            def case1(): 
 
-            # def case1() : 
-            #     FM.FileManager.copyFiles(
-            #     BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
-            #     BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-            #     )  
-            #     try: 
-            #         for genFile in BBT.case.projectFolder.glob("./*.gen"):
-            #             FM.FileManager.copyFiles(
-            #             genFile,
-            #             (BBT.test.projectFolder / genFile.name)
-            #             ) 
-                       
-            #     FM.FileManager.copyFiles(
-            #         sembaPath, 
-            #         (BBT.test.projectFolder / "semba")
-            #     )
+                FM.FileManager.copyFiles(
+                BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
+                BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
+                )         
+                for genFile in BBT.case.projectFolder.glob("./*.gen"):
+                    FM.FileManager.copyFiles(
+                    genFile,
+                    (BBT.test.projectFolder / genFile.name)
+                ) 
+
+                FM.FileManager.copyFiles(
+                sembaPath, 
+                (BBT.test.projectFolder / "semba")
+                )
     
-            #     BBT.callSemba(  
-            #         BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-            #     )
+                BBT.callSemba(  
+                BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
+                )
         
-            #     FM.FileManager.copyFiles(
-            #         ugrfdtdPath, 
-            #         (BBT.test.ugrfdtdFolder / "ugrfdtd")
-            #     )
+                FM.FileManager.copyFiles(
+                ugrfdtdPath, 
+                (BBT.test.ugrfdtdFolder / "ugrfdtd")
+                )
+               
 
-            #     # outList = (BBT.test.ugrfdtdFolder).glob('**/*_Outputrequests_*')
+                BBT.callUGRFDTD( 
+                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+                )
+                
+            def case2():
 
-            #     # if outList.gi_running == False:
+                for genFile in BBT.case.projectFolder.glob("./*.gen"):
+                    FM.FileManager.copyFiles(
+                    genFile,
+                    (BBT.test.ugrfdtdFolder / genFile.name)
+                ) 
+
+                FM.FileManager.copyFiles(
+                    ugrfdtdPath, 
+                    (BBT.test.ugrfdtdFolder / "ugrfdtd")
+                )
+                FM.FileManager.copyFiles(
+                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde")
+                )
+
+                try: 
+                    FM.FileManager.copyFiles(
+                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".cmsh"),
+                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".cmsh")
+                    )
+                except: pass
+
+                try: 
+                    FM.FileManager.copyFiles(
+                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".conf"),
+                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".conf")
+                    )
+                except: pass
+
+                BBT.callUGRFDTD( 
+                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+                )
+
+            def switch(execMode):
+                switcher = {
+                "normal": case1,
+                "ugrfdtd": case2
+                }
+                func = switcher.get(execMode,"invalid execution flag")
+                return func()
+
+          
+            switch(BBT.caseOptions.execution)
             
-
-            #     BBT.callUGRFDTD( 
-            #     BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-            #     )
-
-            # def case2():
-            #     FM.FileManager.copyFiles(
-            #     ugrfdtdPath, 
-            #     (BBT.test.ugrfdtdFolder / "ugrfdtd")
-            #     )
-
-            #     BBT.callUGRFDTD( 
-            #     BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-            #     )
-
-
+            doesPass = False
             doesPass = BBT.launchTest(BBT.storeOutputs())
+
             if doesPass == True:
                 passedTests += 1
             else: 
                 failedTests += 1       
 
             print("\n")
-
-            #TODO: cambiar esto tambien por un switch!
 
             if (count == numTests):
                 continue
@@ -251,7 +214,6 @@ def launcher(size,keyWords):
             print("\n")
             input()
 
-            os.system('cls' if os.name == 'nt' else 'clear')
         else : 
             continue
 
@@ -285,6 +247,4 @@ def launcher(size,keyWords):
     )
     print("\n")
 
-
-launcher(16000, ["conformal", "hola"])
 

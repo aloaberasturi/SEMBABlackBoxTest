@@ -21,9 +21,9 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 
-import filemanager as FM
-import filters
-import comparison
+from . import filemanager as FM
+from . import filters
+from . import comparison
 import colored
 from colored import stylize
 from termcolor import colored as clrd
@@ -38,6 +38,7 @@ import shutil
 
 def searchMatchingProject(caseFile):
     global caseOptions
+    global testOptions
     with caseFile.open("r") as jsonFile:
         j = json.loads(jsonFile.read())
         caseOptions = filters.Filters(j["filters"]["size"],
@@ -126,17 +127,17 @@ def callUGRFDTD(nfde):
    
 #----------------Please comment to display UGRFDTD's std output-----------------
    
-        process = Popen(
-            ["./ugrfdtd","-i",str(nfde.name)],
-            stdout = PIPE, 
-            cwd = nfde.parent
-        )
+        # process = Popen(
+        #     ["./ugrfdtd","-i",str(nfde.name)],
+        #     stdout = PIPE, 
+        #     cwd = nfde.parent
+        # )
 
-        process.communicate() 
+        # process.communicate() 
 
 #----------------Please uncomment to display UGRFDTD's std output---------------
 
-    #subprocess.call(["./ugrfdtd","-i",str(nfde.name)], cwd = str(nfde.parent))
+        subprocess.call(["./ugrfdtd","-i",str(nfde.name)], cwd = str(nfde.parent))
 
         os.system('cls' if os.name == 'nt' else 'clear')
         os.remove(str(nfde.parent / "ugrfdtd"))

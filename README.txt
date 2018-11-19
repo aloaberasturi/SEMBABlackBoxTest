@@ -45,3 +45,15 @@
 #
 #These filters can be changed directly in data/Cases/case.gid/case.test.json , 
 #under the [filters][comparison] flag and [filters][keyWords] flag respectively.
+#
+#
+#
+#
+#It is also possible to choose to launch a case with an .nfde, .cmsh and .conf 
+#files as input (i.e, skipping the call to SEMBA). For that purpose, an
+#["execution"] flag is suplied: 
+#    -[execution] : "normal" will launch BOTH semba and ugrfdtd
+#    -[execution] : "ugrfdtd" will just lunch ugrfdtd
+
+
+
