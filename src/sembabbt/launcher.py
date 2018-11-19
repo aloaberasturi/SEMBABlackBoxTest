@@ -23,38 +23,16 @@
 from . import common as BBT
 from . import filters as filters
 from . import filemanager as FM 
+from . import utils
 from functools import partial
 import pathlib
 import shutil
 import os
 import argparse
-import colored
-from colored import stylize
-from termcolor import cprint
 
 def launcher(size,keyWords):
 
-    sembaPath = pathlib.Path("../bin/semba")
-    ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
-    BBT.case = FM.FileManager("../data/Cases/")
-    BBT.test = FM.FileManager("../data/Temp/")
-
-    blue = colored.fg(38)
-    yellow = colored.fg(214)
-    purple = colored.fg(177)
-    green = colored.fg(82)
-    red = colored.fg(1)
-    print(
-    stylize(
-        "             Welcome to sembaBlackBoxTest" 
-        "\n"
-        "\nPlease insert size of the case file to " 
-        "be tested as well as the keywords.\nThese inputs will be used in order" 
-        " to find any projects matching your requests.", blue
-    )
-    )
-   
-
+    utils.welcomeMessage()
     BBT.test.removeFolders()
 
                        #---Change this parameter if desired another tolerance---
@@ -68,8 +46,7 @@ def launcher(size,keyWords):
                         #--- for AlmostEquality tests that can't use relative---
                         #--- error (i.e.: when true value IS zero)--------------
 
-
-    
+   
     BBT.testOptions = filters.Filters(size, keyWords)                                                 
     BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
 
@@ -79,13 +56,7 @@ def launcher(size,keyWords):
         if BBT.searchMatchingProject(file):
             numTests += 1
 
-    print(
-        stylize("[==========]",green),
-        "Running ",
-        numTests,
-        "tests",
-    )
-
+    utils.runningTestsMessage(numTests)
     count = 0
     passedTests = 0
     failedTests = 0
@@ -97,6 +68,10 @@ def launcher(size,keyWords):
             BBT.test = FM.FileManager(str(BBT.test.mainFolder),file.parent.name)
 
             BBT.test.makeFolders() 
+            FM.FileManager.copyFiles(
+                utils.ugrfdtdPath, 
+                (BBT.test.ugrfdtdFolder / "ugrfdtd")
+            )
 
           
             def case1(): 
@@ -112,23 +87,13 @@ def launcher(size,keyWords):
                 ) 
 
                 FM.FileManager.copyFiles(
-                sembaPath, 
+                utils.sembaPath, 
                 (BBT.test.projectFolder / "semba")
                 )
     
                 BBT.callSemba(  
                 BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
-                )
-        
-                FM.FileManager.copyFiles(
-                ugrfdtdPath, 
-                (BBT.test.ugrfdtdFolder / "ugrfdtd")
-                )
-               
-
-                BBT.callUGRFDTD( 
-                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-                )
+                )               
                 
             def case2():
 
@@ -138,10 +103,6 @@ def launcher(size,keyWords):
                     (BBT.test.ugrfdtdFolder / genFile.name)
                 ) 
 
-                FM.FileManager.copyFiles(
-                    ugrfdtdPath, 
-                    (BBT.test.ugrfdtdFolder / "ugrfdtd")
-                )
                 FM.FileManager.copyFiles(
                     BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
                     BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde")
@@ -161,10 +122,6 @@ def launcher(size,keyWords):
                     )
                 except: pass
 
-                BBT.callUGRFDTD( 
-                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-                )
-
             def switch(execMode):
                 switcher = {
                 "normal": case1,
@@ -175,6 +132,9 @@ def launcher(size,keyWords):
 
           
             switch(BBT.caseOptions.execution)
+            BBT.callUGRFDTD( 
+                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+            )
             
             doesPass = False
             doesPass = BBT.launchTest(BBT.storeOutputs())
@@ -186,65 +146,15 @@ def launcher(size,keyWords):
 
             print("\n")
 
-            if (count == numTests):
-                continue
-
-            elif (count +1) == 2:
-                print(stylize(
-                    "press Enter to continue with " +
-                    str(count + 1) + "nd test case...",
-                    purple
-                    )
-                )
-            elif (count +1) == 3:
-                print(stylize(
-                    "press Enter to continue with " + 
-                    str(count + 1) + "rd test case...",
-                    purple
-                    )
-                )
-            else:
-                print(stylize(
-                    "press Enter to continue with " + 
-                    str(count + 1) + "th test case...",
-                    purple
-                    )
-                ) 
-
-            print("\n")
-            input()
+            utils.nextTestCaseMessage(count, numTests)          
 
         else : 
             continue
+    utils.passedAndFailedTestsMessage(passedTests,failedTests)
+    utils.goodByeMessage()
 
-    print(
-        stylize("[  PASSED  ]", green),
-        passedTests,
-        "tests"
-    )
-    print(
-        stylize("[  FAILED  ]", red),
-        failedTests,
-        "tests"
-    )
-
+   
 
     
-    print(stylize(
-    "-----------------------------------------------------------------", 
-    blue)
-    )
-
-    cprint(
-    "                  SEMBA BlackBoxTest Finished",
-    "blue",
-    attrs=["bold"]
-    )
-
-    print(stylize(
-        "-----------------------------------------------------------------", 
-        blue)
-    )
-    print("\n")
 
 

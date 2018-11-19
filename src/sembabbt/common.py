@@ -127,17 +127,17 @@ def callUGRFDTD(nfde):
    
 #----------------Please comment to display UGRFDTD's std output-----------------
    
-        # process = Popen(
-        #     ["./ugrfdtd","-i",str(nfde.name)],
-        #     stdout = PIPE, 
-        #     cwd = nfde.parent
-        # )
+        process = Popen(
+            ["./ugrfdtd","-i",str(nfde.name)],
+            stdout = PIPE, 
+            cwd = nfde.parent
+        )
 
-        # process.communicate() 
+        process.communicate() 
 
 #----------------Please uncomment to display UGRFDTD's std output---------------
 
-        subprocess.call(["./ugrfdtd","-i",str(nfde.name)], cwd = str(nfde.parent))
+        #subprocess.call(["./ugrfdtd","-i",str(nfde.name)], cwd = str(nfde.parent))
 
         os.system('cls' if os.name == 'nt' else 'clear')
         os.remove(str(nfde.parent / "ugrfdtd"))
