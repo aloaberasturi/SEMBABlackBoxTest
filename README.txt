@@ -52,8 +52,14 @@
 #It is also possible to choose to launch a case with an .nfde, .cmsh and .conf 
 #files as input (i.e, skipping the call to SEMBA). For that purpose, an
 #["execution"] flag is suplied: 
-#    -[execution] : "normal" will launch BOTH semba and ugrfdtd
-#    -[execution] : "ugrfdtd" will just lunch ugrfdtd
+#    -[execution] : "normal"  --will launch BOTH semba and ugrfdtd
+#    -[execution] : "ugrfdtd" --will just lunch ugrfdtd
+#
+#
+#Before execution, please remember to add semba and ugrfdtd executables (or links)
+#in the /bin folder.
+#
+#For further information, please contact aloaberasturi@ugr.es
 
 
 
