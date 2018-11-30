@@ -20,10 +20,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from . import common as BBT
-from . import filters as filters
-from . import filemanager as FM 
-from . import utils
+import sembabbt.common as BBT
+import sembabbt.filters as filters
+import sembabbt.filemanager as FM 
+import sembabbt.utils as utils
 from functools import partial
 import pathlib
 import shutil
@@ -31,6 +31,7 @@ import os
 import argparse
 
 def launcher(size,keyWords):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
 
     utils.welcomeMessage()
     BBT.test.removeFolders()
