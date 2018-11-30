@@ -24,8 +24,11 @@ import colored
 from colored import stylize
 from termcolor import cprint
 import pathlib
-from . import filemanager as FM 
-from . import common as BBT
+import inspect
+import sembabbt.filemanager as FM 
+import sembabbt.common as BBT
+import bin.sembabbt_bin as bbtbin
+import data.sembabbt_data as data
 
 blue = colored.fg(38)
 yellow = colored.fg(214)
@@ -33,19 +36,23 @@ purple = colored.fg(177)
 green = colored.fg(82)
 red = colored.fg(1)
 
-sembaPath = pathlib.Path("../bin/semba")
-ugrfdtdPath = pathlib.Path("../bin/ugrfdtd")
-BBT.case = FM.FileManager("../data/Cases/")
-BBT.test = FM.FileManager("../data/Temp/")
+binPath = pathlib.Path(bbtbin.__file__).parent
+dataPath = pathlib.Path(data.__file__).parent
+
+sembaPath = binPath / "semba"
+ugrfdtdPath = binPath / "ugrfdtd"
+BBT.case = FM.FileManager(dataPath / "Cases")
+BBT.test = FM.FileManager(dataPath / "Temp")
+
 
 def welcomeMessage():
     print(
     stylize(   
         "             Welcome to sembaBlackBoxTest" 
         "\n"
-        "\nPlease insert size of the case file to " 
-        "be tested as well as the keywords.\nThese inputs will be used in order" 
-        " to find any projects matching your requests.", blue
+        "\n '-s' Input determines MAXIMUM size of cases to be tested. Together"
+        " with words following '-k' flag, these parameters will be used in order" 
+        " to find projects matching your requests inside /data/ folder.", blue
         )
     )
 
