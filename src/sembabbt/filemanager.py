@@ -22,28 +22,25 @@
 
 import pathlib
 import shutil
-import fileinput
-import sys
-class FileManager:
-    def __init__(self, path, projectName = 'none'):
-        self.mainFolder = pathlib.Path(path)
-        self.projectFolder = self.mainFolder / projectName
-        self.ugrfdtdFolder = self.projectFolder / "ugrfdtd"
 
-    def makeFolders(self):
-        self.projectFolder.mkdir(parents = True, exist_ok = True)
-        self.ugrfdtdFolder.mkdir(parents = True, exist_ok = True)
+class FM:
+    def __init__(self, path, project_name = 'none'):
+        self.main_folder = pathlib.Path(path)
+        self.project_folder = self.main_folder / project_name
+        self.ugrfdtd_folder = self.project_folder / "ugrfdtd"
 
-    def removeFolders(self):
+    def make_folders(self):
+        self.project_folder.mkdir(parents = True, exist_ok = True)
+        self.ugrfdtd_folder.mkdir(parents = True, exist_ok = True)
+
+    def remove_folders(self):
         try:
-            if self.mainFolder.exists:
-                shutil.rmtree(str(self.mainFolder))
+            if self.main_folder.exists:
+                shutil.rmtree(str(self.main_folder))
         except FileNotFoundError: 
             return
                        
     @staticmethod
-    def copyFiles(orgn,dstn):
+    def copy_files(orgn,dstn):
         shutil.copy(str(orgn), str(dstn))
     
-    
-

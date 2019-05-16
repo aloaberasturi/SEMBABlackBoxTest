@@ -20,106 +20,99 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-import sembabbt.common as BBT
-import sembabbt.filters as filters
-import sembabbt.filemanager as FM 
-import sembabbt.utils as utils
-from functools import partial
-import pathlib
-import shutil
-import os
-import argparse
+import common 
+import filters
+import filemanager 
+import utils
 
-def launcher(size,keyWords):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+def launcher(test):
 
-    utils.welcomeMessage()
-    BBT.test.removeFolders()
+    common.test.remove_folders()
 
                        #---Change this parameter if desired another tolerance---
-    BBT.relTolerance = 2.0 
+    common.rel_tolerance = 2.0 
                        #--- for AlmostEquality tests that can use relative error
                        #--(i.e.: when true value is NOT zero)-------------------
                       
                         
                         #---Change this parameter if desired another tolerance--
-    BBT.absTolerance = 1e-5 
+    common.abs_tolerance = 1e-5 
                         #--- for AlmostEquality tests that can't use relative---
                         #--- error (i.e.: when true value IS zero)--------------
 
    
-    BBT.testOptions = filters.Filters(size, keyWords)                                                 
-    BBT.testOptions.keyWords = [x.upper() for x in BBT.testOptions.keyWords]
+    common.test_options = filters.Filters(size, keywords)                                                 
+    common.test_options.keywords = [x.upper() for x in common.test_options.keywords]
 
     numTests = 0
 
-    for file in BBT.case.mainFolder.glob("**/*.test.json"):
-        if BBT.searchMatchingProject(file):
+    for file in common.case.main_folder.glob("**/*.test.json"):
+        if common.search_project(file):
             numTests += 1
 
-    utils.runningTestsMessage(numTests)
+    utils.running_message(numTests)
     count = 0
     passedTests = 0
     failedTests = 0
 
-    for file in BBT.case.mainFolder.glob("**/*.test.json"):
-        BBT.case = FM.FileManager(str(BBT.case.mainFolder),file.parent.name)
-        if BBT.searchMatchingProject(file):
+    for file in common.case.main_folder.glob("**/*.test.json"):
+        common.case = filemanager.FM(str(common.case.main_folder),file.parent.name)
+        if common.search_project(file):
             count += 1
-            BBT.test = FM.FileManager(str(BBT.test.mainFolder),file.parent.name)
+            common.test = filemanager.FM(str(common.test.main_folder),file.parent.name)
 
-            BBT.test.makeFolders() 
-            FM.FileManager.copyFiles(
-                utils.ugrfdtdPath, 
-                (BBT.test.ugrfdtdFolder / "ugrfdtd")
+            common.test.make_folders() 
+            filemanager.FM.copy_folders(
+                utils.ugrfdtd_path, 
+                (common.test.ugrfdtd_folder / "ugrfdtd")
             )
 
           
             def case1(): 
 
-                FM.FileManager.copyFiles(
-                BBT.case.projectFolder / (file.parent.name.split(".")[0] + ".dat"),
-                BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
+                filemanager.FM.copy_folders(
+                common.case.project_folder / (file.parent.name.split(".")[0] + ".dat"),
+                common.test.project_folder / (file.parent.name.split(".")[0] + ".dat") 
                 )         
-                for genFile in BBT.case.projectFolder.glob("./*.gen"):
-                    FM.FileManager.copyFiles(
+                for genFile in common.case.project_folder.glob("./*.gen"):
+                    filemanager.FM.copy_folders(
                     genFile,
-                    (BBT.test.projectFolder / genFile.name)
+                    (common.test.project_folder / genFile.name)
                 ) 
 
-                FM.FileManager.copyFiles(
-                utils.sembaPath, 
-                (BBT.test.projectFolder / "semba")
+                filemanager.FM.copy_folders(
+                utils.semba_path, 
+                (common.test.project_folder / "semba")
                 )
     
-                BBT.callSemba(  
-                BBT.test.projectFolder / (file.parent.name.split(".")[0] + ".dat") 
+                common.call_semba(  
+                common.test.project_folder / (file.parent.name.split(".")[0] + ".dat") 
                 )               
                 
             def case2():
 
-                for genFile in BBT.case.projectFolder.glob("./*.gen"):
-                    FM.FileManager.copyFiles(
+                for genFile in common.case.project_folder.glob("./*.gen"):
+                    filemanager.FM.copy_folders(
                     genFile,
-                    (BBT.test.ugrfdtdFolder / genFile.name)
+                    (common.test.ugrfdtd_folder / genFile.name)
                 ) 
 
-                FM.FileManager.copyFiles(
-                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
-                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde")
+                filemanager.FM.copy_folders(
+                    common.case.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".nfde"),
+                    common.test.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".nfde")
                 )
 
                 try: 
-                    FM.FileManager.copyFiles(
-                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".cmsh"),
-                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".cmsh")
+                    filemanager.FM.copy_folders(
+                    common.case.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".cmsh"),
+                    common.test.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".cmsh")
                     )
                 except: pass
 
                 try: 
-                    FM.FileManager.copyFiles(
-                    BBT.case.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".conf"),
-                    BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".conf")
+                    filemanager.FM.copy_folders(
+                    common.case.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".conf"),
+                    common.test.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".conf")
                     )
                 except: pass
 
@@ -132,13 +125,13 @@ def launcher(size,keyWords):
                 return func()
 
           
-            switch(BBT.caseOptions.execution)
-            BBT.callUGRFDTD( 
-                BBT.test.ugrfdtdFolder / (file.parent.name.split(".")[0] + ".nfde"),
+            switch(common.caseOptions.execution)
+            common.call_ugrfdtd( 
+                common.test.ugrfdtd_folder / (file.parent.name.split(".")[0] + ".nfde"),
             )
             
             doesPass = False
-            doesPass = BBT.launchTest(BBT.storeOutputs())
+            doesPass = common.launchTest(common.storeOutputs())
 
             if doesPass == True:
                 passedTests += 1
@@ -147,15 +140,9 @@ def launcher(size,keyWords):
 
             print("\n")
 
-            utils.nextTestCaseMessage(count, numTests)          
+            utils.next_test_message(count, numTests)          
 
         else : 
             continue
-    utils.passedAndFailedTestsMessage(passedTests,failedTests)
-    utils.goodByeMessage()
-
-   
-
-    
-
-
+    utils.passed_tests_message(passedTests,failedTests)
+    utils.goodbye_message()

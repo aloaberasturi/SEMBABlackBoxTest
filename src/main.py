@@ -20,35 +20,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-import sembabbt.launcher as LN
-import argparse
-import colored
-from colored import stylize
+import sembabbt.launcher as launcher
+import sembabbt.state as state
+import sembabbt.test as test
 
-blue = colored.fg(38)
-yellow = colored.fg(214)
-
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-s","--size",type = int)
-    parser.add_argument("-k","--keyWords", nargs = '+', default = [])
-    args = parser.parse_args()
-   
-    if args.size is None or args.keyWords is None:    
-        parser.error(
-            print(
-           stylize("\n \nIncorrect syntax. Please type: \n \npython3",blue),
-            stylize(
-                "<program_name.py> -s <Size> -k <Material> <Excitation> <Mesh>", 
-                yellow
-                )   
-            )
-        )
-
-LN.launcher(args.size,args.keyWords) 
-
-
-
+state.State()
+test1 = test.NewTest("input_path","output_path", "exec_mode", "comp_mode", ["filters"])
+State.instance.print_log()
+launcher.launcher(9, ["PlaneWave"]) #launcher must receive the filters 
 
 

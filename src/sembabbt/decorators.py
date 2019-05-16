@@ -18,14 +18,16 @@
 # details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>. 
+# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-class Filters:
-    def __init__(self, size, keywords, comparison = "none", execution = "none"):
-        self.size = size
-        self.keywords = keywords
-        self.comparison = comparison
-        self.execution = execution
+import functools
 
-
-        
+def singleton(cls):
+    """Make a class a singleton class (only one instance)"""
+    @functools.wraps(cls)
+    def wrapper_singleton(*args, **kwargs):
+        if not wrapper_singleton.instance:
+            wrapper_singleton.instance = cls(*args, **kwargs)
+        return wrapper_singleton.instance
+    wrapper_singleton.instance = None
+    return wrapper_singleton

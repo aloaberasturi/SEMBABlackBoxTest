@@ -18,14 +18,19 @@
 # details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>. 
+# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
+import state
 
-class Filters:
-    def __init__(self, size, keywords, comparison = "none", execution = "none"):
-        self.size = size
-        self.keywords = keywords
-        self.comparison = comparison
-        self.execution = execution
-
-
-        
+class NewTest:
+    def __init__(self, input_path, output_path, exec_mode, comp_mode, size, filters):
+        self._input_path = input_path
+        self._output_path = output_path
+        self._exec_mode = exec_mode
+        self._comp_mode = comp_mode 
+        self._size = size
+        if filters is list:
+            self._filters = filters
+        else:
+            raise TypeError("filters must be given in form of a list")
+        self._matching_cases = None
+        state.State.instance(self)

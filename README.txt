@@ -37,7 +37,7 @@
 #     "NIBC"
 #
 #    -[filters][keyWords][excitation] can either have value "planeWave", 
-#     thinWire" or "dipole"
+#     "thinWire" or "dipole"
 #
 #    -[filters][keyWords][mesh] can either have value "conformal" or "staircased"
 
