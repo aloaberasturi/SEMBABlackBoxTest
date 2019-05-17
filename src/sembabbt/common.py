@@ -21,7 +21,7 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 
-import filters
+from filters import Filters
 import comparison 
 import json
 import subprocess
@@ -33,7 +33,7 @@ def search_project(case_file):
     global test_options
     with case_file.open("r") as json_file:
         j = json.loads(json_file.read())
-        case_options = filters.Filters(j["filters"]["size"],
+        case_options = Filters(j["filters"]["size"],
                                     [ j["filters"]["keyWords"]["materials"],
                                       j["filters"]["keyWords"]["excitation"],
                                       j["filters"]["keyWords"]["mesh"]

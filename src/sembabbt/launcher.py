@@ -25,7 +25,7 @@ import filters
 import filemanager 
 import utils
 
-def launcher(test):
+def launcher(size, keywords):
 
     common.test.remove_folders()
 

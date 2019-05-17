@@ -20,27 +20,19 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-import pathlib
-import shutil
+from folder import Folder
+from filters import Filters
 
-class FM:
-    def __init__(self, path, project_name = 'none'):
-        self.main_folder = pathlib.Path(path)
-        self.project_folder = self.main_folder / project_name
-        self.ugrfdtd_folder = self.project_folder / "ugrfdtd"
+class Case:
+    def __init__(self, file):
+        self._folder    = Folder(file)
+        self._filters = None
 
-    def make_folders(self):
-        self.project_folder.mkdir(parents = True, exist_ok = True)
-        self.ugrfdtd_folder.mkdir(parents = True, exist_ok = True)
+    @property
+    def filters(self):
+        return self._filters
+        
+    @filters.setter
+    def filters(self, *args, **kwargs):
+        self._filters = Filters(*args, **kwargs)
 
-    def remove_folders(self):
-        try:
-            if self.main_folder.exists:
-                shutil.rmtree(str(self.main_folder))
-        except FileNotFoundError: 
-            return
-                       
-    @staticmethod
-    def copy_files(orgn,dstn):
-        shutil.copy(str(orgn), str(dstn))
-    

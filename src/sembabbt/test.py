@@ -19,12 +19,13 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
-import state
+from state import State
+import pathlib
 
 class NewTest:
     def __init__(self, input_path, output_path, exec_mode, comp_mode, size, filters):
-        self._input_path = input_path
-        self._output_path = output_path
+        self._input_path  = pathlib.Path(input_path)
+        self._output_path = pathlib.Path(output_path)
         self._exec_mode = exec_mode
         self._comp_mode = comp_mode 
         self._size = size
@@ -33,4 +34,5 @@ class NewTest:
         else:
             raise TypeError("filters must be given in form of a list")
         self._matching_cases = None
-        state.State.instance(self)
+        State(self)
+

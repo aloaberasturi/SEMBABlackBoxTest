@@ -20,13 +20,12 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-import sembabbt.launcher as launcher
-import sembabbt.state as state
-import sembabbt.test as test
+from  sembabbt.state import State
+from sembabbt.launcher2 import Launcher
+from sembabbt.test import NewTest
 
-state.State()
-test1 = test.NewTest("input_path","output_path", "exec_mode", "comp_mode", ["filters"])
-State.instance.print_log()
-launcher.launcher(9, ["PlaneWave"]) #launcher must receive the filters 
+test1 = NewTest("input_path","output_path", "exec_mode", "comp_mode", ["filters"])
+State.print_log()
+Launcher(test1) 
 
 

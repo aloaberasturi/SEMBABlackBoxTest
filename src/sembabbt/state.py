@@ -20,60 +20,28 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from decorators import singleton
-import json
 import pathlib
-import filters
 
-@singleton
 class State: 
-    def __init__(self):
-        self.count = 0
-        self.tests = []
-    def __call__(self, test):
-        self.count += 1
-        self.tests.append(test)   
-        self.search() 
-
-    def search(self): 
-        for test in self.tests:#TODO: make this more pythonic and well-indented
-            for file in test._input_path.glob("**/*.test.json"):
-                with file("r") as json_file:
-                    j = json.loads(json_file.read())
-                    this_case = filters.Filters(j["filters"]["size"],
-                                    [ j["filters"]["keyWords"]["materials"],
-                                      j["filters"]["keyWords"]["excitation"],
-                                      j["filters"]["keyWords"]["mesh"]
-                                    ],
-                                      j["filters"]["comparison"],
-                                      j["filters"]["execution"]
-                                    )
-                this_case.keyWords = [x.upper() for x in this_case.keywords] #this line doesn't make sense. See previous versions in git 
-          
-            if (
-                    (set(this_case.keywords) &  set(test.keywords))!= set() 
-                    and (this_case.size <= test.size)
-                ):
-                test._matching_cases.append(pathlib.Path(file))
-                return True
-
-            else : 
-                return False
-
-
-
-    def print_log(self):
-        print("Current number of running tests: ", len(self.tests))
-        for item in self.tests:
-            print (self.tests.index(item) + 1,"-th test")
+    count = 0
+    tests = []
+    def __new__(cls, *args):
+        if args:
+            cls.count += 1
+            cls.tests.append(*args)
+    @classmethod
+    def display(cls):
+        print("Current number of running tests: ", len(cls.tests))
+        for item in cls.tests:
+            print (cls.tests.index(item) + 1,"-th test")
             print ("EXECUTION MODE: ", item._exec_mode)
             print ("COMPARISON MODE: ", item._comp_mode)
             print ("Test launched under the following filters:")
             for f in item._filters:
                 print(f)
-
-    def write_log(self): 
-        for item in self.tests:
+    @classmethod
+    def write(cls): 
+        for item in cls.tests:
             with open(pathlib.Path(item._output_path) / "sembabbt.log", "w") as file:
                 file.write("EXECUTION MODE: " + str(item._exec_mode))
                 file.write("COMPARISON MODE: " +str(item._comp_mode))
