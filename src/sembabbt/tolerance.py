@@ -19,30 +19,9 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
-from state import State
-from tolerance import Tolerance
-import pathlib
 
-class NewTest:
-    def __init__(
-        self,
-        input_path, 
-        output_path, 
-        exec_mode, 
-        comp_mode, 
-        size, 
-        filters, 
-        tol):
-        self._input_path  = pathlib.Path(input_path)
-        self._output_path = pathlib.Path(output_path)
-        self._exec_mode = exec_mode
-        self._comp_mode = comp_mode 
-        self._tolerance = Tolerance(tol)
-        self._size = size
-        if filters is list:
-            self._filters = filters
-        else:
-            raise TypeError("filters must be given in form of a list")
-        self._matching_cases = None
-        State(self)
-
+def Tolerance(tol):
+    if tol.lower() == "relative":
+        return(2.0)
+    elif tol.lower() == "absolute":
+        return(1e-5)

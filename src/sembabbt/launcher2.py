@@ -58,7 +58,7 @@ class Launcher:
                     (set(c.filters.keywords) &  set(cls._test.keywords))!= set() 
                     and (c.filters.size <= cls._test.size)
                 ):
-                cls._test._matching_cases.append(c._data._project_name)
+                cls._test._matching_cases.append(c._data._project_name)#change?
                 return True
             else : 
                 return False
