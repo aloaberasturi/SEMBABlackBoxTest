@@ -29,17 +29,13 @@ import pathlib
 class Launcher:
     def __new__(cls, test):
         cls._test = test
-        cls._search()
-        cls._create_testing_folders()
-        cls._launch()
-
-    @property
-    def test(self):
-        """Get test in process"""
-        return self._test
+        cls.search()
+        #TODO: cls.switcher
+        #TODO: cls.copy
+        cls.launch()
     
     @classmethod
-    def _search(cls): 
+    def search(cls): 
         for file in cls._test._input_path.glob("**/*.test.json"):
             with file("r") as json_file:
                 j = json.loads(json_file.read())
@@ -58,22 +54,19 @@ class Launcher:
                     (set(c.filters.keywords) &  set(cls._test.keywords))!= set() 
                     and (c.filters.size <= cls._test.size)
                 ):
-                cls._test._matching_cases.append(c._data._project_name)#change?
+                cls._test._matching_cases.append(c)
                 return True
             else : 
                 return False
-    @classmethod
-    def _create_testing_folders(cls):
-        for case in cls.test._matching_cases:
-
-            
-
-
-
-
-
-
 
     @classmethod
-    def _launch(cls):
+    def switch(cls):
+        pass
+
+    @classmethod
+    def copy(cls):
+        pass
+
+    @classmethod
+    def launch(cls):
         pass

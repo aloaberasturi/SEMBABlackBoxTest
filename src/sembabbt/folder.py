@@ -22,21 +22,23 @@
 
 import shutil
 import pathlib
+from file_class import Dat, Nfde, Conf, Cmsh
 from launcher import Launcher
 
 
 class Folder: 
 
     def __init__(self, file):
-        self.raw_path = pathlib.Path(file)
+        self.rmdirs()#???
+        self._raw_path = pathlib.Path(file)
         self._project_name = file.parent.name
-        self._root_folder = Launcher.test()._input_path
+        self._root_folder = Launcher._test._input_path
         self._case_folder = self._root_folder / self._project_name 
         self._ugrfdtd_folder = self._case_folder / "ugrfdtd"
-        self._nfde_file = Nfde(self.raw_path)._name
-        self._conf_file = Conf(self.raw_path)._name
-        self._dat_file  = Dat (self.raw_path)._name
-        self._cmsh_file = Cmsh(self.raw_path)._name
+        self._nfde_file = Nfde().name(self._raw_path)
+        self._conf_file = Conf().name(self._raw_path)
+        self._dat_file  = Dat ().name(self._raw_path)
+        self._cmsh_file = Cmsh().name(self._raw_path)
         self.mkdirs()
 
     def mkdirs(self):
@@ -54,24 +56,3 @@ class Folder:
     def cp(orgn, dstn):
         shutil.copy(str(orgn), str(dstn))
 
-class File:
-    def __init__(self, path):
-        self._format = None
-        self._name = path.parent.name.split(
-            "."[0] + str(self._format))
-class Dat(File):
-    def __init__(self, path):
-        self._format = ".dat"
-        super().__init__(path)
-class Nfde(File):
-     def __init__(self, path):
-        self._format = ".nfde"
-        super().__init__(path)
-class Conf(File):
-    def __init__(self, path):
-        self._format = ".conf"
-        super().__init__(path)
-class Cmsh(File):
-    def __init__(self, path):
-        self._format = ".cmsh"
-        super().__init__(path)

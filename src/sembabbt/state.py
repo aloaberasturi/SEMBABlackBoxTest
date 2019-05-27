@@ -23,29 +23,38 @@
 import pathlib
 
 class State: 
-    count = 0
-    tests = []
+    _count = 0
+    _tests = []
+
     def __new__(cls, *args):
         if args:
-            cls.count += 1
-            cls.tests.append(*args)
+            cls._count += 1
+            cls._tests.append(*args)
+
     @classmethod
     def display(cls):
-        print("Current number of running tests: ", len(cls.tests))
-        for item in cls.tests:
-            print (cls.tests.index(item) + 1,"-th test")
+        print("Current number of running _tests: ", cls._count)
+        for item in cls._tests:
+            print (cls._tests.index(item) + 1,"-th test")
             print ("EXECUTION MODE: ", item._exec_mode)
             print ("COMPARISON MODE: ", item._comp_mode)
-            print ("Test launched under the following filters:")
-            for f in item._filters:
-                print(f)
+            if item._filters:
+                print ("Test launched under the following filters:")
+                for f in item._filters:
+                    print(f)
+            else:
+                print("No filters were specified for this test")
+
     @classmethod
     def write(cls): 
-        for item in cls.tests:
+        for item in cls._tests:
             with open(pathlib.Path(item._output_path) / "sembabbt.log", "w") as file:
-                file.write("EXECUTION MODE: " + str(item._exec_mode))
-                file.write("COMPARISON MODE: " +str(item._comp_mode))
-                file.write("Test launched under the following filters:")
-                for f in item._filters:
-                    file.write(str(f))    
+                file.write("EXECUTION MODE: " + str(item._exec_mode) + "\n")
+                file.write("COMPARISON MODE: " +str(item._comp_mode) + "\n")
+                if item._filters:
+                    file.write("Test launched under the following filters:" + "\n")
+                    for f in item._filters:
+                        file.write(str(f) + "\n")  
+                else:
+                    file.write("No filters were specified for this test" + "\n")  
             file.close()        

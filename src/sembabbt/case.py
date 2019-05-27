@@ -25,7 +25,7 @@ from filters import Filters
 
 class Case:
     def __init__(self, file):
-        self._folder    = Folder(file)
+        self._folder  = Folder(file)
         self._filters = None
 
     @property

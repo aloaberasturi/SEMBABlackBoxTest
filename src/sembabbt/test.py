@@ -31,13 +31,11 @@ class NewTest:
         exec_mode, 
         comp_mode, 
         size, 
-        filters, 
-        tol):
+        filters):
         self._input_path  = pathlib.Path(input_path)
         self._output_path = pathlib.Path(output_path)
         self._exec_mode = exec_mode
         self._comp_mode = comp_mode 
-        self._tolerance = Tolerance(tol)
         self._size = size
         if filters is list:
             self._filters = filters
