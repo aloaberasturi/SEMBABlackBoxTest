@@ -23,7 +23,7 @@ from state import State
 from tolerance import Tolerance
 import pathlib
 
-class NewTest:
+class Test:
     def __init__(
         self,
         input_path, 
@@ -42,5 +42,6 @@ class NewTest:
         else:
             raise TypeError("filters must be given in form of a list")
         self._matching_cases = None
+        self._test_folders = None
         State(self)
 

@@ -22,9 +22,9 @@
 
 from  sembabbt.state import State
 from sembabbt.launcher2 import Launcher
-from sembabbt.test import NewTest
+from sembabbt.test import Test
 
-test1 = NewTest("input_path","output_path", "exec_mode", "comp_mode", ["filters"])
+test1 = Test("input_path","output_path", "exec_mode", "comp_mode", ["filters"])
 State.print_log()
 Launcher(test1) 
 

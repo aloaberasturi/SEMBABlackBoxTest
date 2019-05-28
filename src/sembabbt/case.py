@@ -35,4 +35,5 @@ class Case:
     @filters.setter
     def filters(self, *args, **kwargs):
         self._filters = Filters(*args, **kwargs)
+        self._filters.keywords = [x.upper() for x in self._filters.keywords]
 

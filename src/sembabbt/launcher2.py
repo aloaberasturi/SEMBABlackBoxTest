@@ -40,15 +40,16 @@ class Launcher:
             with file("r") as json_file:
                 j = json.loads(json_file.read())
                 c = Case(file)
-                c.filters = Filters(j["filters"]["size"],
-                                [ j["filters"]["keyWords"]["materials"],
-                                  j["filters"]["keyWords"]["excitation"],
-                                  j["filters"]["keyWords"]["mesh"]
-                                ],
-                                  j["filters"]["comparison"],
-                                  j["filters"]["execution"]
-                                )
-            c.filters.keywords = [x.upper() for x in c.filters.keywords]
+                c.filters( 
+                    j["filters"]["size"],
+                    [
+                        j["filters"]["keyWords"]["materials"],
+                        j["filters"]["keyWords"]["excitation"],
+                        j["filters"]["keyWords"]["mesh"]
+                    ],
+                    j["filters"]["comparison"],
+                    j["filters"]["execution"]
+                )
 
             if (
                     (set(c.filters.keywords) &  set(cls._test.keywords))!= set() 
@@ -60,11 +61,10 @@ class Launcher:
                 return False
 
     @classmethod
-    def switch(cls):
-        pass
-
-    @classmethod
     def copy(cls):
+        for case in cls._test._matching_cases:
+            
+
         pass
 
     @classmethod

@@ -33,7 +33,8 @@ class BaseFile:
 
     @abc.abstractproperty
     def name(self, path):
-        return path.parent.name.split("."[0] + str(self.format))
+        if path.parent.name.split("."[0] + str(self.format)).exists:
+            return path.parent.name.split("."[0] + str(self.format))
 
 class Dat(BaseFile):
     def format(self):
@@ -42,7 +43,7 @@ class Dat(BaseFile):
 
     def name(self, path):
         self._name = super().name(path)
-
+        return self._name
 
 class Nfde(BaseFile):
     def format(self):

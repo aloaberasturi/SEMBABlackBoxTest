@@ -22,28 +22,119 @@
 
 import shutil
 import pathlib
+import abc
 from file_class import Dat, Nfde, Conf, Cmsh
 from launcher import Launcher
 
 
-class Folder: 
+class Folder:
+    __metaclass__ = abc.ABCMeta    
+    
+    @abc.abstractproperty
+    def raw_path(self, path):
+        pass
 
-    def __init__(self, file):
-        self.rmdirs()#???
-        self._raw_path = pathlib.Path(file)
-        self._project_name = file.parent.name
+    @abc.abstractproperty
+    def root_folder(self):
+        pass
+        
+    @abc.abstractproperty
+    def project_name(self):
+        pass
+
+    @abc.abstractproperty
+    def case_folder(self):
+        pass
+    
+    @abc.abstractproperty
+    def nfde_file(self):
+        self._nfde_file = Nfde().name(self.raw_path)
+
+    @abc.abstractproperty
+    def conf_file(self):
+        self._conf_file = Conf().name(self.raw_path)
+
+    @abc.abstractproperty
+    def dat_file(self):
+        self._dat_file  = Dat ().name(self.raw_path)
+
+    @abc.abstractproperty
+    def cmsh_file(self):
+        self._cmsh_file = Cmsh().name(self.raw_path)
+
+    @staticmethod
+    def cp(orgn, dstn):
+        shutil.copy(str(orgn), str(dstn))
+
+
+class Case(Folder):
+
+    def __init__(self, path):
+        self.raw_path
+        self.root_folder
+        self.project_name
+        self.case_folder
+        self.nfde_file
+        self.conf_file
+        self.dat_file
+        self.cmsh_file
+
+    def raw_path(self, path):
+        self._raw_path = path
+        return self._raw_path
+    
+    def root_folder(self):
         self._root_folder = Launcher._test._input_path
-        self._case_folder = self._root_folder / self._project_name 
-        self._ugrfdtd_folder = self._case_folder / "ugrfdtd"
-        self._nfde_file = Nfde().name(self._raw_path)
-        self._conf_file = Conf().name(self._raw_path)
-        self._dat_file  = Dat ().name(self._raw_path)
-        self._cmsh_file = Cmsh().name(self._raw_path)
+        return self._root_folder
+    
+    def project_name(self):
+        self._project_name = self._raw_path.parent.name
+        return self._project_name
+
+    def case_folder(self):
+        self._case_folder =  self.root_folder / self.project_name
+        return self._case_folder
+    
+    def nfde_file(self):
+        return super().nfde_file()
+    
+    def conf_file(self):
+        return super().conf_file()
+
+    def dat_file(self):
+        return super().dat_file()
+    
+    def cmsh_file(self):
+        return super().cmsh_file()
+
+
+class Test(Case):
+
+    def __init__(self, path):
+
+        super().raw_path
+        super().root_folder
+        super().project_name
+        self.test_folder
+        self.ugrfdtd_folder
+        super().nfde_file
+        super().conf_file
+        super().dat_file
+        super().cmsh_file
         self.mkdirs()
 
+    def test_folder(self):
+        self._test_folder = self.root_folder / self.project_name / "Test"
+        return self._test_folder
+
+    def ugrfdtd_folder(self):
+        self._ugrfdtd_folder = self.case_folder / "ugrfdtd"
+        return self._ugrfdtd_folder
+
     def mkdirs(self):
-        self._root_folder.mkdir(parents = True, exist_ok = True)
+        self.root_folder.mkdir(parents = True, exist_ok = True)
         self._ugrfdtd_folder.mkdir(parents = True, exist_ok = True)
+
 
     def rmdirs(self):
         try:
@@ -51,8 +142,5 @@ class Folder:
                 shutil.rmtree(str(self._root_folder))
         except FileNotFoundError:
             return
-
-    @staticmethod
-    def cp(orgn, dstn):
-        shutil.copy(str(orgn), str(dstn))
+        pass
 
