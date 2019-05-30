@@ -19,29 +19,22 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
-from state import State
-from tolerance import Tolerance
-import pathlib
 
-class Test:
-    def __init__(
-        self,
-        input_path, 
-        output_path, 
-        exec_mode, 
-        comp_mode, 
-        size, 
-        filters):
-        self._input_path  = pathlib.Path(input_path)
-        self._output_path = pathlib.Path(output_path)
-        self._exec_mode = exec_mode
-        self._comp_mode = comp_mode 
-        self._size = size
-        if filters is list:
-            self._filters = filters
+from file_class import Dat, Nfde, Conf, Cmsh
+class Case():
+    def __init__(self, filters, folder):
+        self._filters = filters
+        self._folder  = folder
+
+    @property
+    def filters(self):
+        return self._filters
+    
+    def can_call_ugrfdtd(self):
+        if self._filters._exec_mode == "normal":
+            if ".nfde" in self._folder._formats:
+                return True
+            else:
+                return False
         else:
-            raise TypeError("filters must be given in form of a list")
-        self._matching_cases = None
-        self._test_folders = None
-        State(self)
-
+            return True

@@ -20,20 +20,15 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from folder import Folder
-from filters import Filters
-
-class Case:
-    def __init__(self, file):
-        self._folder  = Folder(file)
-        self._filters = None
+class Info():
+    def __init__(self, in_path, out_path):
+        self._in_path  = in_path
+        self._out_path = out_path
 
     @property
-    def filters(self):
-        return self._filters
-        
-    @filters.setter
-    def filters(self, *args, **kwargs):
-        self._filters = Filters(*args, **kwargs)
-        self._filters.keywords = [x.upper() for x in self._filters.keywords]
+    def in_path(self):
+        return self._in_path
 
+    @property
+    def out_path(self):
+        return self._out_path

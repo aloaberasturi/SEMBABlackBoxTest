@@ -28,48 +28,50 @@ class BaseFile:
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
-    def format(self):
-        pass
+    def __init__(self, path):
+        self._path = path
+        self._format = None
 
     @abc.abstractproperty
-    def name(self, path):
-        if path.parent.name.split("."[0] + str(self.format)).exists:
-            return path.parent.name.split("."[0] + str(self.format))
+    def name(self):
+        if self._path.parent.name.split("."[0] + str(self._format)).exists:
+            return self._path.parent.name.split("."[0] + str(self._format))
+        else:
+            return False
 
 class Dat(BaseFile):
-    def format(self):
+    def __init__(self, path):
         self._format = ".dat"
-        return self._format
-
-    def name(self, path):
-        self._name = super().name(path)
-        return self._name
+        self._path = path
+        self.name()
+ 
+    def name(self):
+        pass
 
 class Nfde(BaseFile):
-    def format(self):
+    def __init__(self, path):
         self._format = ".nfde"
-        return self._format
+        self._path = path
+        self.name()
+ 
+    def name(self):
+        pass
     
-    def name(self, path):
-        self._name = super().name(path)
-        return self._name
-
 class Conf(BaseFile):
-    def format(self):
+    def __init(self, path):
         self._format = ".conf"
-        return self._format
-
-    def name(self, path):
-        self._name = super().name(path)
-        return self._name
+        self._path = path
+        self.name()
+ 
+    def name(self):
+        pass
 
 class Cmsh(BaseFile):
-    def format(self):
+    def __init__(self, path):
         self._format = ".cmsh"
-        return self._format
-    
-    def name(self, path):
-        self._name = super().name(path)
-        return self._name
-
+        self._path = path
+        self.name()
+ 
+    def name(self):
+        pass
 

@@ -21,52 +21,51 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from filters import Filters
-from folder import Folder
-from case import Case
+from folder import IFolder, CaseFolder, TestFolder
+from caseobject import Case
 import json
 import pathlib
 
 class Launcher:
     def __new__(cls, test):
-        cls._test = test
-        cls.search()
-        #TODO: cls.switcher
-        #TODO: cls.copy
-        cls.launch()
+        cls.search(test)
+        cls.launch(test)
     
     @classmethod
-    def search(cls): 
-        for file in cls._test._input_path.glob("**/*.test.json"):
-            with file("r") as json_file:
+    def search(cls, test): 
+        for path in test.launcher_info.in_path():
+            with path("r") as json_file:
                 j = json.loads(json_file.read())
-                c = Case(file)
-                c.filters( 
-                    j["filters"]["size"],
-                    [
-                        j["filters"]["keyWords"]["materials"],
-                        j["filters"]["keyWords"]["excitation"],
-                        j["filters"]["keyWords"]["mesh"]
-                    ],
-                    j["filters"]["comparison"],
-                    j["filters"]["execution"]
+                case = Case(
+                    Filters(
+                        j["filters"]["size"],
+                        j["filters"]["comparison"],
+                        j["filters"]["execution"],
+                        [
+                            j["filters"]["keyWords"]["materials"],
+                            j["filters"]["keyWords"]["excitation"],
+                            j["filters"]["keyWords"]["mesh"]
+                        ]
+                    ),
+                    CaseFolder(path)
                 )
 
             if (
-                    (set(c.filters.keywords) &  set(cls._test.keywords))!= set() 
-                    and (c.filters.size <= cls._test.size)
+                    (set(case.filters.keywords) &  set(test.filters.keywords))!= set() 
+                    and (case.filters.size <= test.filters.size)
                 ):
-                cls._test._matching_cases.append(c)
-                return True
+                test.folder(TestFolder(path))
+                test.matching_cases(case)                
             else : 
-                return False
+                pass
 
     @classmethod
-    def copy(cls):
-        for case in cls._test._matching_cases:
-            
-
-        pass
-
-    @classmethod
-    def launch(cls):
-        pass
+    def launch(cls, test):
+        if test.matching_cases:
+            for case in test.matching_cases:
+                if case.can_call_ugrfdtd:
+                    #copy here the ugrfdtd and launch it
+                    pass
+                else:
+                    #copy here the ugrfdtd and semba and launch them
+                    pass

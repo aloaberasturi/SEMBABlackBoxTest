@@ -18,14 +18,44 @@
 # details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>. 
+# along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
+import pathlib
+import abc
+from state import State
+from tolerance import Tolerance
 
 class Filters:
-    def __init__(self, size, keywords, comparison = "none", execution = "none"):
-        self.size = size
-        self.keywords = keywords
-        self.comparison = comparison
-        self.execution = execution
 
+    def __init__(self, size, exec_mode, comp_mode, keywords):
+        self._exec_mode = exec_mode
+        self._comp_mode = comp_mode 
+        self._size = size
+        if keywords is list:
+            self._keywords = keywords
+            self.order_kw()
+        else:
+            raise TypeError("keywords must be given in form of a list")
+ 
+    def order_kw(self):
+        self._keywords = [x.upper() for x in self._keywords]
 
+    @property
+    def size(self):
+        return self._size
         
+    @property
+    def keywords(self):
+        return self._keywords
+
+    @property
+    def exec_mode(self):
+        return self._exec_mode
+    
+    @property
+    def comp_mode(self):
+        return self._comp_mode
+    
+
+
+
+

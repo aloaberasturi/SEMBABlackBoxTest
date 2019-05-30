@@ -25,36 +25,40 @@ import pathlib
 class State: 
     _count = 0
     _tests = []
-
-    def __new__(cls, *args):
-        if args:
-            cls._count += 1
-            cls._tests.append(*args)
+    
+    def __new__(cls, test):
+        cls._count += 1
+        cls._tests.append(test)
+        cls.display()
 
     @classmethod
     def display(cls):
         print("Current number of running _tests: ", cls._count)
         for item in cls._tests:
+            filters = item.filters
             print (cls._tests.index(item) + 1,"-th test")
-            print ("EXECUTION MODE: ", item._exec_mode)
-            print ("COMPARISON MODE: ", item._comp_mode)
-            if item._filters:
-                print ("Test launched under the following filters:")
-                for f in item._filters:
-                    print(f)
+            print ("EXECUTION MODE: ", filters.exec_mode) 
+            print ("COMPARISON MODE: ",filters.comp_mode)
+            if item.filters.keywords:
+                print ("Test launched with the following keywords:")
+                for k in item.filters.keywords:
+                    print(k)
             else:
-                print("No filters were specified for this test")
+                print("No keywords were specified for this test")
 
     @classmethod
     def write(cls): 
         for item in cls._tests:
-            with open(pathlib.Path(item._output_path) / "sembabbt.log", "w") as file:
-                file.write("EXECUTION MODE: " + str(item._exec_mode) + "\n")
-                file.write("COMPARISON MODE: " +str(item._comp_mode) + "\n")
-                if item._filters:
-                    file.write("Test launched under the following filters:" + "\n")
-                    for f in item._filters:
-                        file.write(str(f) + "\n")  
+            with open(
+                pathlib.Path(item.launcher_info.out_path) / "sembabbt.log", "w"
+            ) as file:
+                filters = item.filters
+                file.write("EXECUTION MODE: " + str(filters.exec_mode) + "\n")
+                file.write("COMPARISON MODE: " +str(filters.comp_mode) + "\n")
+                if filters.keywords:
+                    file.write("Test launched with the following keywords:"+"\n")
+                    for k in filters.keywords:
+                        file.write(str(k) + "\n")  
                 else:
-                    file.write("No filters were specified for this test" + "\n")  
+                    file.write("No keywords were specified for this test" + "\n")  
             file.close()        

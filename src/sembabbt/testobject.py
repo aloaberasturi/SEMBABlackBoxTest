@@ -20,14 +20,38 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.state import State
-from sembabbt.launcher2 import Launcher
-from sembabbt.testobject import Test
-from sembabbt.filters import Filters
+from info import Info
+from folder import TestFolder
+from filters import Filter
+from state import State
 
-filters = Filters("exec_mode", "comp_mode", ["keywords"])
-test1 = Test(filters, "inpath", "outpath")
-Launcher(test1) 
-State.print_log()
+class Test():
+    def __init__(self, filters, input_path, output_path):
+        self._launcher_info  = Info(input_path, output_path)
+        self._filters        = filters
+        self._matching_cases = []
+        self._folder         = None
+            
+    @folder.setter
+    def folder(self, json_path):
+        self._folder = TestFolder(json_path)
 
+    @matching_cases.setter 
+    def matching_cases(self, matching_case):
+        for data_file in matching_case.folder.files:
+            if data_file:
+                TestFolder.cp(
+                    matching_case.folder.case_folder / data_file, 
+                    self._folder.test_folder / data_file
+                        )
+        self._matching_cases.append(matching_case)
+        State(self)
+
+    @property
+    def launcher_info(self):
+        return self._launcher_info
+
+    @property
+    def filters(self):
+        return self._filters
 

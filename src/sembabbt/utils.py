@@ -23,24 +23,19 @@
 
 import pathlib
 import inspect
-import filemanager 
-import common 
-import bin.semba_bin as bin
-import data.semba_data as data
 
-bin_path = pathlib.Path(bin.__file__).parent
-data_path = pathlib.Path(data.__file__).parent
-
+bin_path = pathlib.Path(bin.__file__).parent #hacer esto bien
 sembaPath = bin_path / "semba"
 ugrfdtdPath = bin_path / "ugrfdtd"
-common.case = filemanager.FM(data_path / "Cases")
-common.test = filemanager.FM(data_path / "Temp")
 
     
 def passed_tests_message(passed_tests,failed_tests):
+
     print("[  PASSED  ] ",passed_tests," tests")
     print("[  FAILED  ] ",failed_tests," tests")
+
 def goodbye_message():
+
     print("-----------------------------------------------------------------")
 
     print("                  SEMBA BlackBoxTest Finished")
