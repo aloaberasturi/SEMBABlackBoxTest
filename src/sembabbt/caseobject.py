@@ -21,17 +21,35 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from file_class import Dat, Nfde, Conf, Cmsh
+from filters import Filters
+from folder import CaseFolder
+import json
 class Case():
-    def __init__(self, filters, folder):
-        self._filters = filters
-        self._folder  = folder
+    def __init__(self, json_file):
+        j = json.loads(json_file.read())
+        self._exec_m =  j["filters"]["execution"]
+        self._folder = CaseFolder(json_file)
+        self._filters = Filters(
+                        size = j["filters"]["size"],
+                        comp_mode = j["filters"]["comparison"],
+                        keywords =[
+                            j["filters"]["keyWords"]["materials"],
+                            j["filters"]["keyWords"]["excitation"],
+                            j["filters"]["keyWords"]["mesh"]
+                        ]
+        )
 
+                
     @property
     def filters(self):
         return self._filters
     
+    @property
+    def exec_m(self):
+        return self._exec_m
+
     def can_call_ugrfdtd(self):
-        if self._filters._exec_mode == "normal":
+        if self._exec_m == "normal":
             if ".nfde" in self._folder._formats:
                 return True
             else:

@@ -20,15 +20,28 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-class Info():
-    def __init__(self, in_path, out_path):
-        self._in_path  = in_path
-        self._out_path = out_path
+class ExecInfo():
+    def __init__(
+        self, 
+        inpath, 
+        outpath, 
+        semba, 
+        ugrfdtd, 
+        exec_m
+    ):
+        self._inpath    = inpath
+        self._outpath   = outpath
+        self._semba     = semba
+        self._ugrfdtd   = ugrfdtd
+        self._exec_mode = exec_m
 
     @property
     def in_path(self):
-        return self._in_path
+        return self._inpath
 
     @property
     def out_path(self):
-        return self._out_path
+        return self._outpath
+    
+    def copy_executables(self):
+        pass

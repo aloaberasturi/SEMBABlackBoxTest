@@ -26,10 +26,9 @@ from tolerance import Tolerance
 
 class Filters:
 
-    def __init__(self, size, exec_mode, comp_mode, keywords):
-        self._exec_mode = exec_mode
-        self._comp_mode = comp_mode 
+    def __init__(self, size, comp_mode, keywords):
         self._size = size
+        self._comp_mode = comp_mode 
         if keywords is list:
             self._keywords = keywords
             self.order_kw()
@@ -46,10 +45,6 @@ class Filters:
     @property
     def keywords(self):
         return self._keywords
-
-    @property
-    def exec_mode(self):
-        return self._exec_mode
     
     @property
     def comp_mode(self):

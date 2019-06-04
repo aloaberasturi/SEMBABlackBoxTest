@@ -24,11 +24,7 @@
 import pathlib
 import inspect
 
-bin_path = pathlib.Path(bin.__file__).parent #hacer esto bien
-sembaPath = bin_path / "semba"
-ugrfdtdPath = bin_path / "ugrfdtd"
-
-    
+   
 def passed_tests_message(passed_tests,failed_tests):
 
     print("[  PASSED  ] ",passed_tests," tests")

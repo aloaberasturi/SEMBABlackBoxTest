@@ -34,28 +34,86 @@ class IFolder:
     def __init__(self, json_path):
         json_path = pathlib.Path(json_path)
         self._formats = []
+        self._files   = []
+        self._root_f  = None
         self._project_name = json_path.parent.name
-        self._files = [
-            Dat (json_path),
-            Nfde(json_path),
-            Conf(json_path),
-            Cmsh(json_path)
-        ]
+        self.files(json_path)
+        self.formats()
+
+    @abc.abstractmethod
+    @files.setter #TODO: make this more elegant? Dani? :)
+    def files(self, json_path):
+        self._files = {
+            "Dat"  : Dat (json_path),
+            "Nfde" : Nfde(json_path),
+            "Conf" :Conf(json_path),
+            "Cmsh" :Cmsh(json_path)
+        }
+        for file in self._files:
+            if not file:
+                self._files.pop(file)
+
+    @abc.abstractmethod
+    @formats.setter
+    def formats(self):
         for file in self._files:
             self._formats.append(file._format)
 
-    @abc.abstractproperty
-    def files(self):
-        return self._files
+
     @abc.abstractstaticmethod
     def cp(orgn, dstn):
         shutil.copy(str(orgn), str(dstn))
 
-    @abc.abstractstaticmethod
+    @abc.abstractproperty
+    def root(self):
+        return self._root_f
+
+
+class CaseFolder(IFolder):
+
+    def __init__(self, json_path):
+        super().__init__(json_path)
+        self._root_f = json_path.parent
+
+    @files.setter
+    def files(self, json_path):
+        pass
+
+    @formats.setter
+    def formats(self):
+        pass
+
+
+    @staticmethod
+    def cp(orgn, dstn):
+        super().cp(orgn, dstn)
+
+
+class TestFolder(IFolder):
+
+    def __init__(self, json_path):
+        super().__init__(json_path)
+        self._root_f    = json_path.parent  / "Temp"
+        self._ugrfdtd_folder = self._root_f / "ugrfdtd"
+        TestFolder.mkdir(self._ugrfdtd_folder)
+
+    @files.setter
+    def files(self, json_path):
+        pass
+
+    @formats.setter
+    def formats(self):
+        pass
+        
+    @staticmethod
+    def cp(orgn, dstn):
+        super().cp(orgn, dstn)
+
+    @staticmethod
     def mkdir(folder):
         folder.mkdir(parents = True, exist_ok = True)
 
-    @abc.abstractstaticmethod
+    @staticmethod
     def rmrdir(folder):
         try:
             if folder.exists:
@@ -63,59 +121,3 @@ class IFolder:
         except FileNotFoundError:
             return
         pass
-
-
-class CaseFolder(IFolder):
-
-    def __init__(self, json_path):
-        super().__init__(json_path)
-        self._case_folder = json_path.parent
-
-    @property
-    def files(self):
-        pass
-
-    @property
-    def case_folder(self):
-        return self._case_folder
-
-    @staticmethod
-    def cp(orgn, dstn):
-        super().cp(orgn, dstn)
-
-    @staticmethod
-    def mkdir(folder):
-        super().mkdir(folder)
-    
-    @staticmethod
-    def rmrdir(folder):
-        super().mkdir(folder)
-
-
-class TestFolder(IFolder):
-
-    def __init__(self, json_path):
-        super().__init__(json_path)
-        self._test_folder    = json_path.parent  / "Test"
-        self._ugrfdtd_folder = self._test_folder / "ugrfdtd"
-        TestFolder.mkdir(self._ugrfdtd_folder)
-
-    @property
-    def files(self):
-        pass
-
-    @property
-    def test_folder(self):
-        return self.test_folder
-
-    @staticmethod
-    def cp(orgn, dstn):
-        super().cp(orgn, dstn)
-
-    @staticmethod
-    def mkdir(folder):
-        super().mkdir(folder)
-    
-    @staticmethod
-    def rmrdir(folder):
-        super().mkdir(folder)

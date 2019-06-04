@@ -5,7 +5,7 @@
 #                    Miguel David Ruiz-Cabello Nuñez        (miguel@semba.guru)
 #                    Alejandra Lopez de Aberasturi Gomez (aloaberasturi@ugr.es)
 #                    
-# This BaseFile is part of OpenSEMBA.
+# This file is part of OpenSEMBA.
 #
 # OpenSEMBA is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
@@ -24,7 +24,7 @@
 import abc
 
 
-class BaseFile:
+class IFile:
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
@@ -39,7 +39,7 @@ class BaseFile:
         else:
             return False
 
-class Dat(BaseFile):
+class Dat(IFile):
     def __init__(self, path):
         self._format = ".dat"
         self._path = path
@@ -48,7 +48,7 @@ class Dat(BaseFile):
     def name(self):
         pass
 
-class Nfde(BaseFile):
+class Nfde(IFile):
     def __init__(self, path):
         self._format = ".nfde"
         self._path = path
@@ -57,7 +57,7 @@ class Nfde(BaseFile):
     def name(self):
         pass
     
-class Conf(BaseFile):
+class Conf(IFile):
     def __init(self, path):
         self._format = ".conf"
         self._path = path
@@ -66,7 +66,7 @@ class Conf(BaseFile):
     def name(self):
         pass
 
-class Cmsh(BaseFile):
+class Cmsh(IFile):
     def __init__(self, path):
         self._format = ".cmsh"
         self._path = path

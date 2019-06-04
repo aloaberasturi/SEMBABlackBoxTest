@@ -20,14 +20,23 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.state import State
-from sembabbt.launcher2 import Launcher
+from sembabbt.launcher2  import Launcher
 from sembabbt.testobject import Test
-from sembabbt.filters import Filters
 
-filters = Filters("exec_mode", "comp_mode", ["keywords"])
-test1 = Test(filters, "inpath", "outpath")
-Launcher(test1) 
-State.print_log()
+kwargs = {
+    "size"         : 131381,
+    "comp_mode"    : "Equal", 
+    "keywords"     : [1,2,3], 
+    "input_path"   : "www.hola.com",
+    "output_path"  : "www.adios.com",
+    "semba_path"   : "www.semba.com",
+    "ugrfdtd_path" : "www.ugr.com",
+    "exec_mode"    : "normal"
+    }
+
+#the above can also be loaded in the form of a json file
+test1 = Test(**kwargs)
+l1 = Launcher(test1) 
+
 
 

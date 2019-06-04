@@ -20,8 +20,34 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-def Tolerance(tol):
-    if tol.lower() == "relative":
-        return(2.0)
-    elif tol.lower() == "absolute":
-        return(1e-5)
+from subprocess import Popen, PIPE
+import os  
+
+
+def call_semba(test):
+    try:
+
+        process = Popen(
+            ["./semba","-i", test._files["Dat"]],
+            stdout = PIPE,
+            cwd = test.folder.test_folder
+        )
+        process.communicate() 
+       #--------------Please uncomment to display SEMBA's std output-----------
+       #subprocess.run([str(exePath),"-i",str(fileName)]) 
+                  
+    except RuntimeError:"Unable to launch semba"
+
+def call_ugrfdtd(test):
+    try:
+
+        process = Popen(
+               ["./ugrfdtd","-i",test._files["Nfde"]],
+               stdout = PIPE, 
+               cwd = test.folder.test_folder
+           )
+        process.communicate() 
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    except RuntimeError:"Unable to launch ugrfdtd"
+     
