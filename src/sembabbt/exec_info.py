@@ -24,24 +24,24 @@ class ExecInfo():
     def __init__(
         self, 
         inpath, 
-        outpath, 
-        semba, 
-        ugrfdtd, 
-        exec_m
+        outpath,  
+        exec_mode
     ):
         self._inpath    = inpath
         self._outpath   = outpath
-        self._semba     = semba
-        self._ugrfdtd   = ugrfdtd
-        self._exec_mode = exec_m
+        self._exec_mode = exec_mode
 
     @property
-    def in_path(self):
+    def input_path(self):
         return self._inpath
 
     @property
-    def out_path(self):
+    def output_path(self):
         return self._outpath
+    
+    @property
+    def exec_mode(self):
+        return self._exec_mode
     
     def copy_executables(self):
         pass

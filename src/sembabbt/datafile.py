@@ -22,8 +22,6 @@
 
 
 import abc
-
-
 class IFile:
     __metaclass__ = abc.ABCMeta
 

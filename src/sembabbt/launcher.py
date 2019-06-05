@@ -20,8 +20,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from caseobject import Case
-from exe_calls import call_semba, call_ugrfdtd
+from sembabbt.caseobject import Case
+from sembabbt.exe_calls import call_semba, call_ugrfdtd
 class Launcher: #this can be a function instead of a class
     def __new__(cls, test):
         cls.search(test)
@@ -30,7 +30,7 @@ class Launcher: #this can be a function instead of a class
     
     @classmethod
     def search(cls, test): 
-        for path in test.launcher_info.in_path():
+        for path in test.exec_info.in_path(): #correct this
             with path("r") as json_file:
                 case = Case(json_file)
             if (

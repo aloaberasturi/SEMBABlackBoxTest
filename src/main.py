@@ -20,8 +20,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.launcher2  import Launcher
+from sembabbt.launcher   import Launcher
 from sembabbt.testobject import Test
+from sembabbt.state      import State
 
 kwargs = {
     "size"         : 131381,
@@ -29,14 +30,19 @@ kwargs = {
     "keywords"     : [1,2,3], 
     "input_path"   : "www.hola.com",
     "output_path"  : "www.adios.com",
-    "semba_path"   : "www.semba.com",
-    "ugrfdtd_path" : "www.ugr.com",
     "exec_mode"    : "normal"
     }
 
+exec_paths1 = {
+    "semba_path"   : "www.semba.com",
+    "ugrfdtd_path" : "www.ugrfdtd.com"
+}
+
 #the above can also be loaded in the form of a json file
 test1 = Test(**kwargs)
+State(exec_paths1, test1)
 l1 = Launcher(test1) 
+
 
 
 

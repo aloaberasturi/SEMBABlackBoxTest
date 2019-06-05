@@ -20,9 +20,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from file_class import Dat, Nfde, Conf, Cmsh
-from filters import Filters
-from folder import CaseFolder
+from sembabbt.datafile import Dat, Nfde, Conf, Cmsh
+from sembabbt.filters import Filters
+from sembabbt.folder import CaseFolder
 import json
 class Case():
     def __init__(self, json_file):

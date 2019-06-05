@@ -20,11 +20,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
+from sembabbt.datafile import Dat, Nfde, Conf, Cmsh
 import shutil
 import pathlib
 import abc
-from datafile import Dat, Nfde, Conf, Cmsh
-from launcher import Launcher
 
 
 class IFolder:
@@ -33,60 +32,61 @@ class IFolder:
     @abc.abstractmethod
     def __init__(self, json_path):
         json_path = pathlib.Path(json_path)
-        self._formats = []
-        self._files   = []
         self._root_f  = None
         self._project_name = json_path.parent.name
+        self._project_f = self._root_f / self._project_name
+        self._files   = []
+        self._formats = []
         self.files(json_path)
         self.formats()
 
     @abc.abstractmethod
-    @files.setter #TODO: make this more elegant? Dani? :)
     def files(self, json_path):
-        self._files = {
-            "Dat"  : Dat (json_path),
-            "Nfde" : Nfde(json_path),
-            "Conf" :Conf(json_path),
-            "Cmsh" :Cmsh(json_path)
-        }
-        for file in self._files:
-            if not file:
-                self._files.pop(file)
+        try:
+            self._files = {
+                "Dat"  : self._project_f / Dat (json_path),
+                "Nfde" : self._project_f / Nfde(json_path),
+                "Conf" : self._project_f / Conf(json_path),
+                "Cmsh" : self._project_f / Cmsh(json_path)
+            }
+        except TypeError:
+            pass
 
     @abc.abstractmethod
-    @formats.setter
     def formats(self):
         for file in self._files:
             self._formats.append(file._format)
 
+    @abc.abstractproperty
+    def root(self):
+        return self._root_f
 
     @abc.abstractstaticmethod
     def cp(orgn, dstn):
         shutil.copy(str(orgn), str(dstn))
 
-    @abc.abstractproperty
-    def root(self):
-        return self._root_f
 
 
 class CaseFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-        self._root_f = json_path.parent
+        self._root_f = json_path.parent 
 
-    @files.setter
     def files(self, json_path):
         pass
 
-    @formats.setter
     def formats(self):
         pass
-
+    
+    @property
+    def root(self):
+        pass
 
     @staticmethod
     def cp(orgn, dstn):
         super().cp(orgn, dstn)
+    
 
 
 class TestFolder(IFolder):
@@ -97,12 +97,14 @@ class TestFolder(IFolder):
         self._ugrfdtd_folder = self._root_f / "ugrfdtd"
         TestFolder.mkdir(self._ugrfdtd_folder)
 
-    @files.setter
     def files(self, json_path):
         pass
 
-    @formats.setter
     def formats(self):
+        pass
+
+    @property
+    def root(self):
         pass
         
     @staticmethod

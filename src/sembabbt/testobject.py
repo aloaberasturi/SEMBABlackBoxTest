@@ -20,26 +20,24 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from exec_info import ExecInfo
-from folder import TestFolder
-from filters import Filters
-from state import State
+from sembabbt.exec_info import ExecInfo
+from sembabbt.folder import TestFolder
+from sembabbt.filters import Filters
+from sembabbt.state import State
 import shutil
 
 class Test():
     def __init__(self, **kwargs): 
 
         self._exec_info  = ExecInfo(
-                                    kwargs["input_path"],
-                                    kwargs["output_path"],
-                                    kwargs["semba_path"],
-                                    kwargs["ugrfdtd_path"],
-                                    kwargs["exec_mode"]
+            kwargs["input_path"],
+            kwargs["output_path"],
+            kwargs["exec_mode"]
         )
-        self._filters        = Filters (
-                                    kwargs["size"],
-                                    kwargs["comp_mode"],
-                                    kwargs["keywords"]
+        self._filters = Filters (
+            kwargs["size"],
+            kwargs["comp_mode"],
+            kwargs["keywords"]
 
         )
         self._matching_cases = []
@@ -47,7 +45,8 @@ class Test():
 
         def __call__(self, path, case):
             self.folder(path)
-            self.copy_executables()
+            TestFolder.cp(self._exec_info.semba_path,   self.folder._root_f)
+            TestFolder.cp(self._exec_info.ugrfdtd_path, self.folder._root_f)
             self.matching_cases(case)
 
     @property
@@ -58,19 +57,13 @@ class Test():
     def folder(self, json_path):
         self._folders.append(TestFolder(json_path))
 
-    @matching_cases.setter 
-    def matching_cases(self, matching_case):
-        for data_file in matching_case.folder.files:
-            if data_file:
-                TestFolder.cp(
-                    matching_case.folder.case_folder / data_file, 
-                    self._folders[-1].test_folder / data_file
-                        )
-        self._matching_cases.append(matching_case)
-
     def copy_executables(self, jskdhfs):
         shutil.copy(self._exec_info.semba_path,    self.folder._root_f)
         shutil.copy(self._exec_info.ugrfdtdt_path, self.folder._root_f)
+
+    def matching_cases(self, matching_case):
+        self._matching_cases.append(matching_case)
+
 
     @property
     def exec_info(self):

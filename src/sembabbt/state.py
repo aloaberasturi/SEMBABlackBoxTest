@@ -26,19 +26,24 @@ class State:
     _count = 0
     _tests = []
     
-    def __new__(cls, test):
+    def __new__(cls, exec_paths, test):
         cls._count += 1
         cls._tests.append(test)
+        cls._semba_path   = exec_paths["semba_path"]
+        cls._ugrfdtd_path = exec_paths["ugrfdtd_path"]
         cls.display()
 
     @classmethod
     def display(cls):
         print("Current number of running _tests: ", cls._count)
         for item in cls._tests:
-            filters = item.filters
+            filters   = item.filters
+            exec_info = item.exec_info
             print (cls._tests.index(item) + 1,"-th test")
-            print ("EXECUTION MODE: ", filters.exec_mode) 
-            print ("COMPARISON MODE: ",filters.comp_mode)
+            print ("TESTING CASES IN:", exec_info.input_path)
+            print ("OUTPUT FOLDER :"  , exec_info.output_path)
+            print ("EXECUTION MODE: " , exec_info.exec_mode) 
+            print ("COMPARISON MODE: ", filters.comp_mode)
             if item.filters.keywords:
                 print ("Test launched with the following keywords:")
                 for k in item.filters.keywords:
@@ -50,10 +55,11 @@ class State:
     def write(cls): 
         for item in cls._tests:
             with open(
-                pathlib.Path(item.launcher_info.out_path) / "sembabbt.log", "w"
+                pathlib.Path(item.exec_info.output_path) / "sembabbt.log", "w"
             ) as file:
-                filters = item.filters
-                file.write("EXECUTION MODE: " + str(filters.exec_mode) + "\n")
+                filters   = item.filters
+                exec_info = item.exec_info
+                file.write("EXECUTION MODE: " + str(exec_info.exec_mode) + "\n")
                 file.write("COMPARISON MODE: " +str(filters.comp_mode) + "\n")
                 if filters.keywords:
                     file.write("Test launched with the following keywords:"+"\n")

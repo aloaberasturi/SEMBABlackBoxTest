@@ -19,10 +19,6 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
-import pathlib
-import abc
-from state import State
-from tolerance import Tolerance
 
 class Filters:
 
@@ -31,11 +27,11 @@ class Filters:
         self._comp_mode = comp_mode 
         if keywords is list:
             self._keywords = keywords
-            self.order_kw()
+            self._order_kw()
         else:
             raise TypeError("keywords must be given in form of a list")
  
-    def order_kw(self):
+    def _order_kw(self):
         self._keywords = [x.upper() for x in self._keywords]
 
     @property
