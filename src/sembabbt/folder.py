@@ -31,85 +31,69 @@ class IFolder:
  
     @abc.abstractmethod
     def __init__(self, json_path):
-        json_path = pathlib.Path(json_path)
-        self._root_f  = None
-        self._project_name = json_path.parent.name
-        self._project_f = self._root_f / self._project_name
-        self._files   = []
+        self.json_path = pathlib.Path(json_path.name)
+        self.root_f()
+        self.project_name()
+        self._files   = {}
         self._formats = []
-        self.files(json_path)
-        self.formats()
+        self.files()
 
     @abc.abstractmethod
-    def files(self, json_path):
+    def files(self):
         try:
             self._files = {
-                "Dat"  : self._project_f / Dat (json_path),
-                "Nfde" : self._project_f / Nfde(json_path),
-                "Conf" : self._project_f / Conf(json_path),
-                "Cmsh" : self._project_f / Cmsh(json_path)
+                "Dat"  : Dat (self),
+                "Nfde" : Nfde(self),
+                "Conf" : Conf(self),
+                "Cmsh" : Cmsh(self)
             }
         except TypeError:
             pass
 
     @abc.abstractmethod
-    def formats(self):
-        for file in self._files:
-            self._formats.append(file._format)
-
+    def root_f(self):
+        pass
+    
     @abc.abstractproperty
-    def root(self):
-        return self._root_f
-
-    @abc.abstractstaticmethod
-    def cp(orgn, dstn):
-        shutil.copy(str(orgn), str(dstn))
-
-
+    def project_name(self):
+        pass
 
 class CaseFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-        self._root_f = json_path.parent 
 
-    def files(self, json_path):
-        pass
 
-    def formats(self):
-        pass
+    def files(self):
+        super().files()
     
-    @property
-    def root(self):
-        pass
+    def root_f(self):
+        self._root_f = self.json_path.parent
 
-    @staticmethod
-    def cp(orgn, dstn):
-        super().cp(orgn, dstn)
-    
+    def project_name(self):
+        self._project_name = (self._root_f.name).split(".")[0]
 
 
 class TestFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-        self._root_f    = json_path.parent  / "Temp"
         self._ugrfdtd_folder = self._root_f / "ugrfdtd"
+        TestFolder.mkdir(self._root_f)
         TestFolder.mkdir(self._ugrfdtd_folder)
 
-    def files(self, json_path):
-        pass
+    def files(self):
+        super().files
 
-    def formats(self):
-        pass
-
-    @property
-    def root(self):
-        pass
+    def root_f(self):
+        self._root_f = self.json_path.parent  / "Temp"
         
+    def project_name(self):
+        self._project_name = (self._root_f.parent.name).split(".")[0]
+
     @staticmethod
     def cp(orgn, dstn):
-        super().cp(orgn, dstn)
+        shutil.copy(str(orgn), str(dstn))
 
     @staticmethod
     def mkdir(folder):

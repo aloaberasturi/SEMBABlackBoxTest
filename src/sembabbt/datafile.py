@@ -26,50 +26,49 @@ class IFile:
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
-    def __init__(self, path):
-        self._path = path
-        self._format = None
-
-    @abc.abstractproperty
-    def name(self):
-        if self._path.parent.name.split("."[0] + str(self._format)).exists:
-            return self._path.parent.name.split("."[0] + str(self._format))
+    def __init__(self, folder):
+        pass
+    
+    @abc.abstractmethod
+    def path(self, folder):
+        self._path = folder._root_f / (str(folder._project_name) + self._format)
+        if self._path.exists():
+            return self._path
         else:
             return False
 
 class Dat(IFile):
-    def __init__(self, path):
+    def __init__(self, folder):
         self._format = ".dat"
-        self._path = path
-        self.name()
+        self.path(folder)
  
-    def name(self):
-        pass
+    def path(self, folder):
+        super().path(folder)
+
 
 class Nfde(IFile):
-    def __init__(self, path):
+    def __init__(self, folder):
         self._format = ".nfde"
-        self._path = path
-        self.name()
- 
-    def name(self):
-        pass
+        self.path(folder)
+
+    def path(self, folder):
+        super().path(folder)
     
 class Conf(IFile):
-    def __init(self, path):
+    def __init__(self, folder):
         self._format = ".conf"
-        self._path = path
-        self.name()
+        self.path(folder)
  
-    def name(self):
-        pass
+ 
+    def path(self, folder):
+        super().path(folder)
 
 class Cmsh(IFile):
-    def __init__(self, path):
+    def __init__(self, folder):
         self._format = ".cmsh"
-        self._path = path
-        self.name()
+        self.path(folder)
  
-    def name(self):
-        pass
+ 
+    def path(self, folder):
+        super().path(folder)
 

@@ -30,9 +30,9 @@ class Launcher: #this can be a function instead of a class
     
     @classmethod
     def search(cls, test): 
-        for path in test.exec_info.in_path(): #correct this
-            with path("r") as json_file:
-                case = Case(json_file)
+        for path in test.exec_info.input_path.glob("**/*.test.json"): 
+            with open(path, "r") as json_file:
+                case = Case(json_file)            
             if (
                     
                 set(case.filters.keywords) &  set(test.filters.keywords)

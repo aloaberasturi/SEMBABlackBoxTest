@@ -29,8 +29,8 @@ class State:
     def __new__(cls, exec_paths, test):
         cls._count += 1
         cls._tests.append(test)
-        cls._semba_path   = exec_paths["semba_path"]
-        cls._ugrfdtd_path = exec_paths["ugrfdtd_path"]
+        cls.semba_path   = pathlib.Path(exec_paths["semba_path"])
+        cls.ugrfdtd_path = pathlib.Path(exec_paths["ugrfdtd_path"])
         cls.display()
 
     @classmethod
@@ -67,4 +67,4 @@ class State:
                         file.write(str(k) + "\n")  
                 else:
                     file.write("No keywords were specified for this test" + "\n")  
-            file.close()        
+            file.close()    

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
+import pathlib
 class ExecInfo():
     def __init__(
         self, 
@@ -27,17 +28,17 @@ class ExecInfo():
         outpath,  
         exec_mode
     ):
-        self._inpath    = inpath
-        self._outpath   = outpath
+        self._input_path    = pathlib.Path(inpath)
+        self._output_path   = pathlib.Path(outpath)
         self._exec_mode = exec_mode
 
     @property
     def input_path(self):
-        return self._inpath
+        return self._input_path
 
     @property
     def output_path(self):
-        return self._outpath
+        return self._output_path
     
     @property
     def exec_mode(self):

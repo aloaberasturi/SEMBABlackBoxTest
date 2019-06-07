@@ -25,10 +25,10 @@ from sembabbt.testobject import Test
 from sembabbt.state      import State
 
 kwargs = {
-    "size"         : 131381,
+    "size"         : 181381,
     "comp_mode"    : "Equal", 
-    "keywords"     : [1,2,3], 
-    "input_path"   : "www.hola.com",
+    "keywords"     : ["pec","culo","pedo", "pis"], 
+    "input_path"   : "/home/alejandra/workspace/sembabbt/data",
     "output_path"  : "www.adios.com",
     "exec_mode"    : "normal"
     }
@@ -38,10 +38,11 @@ exec_paths1 = {
     "ugrfdtd_path" : "www.ugrfdtd.com"
 }
 
-#the above can also be loaded in the form of a json file
+#*********** the above can also be loaded in the form of a json file ***********
 test1 = Test(**kwargs)
 State(exec_paths1, test1)
 l1 = Launcher(test1) 
+
 
 
 

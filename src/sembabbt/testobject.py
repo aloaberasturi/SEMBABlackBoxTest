@@ -43,27 +43,15 @@ class Test():
         self._matching_cases = []
         self._folders        = []
 
-        def __call__(self, path, case):
-            self.folder(path)
-            TestFolder.cp(self._exec_info.semba_path,   self.folder._root_f)
-            TestFolder.cp(self._exec_info.ugrfdtd_path, self.folder._root_f)
-            self.matching_cases(case)
+    def __call__(self, path, case):
+        self.folder(path)
+        TestFolder.cp(State.semba_path,   self._folders[-1]._root_f)
+        TestFolder.cp(State.ugrfdtd_path, self._folders[-1]._root_f)
+        self.matching_cases(case)
 
-    @property
-    def folder(self):
-        return self._folders[-1]   
 
-    @folder.setter
     def folder(self, json_path):
         self._folders.append(TestFolder(json_path))
-
-    def copy_executables(self, jskdhfs):
-        shutil.copy(self._exec_info.semba_path,    self.folder._root_f)
-        shutil.copy(self._exec_info.ugrfdtdt_path, self.folder._root_f)
-
-    def matching_cases(self, matching_case):
-        self._matching_cases.append(matching_case)
-
 
     @property
     def exec_info(self):
@@ -72,5 +60,14 @@ class Test():
     @property
     def filters(self):
         return self._filters
+
+
+    def copy_executables(self, jskdhfs):
+        shutil.copy(self._exec_info.semba_path,    self.folder._root_f)
+        shutil.copy(self._exec_info.ugrfdtdt_path, self.folder._root_f)
+
+    def matching_cases(self, matching_case):
+        self._matching_cases.append(matching_case)
+
     
 

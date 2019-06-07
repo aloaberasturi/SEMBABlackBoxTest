@@ -25,7 +25,7 @@ class Filters:
     def __init__(self, size, comp_mode, keywords):
         self._size = size
         self._comp_mode = comp_mode 
-        if keywords is list:
+        if isinstance(keywords, list):
             self._keywords = keywords
             self._order_kw()
         else:
