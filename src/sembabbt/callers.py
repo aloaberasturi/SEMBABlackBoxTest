@@ -22,19 +22,21 @@
 
 from subprocess import Popen, PIPE
 import os  
+from sembabbt.state import State
 
 
 def call_semba(test):
     try:
 
         process = Popen(
-            ["./semba","-i", test._files["Dat"]],
+            [(State.semba_path).as_posix(),"-i", test._files["Dat"]],
             stdout = PIPE,
-            cwd = test.folder.test_folder
+            cwd = test.folder._root_f
         )
         process.communicate() 
+       
        #--------------Please uncomment to display SEMBA's std output-----------
-       #subprocess.run([str(exePath),"-i",str(fileName)]) 
+       #subprocess.run([(State.semba_path).as_posix(),"-i",test._files["Dat"]]) 
                   
     except RuntimeError:"Unable to launch semba"
 
@@ -42,10 +44,10 @@ def call_ugrfdtd(test):
     try:
 
         process = Popen(
-               ["./ugrfdtd","-i",test._files["Nfde"]],
-               stdout = PIPE, 
-               cwd = test.folder.test_folder
-           )
+            [(State.ugrfdtd_path).as_posix(),"-i",test._files["Nfde"]],
+            stdout = PIPE, 
+            cwd = test.folder._ugrfdtd_f
+        )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')
 

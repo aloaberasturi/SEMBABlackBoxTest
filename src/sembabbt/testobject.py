@@ -44,14 +44,12 @@ class Test():
         self._folders        = []
 
     def __call__(self, path, case):
-        self.folder(path)
-        TestFolder.cp(State.semba_path,   self._folders[-1]._root_f)
-        TestFolder.cp(State.ugrfdtd_path, self._folders[-1]._root_f)
+        self._folders.append(TestFolder(path))
+        self.copy_datafiles(case)
+        self.copy_executables(case)
+        TestFolder.cp(case._folder._files, self._folders[-1]._files)
         self.matching_cases(case)
 
-
-    def folder(self, json_path):
-        self._folders.append(TestFolder(json_path))
 
     @property
     def exec_info(self):
@@ -62,9 +60,27 @@ class Test():
         return self._filters
 
 
-    def copy_executables(self, jskdhfs):
-        shutil.copy(self._exec_info.semba_path,    self.folder._root_f)
-        shutil.copy(self._exec_info.ugrfdtdt_path, self.folder._root_f)
+    def copy_executables(self, case):
+        shutil.copy(State.semba_path,    self._folders[-1]._root_f / "semba")
+        shutil.copy(State.ugrfdtd_path, self._folders[-1]._ugrfdtd_f / "ugrfdtd")
+        
+        for genfile in case._folder._root_f.glob("./**/*.gen"):
+            shutil.copy(genfile, self._folders[-1]._root_f / genfile.name)
+            if case.can_call_ugrfdtd:
+                shutil.copy(genfile, self._folders[-1]._ugrfdtd_f / genfile.name)
+                        
+    def copy_datafiles(self, case):
+        try:
+            for k,v in case._folder._files.items():
+                TestFolder.cp(
+                    v._path.as_posix(), 
+                    str(self._folders[-1]._root_f / v._path._name)
+                )
+
+            self._folders[-1].files()
+        except:
+            pass
+        
 
     def matching_cases(self, matching_case):
         self._matching_cases.append(matching_case)

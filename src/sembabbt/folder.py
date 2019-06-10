@@ -78,15 +78,18 @@ class TestFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-        self._ugrfdtd_folder = self._root_f / "ugrfdtd"
+        self.ugrfdtd_f()
         TestFolder.mkdir(self._root_f)
-        TestFolder.mkdir(self._ugrfdtd_folder)
+        TestFolder.mkdir(self._ugrfdtd_f)
 
     def files(self):
         super().files
 
     def root_f(self):
         self._root_f = self.json_path.parent  / "Temp"
+    
+    def ugrfdtd_f(self):
+        self._ugrfdtd_f = self._root_f / "ugrfdtd"
         
     def project_name(self):
         self._project_name = (self._root_f.parent.name).split(".")[0]

@@ -29,13 +29,13 @@ kwargs = {
     "comp_mode"    : "Equal", 
     "keywords"     : ["pec","culo","pedo", "pis"], 
     "input_path"   : "/home/alejandra/workspace/sembabbt/data",
-    "output_path"  : "www.adios.com",
+    "output_path"  : "/home/alejandra/Desktop/",
     "exec_mode"    : "normal"
     }
 
 exec_paths1 = {
-    "semba_path"   : "www.semba.com",
-    "ugrfdtd_path" : "www.ugrfdtd.com"
+    "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
+    "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" #maybe change this so the program looks for them in case they are not specified?
 }
 
 #*********** the above can also be loaded in the form of a json file ***********
