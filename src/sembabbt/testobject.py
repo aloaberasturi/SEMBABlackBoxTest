@@ -25,6 +25,7 @@ from sembabbt.folder import TestFolder
 from sembabbt.filters import Filters
 from sembabbt.state import State
 import shutil
+import pathlib
 
 class Test():
     def __init__(self, **kwargs): 
@@ -41,14 +42,13 @@ class Test():
 
         )
         self._matching_cases = []
-        self._folders        = []
+        self._folder         = None
 
     def __call__(self, path, case):
-        self._folders.append(TestFolder(path))
-        self.copy_datafiles(case)
-        self.copy_executables(case)
-        TestFolder.cp(case._folder._files, self._folders[-1]._files)
+        self._folder = TestFolder(path)
         self.matching_cases(case)
+        self.copy_executables()
+        self.copy_datafiles()
 
 
     @property
@@ -59,31 +59,42 @@ class Test():
     def filters(self):
         return self._filters
 
+    @property
+    def case(self):
+        return self._matching_cases[-1]
 
-    def copy_executables(self, case):
-        shutil.copy(State.semba_path,    self._folders[-1]._root_f / "semba")
-        shutil.copy(State.ugrfdtd_path, self._folders[-1]._ugrfdtd_f / "ugrfdtd")
+    def matching_cases(self, case):
+        self._matching_cases.append(case)
+
+    def copy_executables(self):
+
+        """Copies of semba and ugrfdtd executables"""
+
+        shutil.copy(State.semba_path,    self._folder._root_f / "semba")
+        shutil.copy(State.ugrfdtd_path,  self._folder._ugrfdtd_f / "ugrfdtd")
         
-        for genfile in case._folder._root_f.glob("./**/*.gen"):
-            shutil.copy(genfile, self._folders[-1]._root_f / genfile.name)
-            if case.can_call_ugrfdtd:
-                shutil.copy(genfile, self._folders[-1]._ugrfdtd_f / genfile.name)
+        """Copies of .gen executables"""
+
+        try: #preguntar a miguel si esta bien que me quede solo con la primera
+             #copia que encuentro del .gen 
+            genfile = [item for item in self.case._folder._root_f.glob("./**/*.gen")][0]
+            shutil.copy(genfile, self._folder._root_f / genfile.name)
+            if self.case.can_call_ugrfdtd:
+                shutil.copy(genfile, self._folder._ugrfdtd_f / genfile.name)
+        except IndexError:
+            pass  
                         
-    def copy_datafiles(self, case):
+    def copy_datafiles(self):
         try:
-            for k,v in case._folder._files.items():
+            for k,v in self.case._folder._files.items():
                 TestFolder.cp(
                     v._path.as_posix(), 
-                    str(self._folders[-1]._root_f / v._path._name)
+                    self._folder._root_f / v._path.name
                 )
 
-            self._folders[-1].files()
-        except:
-            pass
-        
-
-    def matching_cases(self, matching_case):
-        self._matching_cases.append(matching_case)
+        except FileNotFoundError: "No existing datafiles to copy"
+    
+                   
 
     
 

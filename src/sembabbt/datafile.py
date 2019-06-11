@@ -30,8 +30,7 @@ class IFile:
         pass
     
     @abc.abstractmethod
-    def path(self, folder):
-        self._path = folder._root_f / (str(folder._project_name) + self._format)
+    def path(self):
         if self._path.exists():
             return self._path
         else:
@@ -39,36 +38,20 @@ class IFile:
 
 class Dat(IFile):
     def __init__(self, folder):
-        self._format = ".dat"
-        self.path(folder)
+        self._format = str(folder._project_name) + ".dat"
+        self._path = folder._root_f / self._format
+        self.path()
  
-    def path(self, folder):
-        super().path(folder)
+    def path(self):
+        super().path()
 
 
 class Nfde(IFile):
     def __init__(self, folder):
-        self._format = ".nfde"
-        self.path(folder)
+        self._format = str(folder._project_name) + ".nfde"
+        self._path = folder._ugrfdtd_f / self._format
+        self.path()
 
-    def path(self, folder):
-        super().path(folder)
+    def path(self):
+        super().path()
     
-class Conf(IFile):
-    def __init__(self, folder):
-        self._format = ".conf"
-        self.path(folder)
- 
- 
-    def path(self, folder):
-        super().path(folder)
-
-class Cmsh(IFile):
-    def __init__(self, folder):
-        self._format = ".cmsh"
-        self.path(folder)
- 
- 
-    def path(self, folder):
-        super().path(folder)
-

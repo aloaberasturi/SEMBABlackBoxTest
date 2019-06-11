@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.datafile import Dat, Nfde, Conf, Cmsh
+from sembabbt.datafile import Dat, Nfde
 import shutil
 import pathlib
 import abc
@@ -33,6 +33,7 @@ class IFolder:
     def __init__(self, json_path):
         self.json_path = pathlib.Path(json_path.name)
         self.root_f()
+        self._ugrfdtd_f = self._root_f / "ugrfdtd"
         self.project_name()
         self._files   = {}
         self._formats = []
@@ -40,15 +41,10 @@ class IFolder:
 
     @abc.abstractmethod
     def files(self):
-        try:
-            self._files = {
-                "Dat"  : Dat (self),
-                "Nfde" : Nfde(self),
-                "Conf" : Conf(self),
-                "Cmsh" : Cmsh(self)
-            }
-        except TypeError:
-            pass
+        self._files = {
+            "Dat"  : Dat (self),
+            "Nfde" : Nfde(self),
+        }
 
     @abc.abstractmethod
     def root_f(self):
@@ -62,7 +58,6 @@ class CaseFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-
 
     def files(self):
         super().files()
@@ -78,7 +73,6 @@ class TestFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
-        self.ugrfdtd_f()
         TestFolder.mkdir(self._root_f)
         TestFolder.mkdir(self._ugrfdtd_f)
 
@@ -87,10 +81,7 @@ class TestFolder(IFolder):
 
     def root_f(self):
         self._root_f = self.json_path.parent  / "Temp"
-    
-    def ugrfdtd_f(self):
-        self._ugrfdtd_f = self._root_f / "ugrfdtd"
-        
+         
     def project_name(self):
         self._project_name = (self._root_f.parent.name).split(".")[0]
 

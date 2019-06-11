@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.datafile import Dat, Nfde, Conf, Cmsh
+from sembabbt.datafile import Dat, Nfde
 from sembabbt.filters import Filters
 from sembabbt.folder import CaseFolder
 import json
@@ -48,7 +48,8 @@ class Case():
     def exec_m(self):
         return self._exec_m
 
-    def can_call_ugrfdtd(self):
+    def can_call_ugrfdtd(self): #repensar esto. Quizas puedo convertirlo en 
+        #un atributo y definirlo al alocatear los datafiles{}
         if self._exec_m == "normal":
             if ".nfde" in self._folder._formats:
                 return True
