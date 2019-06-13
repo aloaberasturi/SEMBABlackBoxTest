@@ -32,7 +32,7 @@ class State:
         cls.semba_path   = pathlib.Path(exec_paths["semba_path"])
         cls.ugrfdtd_path = pathlib.Path(exec_paths["ugrfdtd_path"])
         cls.display()
-
+     
     @classmethod
     def display(cls):
         print("Current number of running _tests: ", cls._count)
@@ -55,7 +55,9 @@ class State:
     def write(cls): 
         for item in cls._tests:
             with open(
-                pathlib.Path(item.exec_info.output_path) / "sembabbt.log", "w"
+                item.exec_info.output_path / 
+                item._folder._project_name / 
+                (item._folder._project_name + ".log"), "w"
             ) as file:
                 filters   = item.filters
                 exec_info = item.exec_info

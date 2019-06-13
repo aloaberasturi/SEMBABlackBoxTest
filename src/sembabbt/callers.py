@@ -37,7 +37,7 @@ def call_semba(test):
             cwd = test._folder._root_f
         )
         process.communicate() 
-       
+        test._folder()       
        #--------------Please uncomment to display SEMBA's std output-----------
        #subprocess.run([(State.semba_path).as_posix(),"-i",test._files["Dat"]]) 
                   

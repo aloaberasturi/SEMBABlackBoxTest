@@ -49,7 +49,6 @@ def launch(test):
                     call_ugrfdtd(test)
                 else:
                     call_semba(test)
-                    test._folder()
                     call_ugrfdtd(test)
 
         except IndexError : "No cases matching the input test"                        
@@ -57,9 +56,20 @@ def launch(test):
 
     search(test)
     call_executable(test)
-    TestFolder.cptree(
-        test._folder._root_f, 
-        test._exec_info._output_path / test._folder._project_name)
+    try:
+
+        TestFolder.cptree(
+            test._folder._root_f, 
+            test._exec_info._output_path / test._folder._project_name)
+
+    except FileExistsError: 
+            TestFolder.rmrdir(
+                test._exec_info._output_path / test._folder._project_name
+            )
+            TestFolder.cptree(
+            test._folder._root_f, 
+            test._exec_info._output_path / test._folder._project_name)
+            
     TestFolder.rmrdir(test._folder._root_f)
     
 

@@ -27,7 +27,7 @@ from sembabbt.state      import State
 kwargs = {
     "size"         : 181381,
     "comp_mode"    : "Equal", 
-    "keywords"     : ["pec","culo","pedo", "pis"], 
+    "keywords"     : ["pec", "culo", "pedo", "pis"], 
     "input_path"   : "/home/alejandra/workspace/sembabbt/data",
     "output_path"  : "/home/alejandra/Desktop/",
     "exec_mode"    : "normal"
@@ -35,14 +35,14 @@ kwargs = {
 
 exec_paths1 = {
     "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
-    "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" #maybe change this so the program looks for them in case they are not specified?
+    "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" 
 }
 
 #*********** the above can also be loaded in the form of a json file ***********
 test1 = Test(**kwargs)
 State(exec_paths1, test1)
 launch(test1) 
-
+State.write()
 
 
 

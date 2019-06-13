@@ -37,19 +37,15 @@ class IFolder:
         self.project_name()
         self._files   = {}
         self._formats = []
-        self.files()
+
     
     @abc.abstractmethod
     def __call__(self):
-        self.files()
-
-    @abc.abstractmethod
-    def files(self):
         self._files = {
             "Dat"  : Dat (self),
             "Nfde" : Nfde(self),
         }
-
+  
     @abc.abstractmethod
     def root_f(self):
         pass
@@ -64,12 +60,10 @@ class CaseFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
+        self.__call__()
 
     def __call__(self):
         super().__call__()
-
-    def files(self):
-        super().files()
     
     def root_f(self):
         self._root_f = self.json_path.parent
@@ -87,9 +81,6 @@ class TestFolder(IFolder):
     
     def __call__(self):
         super().__call__()
-
-    def files(self):
-        super().files()
 
     def root_f(self):
         self._root_f = self.json_path.parent  / "Temp"

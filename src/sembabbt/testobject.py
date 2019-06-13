@@ -46,6 +46,7 @@ class Test():
 
     def __call__(self, path, case):
         self._folder = TestFolder(path)
+        self._folder.__call__()
         self.matching_cases(case)
         self.copy_executables()
         self.copy_datafiles()
@@ -77,7 +78,9 @@ class Test():
 
         try: #preguntar a miguel si esta bien que me quede solo con la primera
              #copia que encuentro del .gen 
-            genfile = [item for item in self.case._folder._root_f.glob("./**/*.gen")][0]
+            genfile = [
+                item for item in self.case._folder._root_f.glob("./**/*.gen")
+            ][0]
             shutil.copy(genfile, self._folder._root_f / genfile.name)
             if self.case.can_call_ugrfdtd:
                 shutil.copy(genfile, self._folder._ugrfdtd_f / genfile.name)
