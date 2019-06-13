@@ -38,7 +38,6 @@ class Case():
                             j["filters"]["keyWords"]["mesh"]
                         ]
         )
-
                 
     @property
     def filters(self):
@@ -47,13 +46,8 @@ class Case():
     @property
     def exec_m(self):
         return self._exec_m
-
-    def can_call_ugrfdtd(self): #repensar esto. Quizas puedo convertirlo en 
-        #un atributo y definirlo al alocatear los datafiles{}
-        if self._exec_m == "normal":
-            if ".nfde" in self._folder._formats:
-                return True
-            else:
-                return False
-        else:
+    def can_call_ugrfdtd(self): 
+        if self._folder._files["Nfde"]._path:
             return True
+        else:
+            return False

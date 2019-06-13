@@ -28,30 +28,22 @@ class IFile:
     @abc.abstractproperty
     def __init__(self, folder):
         pass
-    
-    @abc.abstractmethod
-    def path(self):
-        if self._path.exists():
-            return self._path
-        else:
-            return False
-
 class Dat(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".dat"
-        self._path = folder._root_f / self._format
-        self.path()
- 
-    def path(self):
-        super().path()
-
+        path = folder._root_f / self._format
+        if path.exists:
+            self._path = path
+        else:
+            self._path = None
 
 class Nfde(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".nfde"
-        self._path = folder._ugrfdtd_f / self._format
-        self.path()
+        path = folder._ugrfdtd_f / self._format
+        if path.is_file():
+            self._path = path
+        else:
+            self._path = None
 
-    def path(self):
-        super().path()
     

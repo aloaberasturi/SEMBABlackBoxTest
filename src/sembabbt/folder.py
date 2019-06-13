@@ -38,6 +38,10 @@ class IFolder:
         self._files   = {}
         self._formats = []
         self.files()
+    
+    @abc.abstractmethod
+    def __call__(self):
+        self.files()
 
     @abc.abstractmethod
     def files(self):
@@ -54,10 +58,15 @@ class IFolder:
     def project_name(self):
         pass
 
+    
+
 class CaseFolder(IFolder):
 
     def __init__(self, json_path):
         super().__init__(json_path)
+
+    def __call__(self):
+        super().__call__()
 
     def files(self):
         super().files()
@@ -75,9 +84,12 @@ class TestFolder(IFolder):
         super().__init__(json_path)
         TestFolder.mkdir(self._root_f)
         TestFolder.mkdir(self._ugrfdtd_f)
+    
+    def __call__(self):
+        super().__call__()
 
     def files(self):
-        super().files
+        super().files()
 
     def root_f(self):
         self._root_f = self.json_path.parent  / "Temp"
@@ -88,6 +100,10 @@ class TestFolder(IFolder):
     @staticmethod
     def cp(orgn, dstn):
         shutil.copy(str(orgn), str(dstn))
+    
+    @staticmethod
+    def cptree(orgn, dstn):
+        shutil.copytree(str(orgn), str(dstn))
 
     @staticmethod
     def mkdir(folder):
@@ -98,6 +114,5 @@ class TestFolder(IFolder):
         try:
             if folder.exists:
                 shutil.rmtree(str(folder))
-        except FileNotFoundError:
-            return
-        pass
+        except FileExistsError: 
+            "Oops! Something went wrong while removing temporary folders"

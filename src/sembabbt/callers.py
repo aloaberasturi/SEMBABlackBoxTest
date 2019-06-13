@@ -27,11 +27,14 @@ from sembabbt.state import State
 
 def call_semba(test):
     try:
-
         process = Popen(
-            [(State.semba_path).as_posix(),"-i", test._files["Dat"]],
+            [
+                (State.semba_path).as_posix(),
+                "-i", 
+                test._folder._files["Dat"]._path.as_posix()
+            ],
             stdout = PIPE,
-            cwd = test.folder._root_f
+            cwd = test._folder._root_f
         )
         process.communicate() 
        
@@ -42,11 +45,14 @@ def call_semba(test):
 
 def call_ugrfdtd(test):
     try:
-
         process = Popen(
-            [(State.ugrfdtd_path).as_posix(),"-i",test._files["Nfde"]],
+            [
+                (State.ugrfdtd_path).as_posix(),
+                "-i",
+                test._folder._files["Nfde"]._path.as_posix()
+            ],
             stdout = PIPE, 
-            cwd = test.folder._ugrfdtd_f
+            cwd = test._folder._ugrfdtd_f
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')

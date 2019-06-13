@@ -85,14 +85,13 @@ class Test():
             pass  
                         
     def copy_datafiles(self):
-        try:
-            for k,v in self.case._folder._files.items():
+        for k in self.case._folder._files.keys():
+            try:
                 TestFolder.cp(
-                    v._path.as_posix(), 
-                    self._folder._root_f / v._path.name
+                    self.case._folder._files[k]._path.as_posix(), 
+                    self._folder._files[k]._path.as_posix()
                 )
-
-        except FileNotFoundError: "No existing datafiles to copy"
+            except AttributeError: "No existing datafiles to copy"
     
                    
 

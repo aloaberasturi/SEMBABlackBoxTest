@@ -21,16 +21,12 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from sembabbt.caseobject import Case
+from sembabbt.folder import TestFolder
 from sembabbt.callers import call_semba, call_ugrfdtd
 
-class Launcher: #this can be a function instead of a class
-    def __new__(cls, test):
-        cls.search(test)
-        cls.launch(test)
-        cls.output(test)
+def launch(test):
     
-    @classmethod
-    def search(cls, test): 
+    def search(test): 
         for path in test.exec_info.input_path.glob("**/*.test.json"): 
             with open(path, "r") as json_file:
                 case = Case(json_file)            
@@ -46,16 +42,24 @@ class Launcher: #this can be a function instead of a class
             else : 
                 pass
 
-    @classmethod
-    def launch(cls, test):
-        if test.matching_cases:
-            for case in test.matching_cases:
-                if case.can_call_ugrfdtd:
+    def call_executable(test):
+        try:
+            for case in test._matching_cases:
+                if case.can_call_ugrfdtd():
                     call_ugrfdtd(test)
                 else:
                     call_semba(test)
+                    test._folder()
                     call_ugrfdtd(test)
-                        
-    @classmethod
-    def output(cls, test):
-        pass
+
+        except IndexError : "No cases matching the input test"                        
+
+
+    search(test)
+    call_executable(test)
+    TestFolder.cptree(
+        test._folder._root_f, 
+        test._exec_info._output_path / test._folder._project_name)
+    TestFolder.rmrdir(test._folder._root_f)
+    
+

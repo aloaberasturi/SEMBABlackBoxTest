@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.launcher   import Launcher
+from sembabbt.launcher   import launch
 from sembabbt.testobject import Test
 from sembabbt.state      import State
 
@@ -41,7 +41,7 @@ exec_paths1 = {
 #*********** the above can also be loaded in the form of a json file ***********
 test1 = Test(**kwargs)
 State(exec_paths1, test1)
-l1 = Launcher(test1) 
+launch(test1) 
 
 
 
