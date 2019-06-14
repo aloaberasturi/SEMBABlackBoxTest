@@ -51,15 +51,6 @@ class Test():
         self.copy_executables()
         self.copy_datafiles()
 
-
-    @property
-    def exec_info(self):
-        return self._exec_info
-
-    @property
-    def filters(self):
-        return self._filters
-
     @property
     def case(self):
         return self._matching_cases[-1]

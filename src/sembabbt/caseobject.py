@@ -38,11 +38,7 @@ class Case():
                             j["filters"]["keyWords"]["mesh"]
                         ]
         )
-                
-    @property
-    def filters(self):
-        return self._filters
-    
+
     @property
     def exec_m(self):
         return self._exec_m

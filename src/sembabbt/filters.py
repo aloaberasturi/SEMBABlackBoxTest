@@ -34,19 +34,6 @@ class Filters:
     def _order_kw(self):
         self._keywords = [x.upper() for x in self._keywords]
 
-    @property
-    def size(self):
-        return self._size
-        
-    @property
-    def keywords(self):
-        return self._keywords
-    
-    @property
-    def comp_mode(self):
-        return self._comp_mode
-    
-
 
 
 

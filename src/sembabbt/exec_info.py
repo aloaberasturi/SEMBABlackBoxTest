@@ -32,17 +32,3 @@ class ExecInfo():
         self._output_path   = pathlib.Path(outpath)
         self._exec_mode = exec_mode
 
-    @property
-    def input_path(self):
-        return self._input_path
-
-    @property
-    def output_path(self):
-        return self._output_path
-    
-    @property
-    def exec_mode(self):
-        return self._exec_mode
-    
-    def copy_executables(self):
-        pass

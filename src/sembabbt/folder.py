@@ -36,7 +36,7 @@ class IFolder:
         self._ugrfdtd_f = self._root_f / "ugrfdtd"
         self.project_name()
         self._files   = {}
-        self._formats = []
+        self._formats = []#borrar
 
     
     @abc.abstractmethod

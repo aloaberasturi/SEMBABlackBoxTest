@@ -26,23 +26,17 @@ from sembabbt.callers import call_semba, call_ugrfdtd
 
 def launch(test):
     
-    def search(test): 
-        for path in test.exec_info.input_path.glob("**/*.test.json"): 
+    def search(): 
+        for path in test._exec_info._input_path.glob("**/*.test.json"): 
             with open(path, "r") as json_file:
                 case = Case(json_file)            
-            if (
-                    
-                set(case.filters.keywords) &  set(test.filters.keywords)
-                                          != 
-                                          set() 
-                                          and 
-                case.filters.size <= test.filters.size
-            ):
+            if (set(case._filters._keywords) &  set(test._filters._keywords)
+                != set() and case._filters._size <= test._filters._size):
                 test(json_file, case)
             else : 
                 pass
 
-    def call_executable(test):
+    def call_executable():
         try:
             for case in test._matching_cases:
                 if case.can_call_ugrfdtd():
@@ -51,11 +45,10 @@ def launch(test):
                     call_semba(test)
                     call_ugrfdtd(test)
 
-        except IndexError : "No cases matching the input test"                        
+        except IndexError : "No cases matching the input test"   
 
-
-    search(test)
-    call_executable(test)
+    search()
+    call_executable()
     try:
 
         TestFolder.cptree(
