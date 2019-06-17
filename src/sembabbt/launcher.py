@@ -20,26 +20,37 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.caseobject import Case
+import json
+from sembabbt.filters import Filters
 from sembabbt.folder import TestFolder
 from sembabbt.callers import call_semba, call_ugrfdtd
 
-def launch(test):
-    
+def launch(test):    
     def search(): 
         for path in test._exec_info._input_path.glob("**/*.test.json"): 
+            print(type(path))
             with open(path, "r") as json_file:
-                case = Case(json_file)            
-            if (set(case._filters._keywords) &  set(test._filters._keywords)
-                != set() and case._filters._size <= test._filters._size):
-                test(json_file, case)
+                j = json.loads(json_file.read())
+                case_filters = Filters(
+                    j["filters"]["size"],
+                    j["filters"]["comparison"],
+                    [
+                        j["filters"]["keyWords"]["materials"],
+                        j["filters"]["keyWords"]["excitation"],
+                        j["filters"]["keyWords"]["mesh"]
+                    ]            
+                )       
+                json_file.close()   
+            if (set(case_filters._keywords) &  set(test._filters._keywords)
+                != set() and case_filters._size <= test._filters._size):
+                test.append_case(path)
             else : 
                 pass
 
-    def call_executable():
+    def call_executable(): #esto ahora funciona??
         try:
             for case in test._matching_cases:
-                if case.can_call_ugrfdtd():
+                if test.can_call_ugrfdtd():
                     call_ugrfdtd(test)
                 else:
                     call_semba(test)

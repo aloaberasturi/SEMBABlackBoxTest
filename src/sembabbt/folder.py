@@ -26,67 +26,23 @@ import pathlib
 import abc
 
 
-class IFolder:
-    __metaclass__ = abc.ABCMeta    
- 
-    @abc.abstractmethod
+class Folder:
+
     def __init__(self, json_path):
         self.json_path = pathlib.Path(json_path.name)
-        self.root_f()
+        self._case_f = self.json_path.parent
+        self._root_f  = self.json_path.parent  / "Temp"
         self._ugrfdtd_f = self._root_f / "ugrfdtd"
-        self.project_name()
+        self.project_name = self._case_f.name.split(".")[0]
         self._files   = {}
-        self._formats = []#borrar
-
-    
-    @abc.abstractmethod
+        Folder.mkdir(self._root_f)
+        Folder.mkdir(self._ugrfdtd_f)
+       
     def __call__(self):
         self._files = {
             "Dat"  : Dat (self),
             "Nfde" : Nfde(self),
         }
-  
-    @abc.abstractmethod
-    def root_f(self):
-        pass
-    
-    @abc.abstractproperty
-    def project_name(self):
-        pass
-
-    
-
-class CaseFolder(IFolder):
-
-    def __init__(self, json_path):
-        super().__init__(json_path)
-        self.__call__()
-
-    def __call__(self):
-        super().__call__()
-    
-    def root_f(self):
-        self._root_f = self.json_path.parent
-
-    def project_name(self):
-        self._project_name = (self._root_f.name).split(".")[0]
-
-
-class TestFolder(IFolder):
-
-    def __init__(self, json_path):
-        super().__init__(json_path)
-        TestFolder.mkdir(self._root_f)
-        TestFolder.mkdir(self._ugrfdtd_f)
-    
-    def __call__(self):
-        super().__call__()
-
-    def root_f(self):
-        self._root_f = self.json_path.parent  / "Temp"
-         
-    def project_name(self):
-        self._project_name = (self._root_f.parent.name).split(".")[0]
 
     @staticmethod
     def cp(orgn, dstn):

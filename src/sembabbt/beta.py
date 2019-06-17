@@ -20,30 +20,31 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.datafile import Dat, Nfde
-from sembabbt.filters import Filters
-from sembabbt.folder import CaseFolder
-import json
-class Case():
-    def __init__(self, json_file):
-        j = json.loads(json_file.read())
-        self._exec_m =  j["filters"]["execution"]
-        self._folder = CaseFolder(json_file)
-        self._filters = Filters(
-                        size = j["filters"]["size"],
-                        comp_mode = j["filters"]["comparison"],
-                        keywords =[
-                            j["filters"]["keyWords"]["materials"],
-                            j["filters"]["keyWords"]["excitation"],
-                            j["filters"]["keyWords"]["mesh"]
-                        ]
-        )
+from sembabbt.launcher   import launch
+from sembabbt.testobject import Test
+from sembabbt.state      import State
 
-    @property
-    def exec_m(self):
-        return self._exec_m
-    def can_call_ugrfdtd(self): 
-        if self._folder._files["Nfde"]._path:
-            return True
-        else:
-            return False
+kwargs = {
+    "size"         : 181381,
+    "comp_mode"    : "Equal", 
+    "keywords"     : ["pec", "culo", "pedo", "pis"], 
+    "input_path"   : "/home/alejandra/workspace/sembabbt/data",
+    "output_path"  : "/home/alejandra/Desktop/",
+    "exec_mode"    : "normal",
+    "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
+    "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" 
+}
+    
+
+
+#*********** the above can also be loaded in the form of a json file ***********
+Test(kwargs)
+State(kwargs)#esconder esta llamada
+launch(kwargs) 
+State.write()
+
+
+
+
+
+

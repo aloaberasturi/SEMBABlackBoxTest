@@ -39,7 +39,7 @@ exec_paths1 = {
 }
 
 #*********** the above can also be loaded in the form of a json file ***********
-test1 = Test(**kwargs)
+test1 = Test(**kwargs) #change this
 State(exec_paths1, test1)
 launch(test1) 
 State.write()
