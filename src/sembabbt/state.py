@@ -28,9 +28,7 @@ class State:
     
     def __new__(cls, exec_paths, test):
         cls._count += 1
-        cls._tests.append(test)
-        cls.semba_path   = pathlib.Path(exec_paths["semba_path"])   #no tiene sentido que esto sea atributo
-        cls.ugrfdtd_path = pathlib.Path(exec_paths["ugrfdtd_path"])#no tiene sentido que esto sea atributo
+        cls._tests.append(test)        
         cls.display()
      
     @classmethod

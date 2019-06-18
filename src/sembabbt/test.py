@@ -20,31 +20,37 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.launcher   import launch
-from sembabbt.testobject import Test
-from sembabbt.state      import State
+from sembabbt.exec_info import ExecInfo
+from sembabbt.project_folder import ProjectFolder
+from sembabbt.filters import Filters
+from sembabbt.state import State
+import shutil
+import pathlib
+import json
 
-kwargs = {
-    "size"         : 181381,
-    "comp_mode"    : "Equal", 
-    "keywords"     : ["pec", "culo", "pedo", "pis"], 
-    "input_path"   : "/home/alejandra/workspace/sembabbt/data",
-    "output_path"  : "/home/alejandra/Desktop/",
-    "exec_mode"    : "normal",
-    "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
-    "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" 
-}
+class Test():
+    def __init__(self, **kwargs): 
+        self._exec_info  = ExecInfo(
+            kwargs["input_path"],
+            kwargs["output_path"],
+            kwargs["exec_mode"],
+        )
+        self._filters = Filters(
+            kwargs["size"],
+            kwargs["comp_mode"],
+            kwargs["keywords"]
+
+        )
+        self._folders = []
     
+        Test._semba_path = pathlib.Path(kwargs["semba_path"]) #not sure about this
+        Test._ugrfdtd_path = pathlib.Path(kwargs["ugrfdtd_path"])
+
+    def new_folder(self, path):
+        self._folder = ProjectFolder(path)
 
 
-#*********** the above can also be loaded in the form of a json file ***********
-Test(kwargs)
-State(kwargs)#esconder esta llamada
-launch(kwargs) 
-State.write()
+                   
 
-
-
-
-
+    
 

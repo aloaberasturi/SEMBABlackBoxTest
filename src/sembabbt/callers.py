@@ -23,36 +23,40 @@
 from subprocess import Popen, PIPE
 import os  
 from sembabbt.state import State
+from sembabbt.test  import Test
 
 
-def call_semba(test):
+def call_semba(folder):
     try:
         process = Popen(
             [
-                (State.semba_path).as_posix(),
+                (Test._semba_path).as_posix(),
                 "-i", 
-                test._folder._files["Dat"]._path.as_posix()
+                folder._files["Dat"]._test_path.as_posix()
             ],
             stdout = PIPE,
-            cwd = test._folder._root_f
+            cwd = folder._main_f["test"]
         )
-        process.communicate() 
-        test._folder()       
-       #--------------Please uncomment to display SEMBA's std output-----------
-       #subprocess.run([(State.semba_path).as_posix(),"-i",test._files["Dat"]]) 
-                  
+        process.communicate()    
+
+       #------------------Uncomment to display SEMBA's std output--------------#
+       #                                                                       #
+       #subprocess.run([(State.semba_path).as_posix(),"-i",test._files["Dat"]])#
+       #                                                                       #
+       #-----------------------------------------------------------------------#
+        
     except RuntimeError:"Unable to launch semba"
 
-def call_ugrfdtd(test):
+def call_ugrfdtd(folder):
     try:
         process = Popen(
             [
-                (State.ugrfdtd_path).as_posix(),
+                (Test._ugrfdtd_path).as_posix(),
                 "-i",
-                test._folder._files["Nfde"]._path.as_posix()
+                folder._files["Nfde"]._test_path.as_posix()
             ],
             stdout = PIPE, 
-            cwd = test._folder._ugrfdtd_f
+            cwd = folder._ugrfdtd_f["test"]
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')

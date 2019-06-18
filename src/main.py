@@ -20,9 +20,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.launcher   import launch
-from sembabbt.testobject import Test
-from sembabbt.state      import State
+from sembabbt.launcher import launch
+from sembabbt.test     import Test
+from sembabbt.state    import State
 
 kwargs = {
     "size"         : 181381,
@@ -30,19 +30,19 @@ kwargs = {
     "keywords"     : ["pec", "culo", "pedo", "pis"], 
     "input_path"   : "/home/alejandra/workspace/sembabbt/data",
     "output_path"  : "/home/alejandra/Desktop/",
-    "exec_mode"    : "normal"
-    }
-
-exec_paths1 = {
+    "exec_mode"    : "normal",
     "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
     "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" 
 }
+    
+
 
 #*********** the above can also be loaded in the form of a json file ***********
-test1 = Test(**kwargs) #change this
-State(exec_paths1, test1)
-launch(test1) 
-State.write()
+test = Test(**kwargs)
+#State(kwargs)#esconder esta llamada
+launch(test) 
+#State.write()
+
 
 
 

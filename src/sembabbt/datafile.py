@@ -22,7 +22,7 @@
 
 
 import abc
-class IFile:
+class IFile: #ver como puedo hacer esto bien
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
@@ -31,19 +31,27 @@ class IFile:
 class Dat(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".dat"
-        path = folder._root_f / self._format
-        if path.exists:
-            self._path = path
-        else:
-            self._path = None
+        test_path = folder._main_f["test"] / self._format
+        case_path = folder._main_f["case"] / self._format
+
+        if case_path.is_file:
+            self._case_path = case_path
+            self._test_path = test_path
+        else: 
+            self._case_path = None
+            self._test_path = None
+        
 
 class Nfde(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".nfde"
-        path = folder._ugrfdtd_f / self._format
-        if path.is_file():
-            self._path = path
-        else:
-            self._path = None
+        test_path = folder._ugrfdtd_f["test"] / self._format
+        case_path = folder._ugrfdtd_f["case"] / self._format
 
+        if case_path.is_file():
+            self._case_path = case_path
+            self._test_path = test_path
+        else:
+            self._case_path = None
+            self._test_path = None
     

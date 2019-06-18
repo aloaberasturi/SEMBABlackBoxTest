@@ -26,9 +26,13 @@ class ExecInfo():
         self, 
         inpath, 
         outpath,  
-        exec_mode
+        exec_mode,
+        semba_path,
+        ugrfdtd_path
     ):
         self._input_path    = pathlib.Path(inpath)
         self._output_path   = pathlib.Path(outpath)
-        self._exec_mode = exec_mode
+        self._exec_mode     = exec_mode
+        self._semba_path    = pathlib.Path(semba_path)
+        self._ugrfdtd_path  = pathlib.Path(ugrfdtd_path)
 
