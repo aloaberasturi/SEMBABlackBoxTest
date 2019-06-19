@@ -20,24 +20,40 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
+from abc import ABC, abstractmethod, abstractproperty
+class IFile(ABC):
 
-import abc
-class IFile: #ver como puedo hacer esto bien
-    __metaclass__ = abc.ABCMeta
+    @abstractproperty
+    def format(self):
+        ...
+    
+    @abstractproperty
+    def folder(self):
+        ...
+    def data_file(self):
+        return self._folder._project_name + self.format()
 
-    @abc.abstractproperty
-    def __init__(self, folder):
-        pass
+    @abstractmethod
+    def __init__(self, f): 
+        self._folder = f
+        self._test_path = self.folder()["test"] / self.data_file()
+        self._case_path = self.folder()["case"] / self.data_file()
 class Dat(IFile):
-    def __init__(self, folder):
-        self._format = str(folder._project_name) + ".dat"
-        self._test_path = folder._main_f["test"] / self._format
-        self._case_path = folder._main_f["case"] / self._format
-
+    def __init__(self, f):
+        super().__init__(f)
+    
+    def folder(self):
+        return self._folder._main_f
+    
+    def format(self):
+        return ".dat"
 class Nfde(IFile):
-    def __init__(self, folder):
-        self._format = str(folder._project_name) + ".nfde"
-        self._test_path = folder._ugrfdtd_f["test"] / self._format
-        self._case_path = folder._ugrfdtd_f["case"] / self._format
+    def __init__(self, f):
+        super().__init__(f)
 
+    def folder(self):
+        return self._folder._ugrfdtd_f
+    
+    def format(self):
+        return ".nfde"
     
