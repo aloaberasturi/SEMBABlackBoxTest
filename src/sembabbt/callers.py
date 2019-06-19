@@ -26,16 +26,16 @@ from sembabbt.state import State
 from sembabbt.test  import Test
 
 
-def call_semba(folder):
+def call_semba(test):
     try:
         process = Popen(
             [
-                (Test._semba_path).as_posix(),
+                (test._exec_info._semba_path).as_posix(),
                 "-i", 
-                folder._files["Dat"]._test_path.as_posix()
+                test._folder._files["Dat"]._test_path.as_posix()
             ],
             stdout = PIPE,
-            cwd = folder._main_f["test"]
+            cwd = test._folder._main_f["test"]
         )
         process.communicate()    
 
@@ -47,16 +47,16 @@ def call_semba(folder):
         
     except RuntimeError:"Unable to launch semba"
 
-def call_ugrfdtd(folder):
+def call_ugrfdtd(test):
     try:
         process = Popen(
             [
-                (Test._ugrfdtd_path).as_posix(),
+                (test._exec_info._ugrfdtd_path).as_posix(),
                 "-i",
-                folder._files["Nfde"]._test_path.as_posix()
+                test._folder._files["Nfde"]._test_path.as_posix()
             ],
             stdout = PIPE, 
-            cwd = folder._ugrfdtd_f["test"]
+            cwd = test._folder._ugrfdtd_f["test"]
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')

@@ -34,20 +34,52 @@ class Test():
             kwargs["input_path"],
             kwargs["output_path"],
             kwargs["exec_mode"],
+            kwargs["semba_path"],
+            kwargs["ugrfdtd_path"]
         )
         self._filters = Filters(
             kwargs["size"],
             kwargs["comp_mode"],
             kwargs["keywords"]
-
         )
         self._folders = []
     
-        Test._semba_path = pathlib.Path(kwargs["semba_path"]) #not sure about this
-        Test._ugrfdtd_path = pathlib.Path(kwargs["ugrfdtd_path"])
-
+       
     def new_folder(self, path):
         self._folder = ProjectFolder(path)
+        self.copy_executables()
+        self.copy_datafiles()
+
+    def copy_executables(self):
+
+        """Copies of semba and ugrfdtd executables"""
+
+        shutil.copy(self._exec_info._semba_path,   self._folder._main_f["test"] / "semba")
+        shutil.copy(self._exec_info._ugrfdtd_path, self._folder._ugrfdtd_f["test"] / "ugrfdtd")
+        
+        """Copies of .gen executables"""
+
+        try: 
+            genfile = [  
+                item for item in self._folder._main_f["case"].glob("./**/*.gen")
+            ][0]
+            shutil.copy(genfile, self._folder._main_f["test"]    / genfile.name)
+            shutil.copy(genfile, self._folder._ugrfdtd_f["test"] / genfile.name)
+        except IndexError:
+            pass  
+        except FileNotFoundError:
+            pass
+                
+    def copy_datafiles(self): 
+        for v in self._folder._files.values(): 
+            try:
+                shutil.copy(
+                    v._case_path.as_posix(),
+                    v._test_path.as_posix()
+                )
+            except FileNotFoundError: 
+                pass
+       
 
 
                    

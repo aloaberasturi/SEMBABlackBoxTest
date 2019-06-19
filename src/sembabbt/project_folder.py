@@ -30,7 +30,7 @@ import abc
 class ProjectFolder:
 
     def __init__(self, json_path):
-        self._json_path = pathlib.Path(json_path.name)
+        self._json_path = pathlib.Path(json_path)
         self._project_name = self._json_path.parent.name.split(".")[0]
         self._main_f  = {
             "case" : self._json_path.parent,
@@ -44,41 +44,10 @@ class ProjectFolder:
             "Dat"  : Dat (self),
             "Nfde" : Nfde(self),
         }
-        if self._files["Nfde"]._case_path:
+        if self._files["Nfde"]._case_path.is_file():
             self._can_call_ugrfdtd = True
         else:
             self._can_call_ugrfdtd = False
+
         self._main_f["test"].mkdir(parents = True, exist_ok = True)
         self._ugrfdtd_f["test"].mkdir(parents = True, exist_ok = True)
-        self.copy_executables()
-        self.copy_datafiles()
-
-    def copy_executables(self):
-
-        """Copies of semba and ugrfdtd executables"""
-
-        shutil.copy(State.semba_path,   self._main_f["test"] / "semba")
-        shutil.copy(State.ugrfdtd_path, self._ugrfdtd_f["test"] / "ugrfdtd")
-        
-        """Copies of .gen executables"""
-
-        try: 
-            genfile = [  
-                item for item in self._main_f["case"].glob("./**/*.gen")
-            ][0]
-            shutil.copy(genfile, self._main_f["test"]    / genfile.name)
-            shutil.copy(genfile, self._ugrfdtd_f["test"] / genfile.name)
-        except IndexError:
-            pass  
-        except FileNotFoundError:
-            pass
-                        
-    def copy_datafiles(self): 
-        for k in ["Dat", "Nfde"]: 
-            try:
-                ProjectFolder.cp(
-                    self._files[k]._case_path.as_posix(),
-                    self._files[k]._test_path.as_posix()
-                )
-            except AttributeError: "No existing datafiles to copy"
-       

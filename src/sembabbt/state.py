@@ -26,7 +26,7 @@ class State:
     _count = 0
     _tests = []
     
-    def __new__(cls, exec_paths, test):
+    def __new__(cls, test):
         cls._count += 1
         cls._tests.append(test)        
         cls.display()
@@ -53,9 +53,8 @@ class State:
     def write(cls): 
         for item in cls._tests:
             with open(
-                item._exec_info._output_path / 
-                item._folder._project_name / 
-                (item._folder._project_name + ".log"), "w"
+                item._folder._main_f["test"] / (item._folder._project_name + ".log"), 
+                "w"
             ) as file:
                 filters   = item._filters
                 exec_info = item._exec_info

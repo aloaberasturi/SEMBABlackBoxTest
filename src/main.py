@@ -22,7 +22,6 @@
 
 from sembabbt.launcher import launch
 from sembabbt.test     import Test
-from sembabbt.state    import State
 
 kwargs = {
     "size"         : 181381,
@@ -36,12 +35,8 @@ kwargs = {
 }
     
 
+launch(Test(**kwargs)) 
 
-#*********** the above can also be loaded in the form of a json file ***********
-test = Test(**kwargs)
-#State(kwargs)#esconder esta llamada
-launch(test) 
-#State.write()
 
 
 

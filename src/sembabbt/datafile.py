@@ -31,27 +31,13 @@ class IFile: #ver como puedo hacer esto bien
 class Dat(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".dat"
-        test_path = folder._main_f["test"] / self._format
-        case_path = folder._main_f["case"] / self._format
-
-        if case_path.is_file:
-            self._case_path = case_path
-            self._test_path = test_path
-        else: 
-            self._case_path = None
-            self._test_path = None
-        
+        self._test_path = folder._main_f["test"] / self._format
+        self._case_path = folder._main_f["case"] / self._format
 
 class Nfde(IFile):
     def __init__(self, folder):
         self._format = str(folder._project_name) + ".nfde"
-        test_path = folder._ugrfdtd_f["test"] / self._format
-        case_path = folder._ugrfdtd_f["case"] / self._format
+        self._test_path = folder._ugrfdtd_f["test"] / self._format
+        self._case_path = folder._ugrfdtd_f["case"] / self._format
 
-        if case_path.is_file():
-            self._case_path = case_path
-            self._test_path = test_path
-        else:
-            self._case_path = None
-            self._test_path = None
     
