@@ -20,37 +20,31 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.datafile import Dat, Nfde
-from sembabbt.state    import State
-import shutil
-import pathlib
-import abc
+import sys
 
+def compare(test):
 
-class ProjectFolder:
+    def is_equal(a,b):
+        try:
+            assert a == b
+            return True
+        except AssertionError: 
+            print(
+                sys.modules[__name__],
+                ": error: Expected: ",
+                a,
+                " \nto be equal to:",
+                b,"\nActual: False")
+        except ValueError:
+            pass
+        return False 
 
-    def __init__(self, json_path):
-        self._json_path = pathlib.Path(json_path)
-        self._project_name = self._json_path.parent.name.split(".")[0]
-        self._main_f  = {
-            "case" : self._json_path.parent,
-            "test" : self._json_path.parent  / "Temp"
-        }
-        self._ugrfdtd_f = {
-            "case" : self._main_f["case"] / "ugrfdtd",
-            "test" : self._main_f["test"] / "ugrfdtd"
-        }
-        self._files = {
-            "Dat"  : Dat (self),
-            "Nfde" : Nfde(self),
-        }
-        if self._files["Nfde"]._case_path[0].is_file():
-            self._can_call_ugrfdtd = True
-        else:
-            self._can_call_ugrfdtd = False
-
-        self._main_f["test"].mkdir(parents = True, exist_ok = True)
-        self._ugrfdtd_f["test"].mkdir(parents = True, exist_ok = True)
-
-
-#make this more nested main_f is a folder that contains other folders
+    for i in range (len(test._folder._files["Dat"]._test_path) - 1):
+        with open(test._folder._files["Dat"]._test_path[i+1], "r") as testfile:
+            with open(test._folder._files["Dat"]._case_path[i+1], "r") as casefile: #make this easier to read
+                a = casefile.readline()
+                b = testfile.readline()
+                while (a,b):
+                    is_equal(a,b) 
+                    a = casefile.readline()
+                    b = testfile.readline()

@@ -30,6 +30,7 @@ class State:
         cls._count += 1
         cls._tests.append(test)        
         cls.display()
+        cls.write()
      
     @classmethod
     def display(cls):

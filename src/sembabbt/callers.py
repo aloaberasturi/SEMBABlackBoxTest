@@ -32,7 +32,7 @@ def call_semba(test):
             [
                 (test._exec_info._semba_path).as_posix(),
                 "-i", 
-                test._folder._files["Dat"]._test_path.as_posix()
+                test._folder._files["Dat"]._test_path[0].as_posix()
             ],
             stdout = PIPE,
             cwd = test._folder._main_f["test"]
@@ -53,13 +53,14 @@ def call_ugrfdtd(test):
             [
                 (test._exec_info._ugrfdtd_path).as_posix(),
                 "-i",
-                test._folder._files["Nfde"]._test_path.as_posix()
+                test._folder._files["Nfde"]._test_path[0].as_posix()
             ],
             stdout = PIPE, 
             cwd = test._folder._ugrfdtd_f["test"]
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')
+        test._folder._files["Dat"].resulting_data_files()
 
     except RuntimeError:"Unable to launch ugrfdtd"
      

@@ -26,6 +26,7 @@ from sembabbt.filters        import Filters
 from sembabbt.project_folder import ProjectFolder
 from sembabbt.callers        import call_semba, call_ugrfdtd
 from sembabbt.state          import State
+from sembabbt.comparator     import compare
 
 
 def launch(test): 
@@ -64,12 +65,12 @@ def launch(test):
                 ]            
             )       
             json_file.close()   
-        if (set(case_filters._keywords) &  set(test._filters._keywords)
-            != set() and case_filters._size <= test._filters._size):
+        if (set(case_filters._keywords) &  set(test._filters._keywords) != 
+            set() and case_filters._size <= test._filters._size):
             test.new_folder(path)
             call_executable(test)
             State(test)
-            State.write()
+            compare(test)
             copy_and_clean(test)
         else : 
             pass   

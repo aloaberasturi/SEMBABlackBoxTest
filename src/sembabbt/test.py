@@ -74,8 +74,8 @@ class Test():
         for v in self._folder._files.values(): 
             try:
                 shutil.copy(
-                    v._case_path.as_posix(),
-                    v._test_path.as_posix()
+                    v._case_path[0].as_posix(),
+                    v._test_path[0].as_posix()
                 )
             except FileNotFoundError: 
                 pass
