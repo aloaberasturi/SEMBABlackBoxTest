@@ -21,9 +21,9 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from sembabbt.exec_info import ExecInfo
-from sembabbt.project_folder import ProjectFolder
-from sembabbt.filters import Filters
-from sembabbt.state import State
+from sembabbt.datafile2 import Folder
+from sembabbt.filters   import Filters
+from sembabbt.state     import State
 import shutil
 import pathlib
 import json
@@ -42,20 +42,34 @@ class Test():
             kwargs["comp_mode"],
             kwargs["keywords"]
         )
-        self._folders = []
+        self._folder = None
+        self._can_call_ugrfdtd = False
     
        
     def new_folder(self, path):
-        self._folder = ProjectFolder(path)
-        self.copy_executables()
+        self._folder = Folder(path)
+        case_ugr = Folder(self._folder._path / "ugrfdtd")
+        if case_ugr._files["Nfde"]:
+            self._can_call_ugrfdtd = True
+        temp_f   = Folder(self._folder._path / "Temp")
+        temp_ugr = Folder(temp_f._path / "ugrfdtd")
+        temp_f.add_subfolders(ugrfdtd = temp_ugr)
+        self._folder.add_subfolders(ugrfdtd = case_ugr, Temp = temp_f)
+        self.copy_executables() #debugging here 25th june
         self.copy_datafiles()
 
     def copy_executables(self):
 
         """Copies of semba and ugrfdtd executables"""
 
-        shutil.copy(self._exec_info._semba_path,   self._folder._main_f["test"] / "semba")
-        shutil.copy(self._exec_info._ugrfdtd_path, self._folder._ugrfdtd_f["test"] / "ugrfdtd")
+        shutil.copy(
+            self._exec_info._semba_path,
+            self._folder._subfolders["Temp"] / "semba"
+        )
+        shutil.copy(
+            self._exec_info._ugrfdtd_path, 
+            self._folder._subfolders["Temp"]._subfolders["ugrfdtd"] / "ugrfdtd"
+        )
         
         """Copies of .gen executables"""
 

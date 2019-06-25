@@ -24,6 +24,7 @@ from subprocess import Popen, PIPE
 import os  
 from sembabbt.state import State
 from sembabbt.test  import Test
+from sembabbt.datafile2 import search_files
 
 
 def call_semba(test):
@@ -60,7 +61,7 @@ def call_ugrfdtd(test):
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')
-        test._folder._files["Dat"].resulting_data_files()
+        test._folder.update_files()
 
     except RuntimeError:"Unable to launch ugrfdtd"
      

@@ -22,16 +22,22 @@
 
 import json
 import shutil
+import pathlib
 from sembabbt.filters        import Filters
-from sembabbt.project_folder import ProjectFolder
 from sembabbt.callers        import call_semba, call_ugrfdtd
 from sembabbt.state          import State
 from sembabbt.comparator     import compare
+from sembabbt.datafile2      import Folder
 
 
 def launch(test): 
 
     def call_executable(test): 
+
+        if  self._folder._["Nfde"]: #this should be only in the main folder
+            self._can_call_ugrfdtd = True
+        else:
+            self._can_call_ugrfdtd = False
         if test._folder._can_call_ugrfdtd:
             call_ugrfdtd(test)
         else:
@@ -67,7 +73,7 @@ def launch(test):
             json_file.close()   
         if (set(case_filters._keywords) &  set(test._filters._keywords) != 
             set() and case_filters._size <= test._filters._size):
-            test.new_folder(path)
+            test.new_folder(pathlib.Path(path).parent)
             call_executable(test)
             State(test)
             compare(test)

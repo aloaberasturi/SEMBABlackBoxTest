@@ -22,44 +22,36 @@
 
 from abc import ABC, abstractmethod, abstractproperty
 import glob
-class IFile(ABC):
 
-    @abstractproperty
-    def format(self):
-        ...
-    @abstractproperty
-    def folder(self):
-        ...
-    def initial_data_file(self):
-        return self._folder._project_name + self.format()
+
+
+def search_files(f, fmt):
+    files = []
+    for datafile in f._path.glob("*" + fmt):
+        files.append(datafile)
+    return files
+
+
+class Folder:
+
+    def __init__(self, path):
+        self._path = path
+        self._subfolders = {}
+        self.update_files()        
+        self._path.mkdir(parents = True, exist_ok = True)
+
+    def update_files(self):
+        self._files = {}
+        self._files.update(
+            {
+                "Dat" : search_files(self, ".dat"),
+                "Nfde": search_files(self, ".nfde")
+            }
+        )
+
+    def add_subfolders(self, **kwargs):
+        for (k,v) in kwargs.items():
+            self._subfolders.update( {k : v} )
+        
     
 
-    @abstractmethod
-    def __init__(self, f): 
-        self._folder = f
-        self._test_path = [self.folder()["test"] / self.initial_data_file()]
-        self._case_path = [self.folder()["case"] / self.initial_data_file()]
-class Dat(IFile):
-    def __init__(self, f):
-        super().__init__(f)
-    
-    def folder(self):
-        return self._folder._main_f
-    
-    def format(self):
-        return ".dat"
-
-    def resulting_data_files(self): #change this
-        for dat in self._folder._ugrfdtd_f["case"].glob("*.dat"):
-            self._case_path.append(self._folder._ugrfdtd_f["case"] / dat.name)
-            self._test_path.append(self._folder._ugrfdtd_f["test"] / dat.name)   
-class Nfde(IFile):
-    def __init__(self, f):
-        super().__init__(f)
-
-    def folder(self):
-        return self._folder._ugrfdtd_f
-    
-    def format(self):
-        return ".nfde"
-    
