@@ -54,7 +54,7 @@ class State:
     def write(cls): 
         for item in cls._tests:
             with open(
-                item._folder._main_f["test"] / (item._folder._project_name + ".log"), 
+                item._folder._subfolders["Temp"]._path / (item._folder._path.name + ".log"), 
                 "w"
             ) as file:
                 filters   = item._filters

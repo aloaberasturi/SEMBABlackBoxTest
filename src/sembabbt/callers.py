@@ -24,19 +24,20 @@ from subprocess import Popen, PIPE
 import os  
 from sembabbt.state import State
 from sembabbt.test  import Test
-from sembabbt.datafile2 import search_files
+
 
 
 def call_semba(test):
     try:
+        this_folder = test._folder._subfolders["Temp"]
         process = Popen(
             [
-                (test._exec_info._semba_path).as_posix(),
+                (test._exec_info._semba_path),
                 "-i", 
-                test._folder._files["Dat"]._test_path[0].as_posix()
+                this_folder._files["Dat"][0]
             ],
-            stdout = PIPE,
-            cwd = test._folder._main_f["test"]
+            cwd = this_folder._path,
+            stdout = PIPE
         )
         process.communicate()    
 
@@ -50,14 +51,14 @@ def call_semba(test):
 
 def call_ugrfdtd(test):
     try:
+        this_folder = test._folder._subfolders["Temp"]._subfolders["ugrfdtd"]
         process = Popen(
-            [
-                (test._exec_info._ugrfdtd_path).as_posix(),
-                "-i",
-                test._folder._files["Nfde"]._test_path[0].as_posix()
+            [(test._exec_info._ugrfdtd_path),
+            "-i",
+            this_folder._files["Nfde"][0]
             ],
             stdout = PIPE, 
-            cwd = test._folder._ugrfdtd_f["test"]
+            cwd = this_folder._path
         )
         process.communicate() 
         os.system('cls' if os.name == 'nt' else 'clear')

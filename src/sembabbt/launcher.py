@@ -27,18 +27,19 @@ from sembabbt.filters        import Filters
 from sembabbt.callers        import call_semba, call_ugrfdtd
 from sembabbt.state          import State
 from sembabbt.comparator     import compare
-from sembabbt.datafile2      import Folder
+from sembabbt.folder         import Folder
 
 
 def launch(test): 
 
     def call_executable(test): 
 
-        if  self._folder._["Nfde"]: #this should be only in the main folder
-            self._can_call_ugrfdtd = True
+        if  test._folder._files["Nfde"]: #this should be only in the main folder
+            test._can_call_ugrfdtd = True
         else:
-            self._can_call_ugrfdtd = False
-        if test._folder._can_call_ugrfdtd:
+            test._can_call_ugrfdtd = False
+
+        if test._can_call_ugrfdtd:
             call_ugrfdtd(test)
         else:
             call_semba(test)
@@ -75,8 +76,8 @@ def launch(test):
             set() and case_filters._size <= test._filters._size):
             test.new_folder(pathlib.Path(path).parent)
             call_executable(test)
-            State(test)
-            compare(test)
+            State(test) #
+            compare(test) # improve these two modules
             copy_and_clean(test)
         else : 
             pass   

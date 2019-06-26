@@ -26,22 +26,26 @@ def compare(test):
 
     def is_equal(a,b):
         try:
-            assert a == b
-            return True
-        except AssertionError: 
-            print(
-                sys.modules[__name__],
-                ": error: Expected: ",
-                a,
-                " \nto be equal to:",
-                b,"\nActual: False")
+            a = [float(_) for _ in a.split()]
+            b = [float(_) for _ in b.split()]
+            for i in range(len(a)):
+                assert a[i] == b[i]
+
         except ValueError:
             pass
-        return False 
 
-    for i in range (len(test._folder._files["Dat"]._test_path) - 1):
-        with open(test._folder._files["Dat"]._test_path[i+1], "r") as testfile:
-            with open(test._folder._files["Dat"]._case_path[i+1], "r") as casefile: #make this easier to read
+        except AssertionError: 
+            print(
+                sys.modules[__name__],": error: Expected: ", a[i], " \nto be equal to:",
+                b[i], "\nActual: False"
+            )
+ 
+    test_folder = test._folder._subfolders["Temp"]._subfolders["ugrfdtd"]
+    case_folder = test._folder._subfolders["ugrfdtd"]
+
+    for i in range(len(test_folder._files["Dat"])):
+        with open(test_folder._files["Dat"][i], "r") as testfile:
+            with open(case_folder._files["Dat"][i], "r") as casefile:
                 a = casefile.readline()
                 b = testfile.readline()
                 while (a,b):

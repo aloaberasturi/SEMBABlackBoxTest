@@ -24,14 +24,6 @@ from abc import ABC, abstractmethod, abstractproperty
 import glob
 
 
-
-def search_files(f, fmt):
-    files = []
-    for datafile in f._path.glob("*" + fmt):
-        files.append(datafile)
-    return files
-
-
 class Folder:
 
     def __init__(self, path):
@@ -44,14 +36,20 @@ class Folder:
         self._files = {}
         self._files.update(
             {
-                "Dat" : search_files(self, ".dat"),
-                "Nfde": search_files(self, ".nfde")
+                "Dat" : Folder.search_files(self, ".dat"),
+                "Nfde": Folder.search_files(self, ".nfde")
             }
         )
 
     def add_subfolders(self, **kwargs):
         for (k,v) in kwargs.items():
             self._subfolders.update( {k : v} )
+
+    @staticmethod
+    def search_files(f, fmt):
+        files = []
+        for datafile in f._path.glob("*" + fmt):
+            files.append(datafile)
+        return files
         
     
-

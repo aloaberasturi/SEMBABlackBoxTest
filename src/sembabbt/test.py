@@ -21,12 +21,10 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from sembabbt.exec_info import ExecInfo
-from sembabbt.datafile2 import Folder
+from sembabbt.folder    import Folder
 from sembabbt.filters   import Filters
-from sembabbt.state     import State
 import shutil
-import pathlib
-import json
+
 
 class Test():
     def __init__(self, **kwargs): 
@@ -55,8 +53,10 @@ class Test():
         temp_ugr = Folder(temp_f._path / "ugrfdtd")
         temp_f.add_subfolders(ugrfdtd = temp_ugr)
         self._folder.add_subfolders(ugrfdtd = case_ugr, Temp = temp_f)
-        self.copy_executables() #debugging here 25th june
-        self.copy_datafiles()
+        self.copy_executables()
+        Test.copy_data(self._folder, temp_f, "Dat")
+        Test.copy_data(case_ugr, temp_ugr, "Nfde")
+
 
     def copy_executables(self):
 
@@ -64,39 +64,38 @@ class Test():
 
         shutil.copy(
             self._exec_info._semba_path,
-            self._folder._subfolders["Temp"] / "semba"
+            self._folder._subfolders["Temp"]._path / "semba"
         )
         shutil.copy(
             self._exec_info._ugrfdtd_path, 
-            self._folder._subfolders["Temp"]._subfolders["ugrfdtd"] / "ugrfdtd"
+            self._folder._subfolders["Temp"]._subfolders["ugrfdtd"]._path / "ugrfdtd"
         )
         
         """Copies of .gen executables"""
 
         try: 
             genfile = [  
-                item for item in self._folder._main_f["case"].glob("./**/*.gen")
+                item for item in self._folder._path.glob("./**/*.gen")
             ][0]
-            shutil.copy(genfile, self._folder._main_f["test"]    / genfile.name)
-            shutil.copy(genfile, self._folder._ugrfdtd_f["test"] / genfile.name)
+            shutil.copy(genfile, self._folder._subfolders["Temp"]._path / genfile.name)
+            shutil.copy(
+                genfile, 
+                self._folder._subfolders["Temp"]._subfolders["ugrfdtd"]._path / genfile.name
+            )
         except IndexError:
             pass  
         except FileNotFoundError:
             pass
                 
-    def copy_datafiles(self): 
-        for v in self._folder._files.values(): 
-            try:
-                shutil.copy(
-                    v._case_path[0].as_posix(),
-                    v._test_path[0].as_posix()
-                )
-            except FileNotFoundError: 
-                pass
-       
+     
+    @staticmethod
+    def copy_data(f_orgn, f_dstn, fmt):
+        for i in f_orgn._files[fmt]:
+            shutil.copy(i, f_dstn._path / i.name)
+        
+                    
 
 
                    
 
     
-
