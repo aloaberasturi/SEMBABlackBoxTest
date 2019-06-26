@@ -32,10 +32,12 @@ def compare(test):
                 assert a[i] == b[i]
 
         except ValueError:
-            pass
+            test._logfile.write("In file " + testfile.name)
+            test._logfile.close()
 
         except AssertionError: 
-            print(
+            test._logfile.write("In file " + testfile.name)
+            test._logfile.write(
                 sys.modules[__name__],": error: Expected: ", a[i], " \nto be equal to:",
                 b[i], "\nActual: False"
             )
@@ -52,3 +54,4 @@ def compare(test):
                     is_equal(a,b) 
                     a = casefile.readline()
                     b = testfile.readline()
+    test._logfile.close()

@@ -40,7 +40,8 @@ class Test():
             kwargs["comp_mode"],
             kwargs["keywords"]
         )
-        self._folder = None
+        self._folder  = None
+        self._logfile = None
         self._can_call_ugrfdtd = False
     
        
@@ -56,6 +57,8 @@ class Test():
         self.copy_executables()
         Test.copy_data(self._folder, temp_f, "Dat")
         Test.copy_data(case_ugr, temp_ugr, "Nfde")
+        self._logfile = open(self._folder._subfolders["Temp"]._path / 
+            (self._folder._path.name + ".log"), "w")
 
 
     def copy_executables(self):

@@ -45,6 +45,8 @@ def launch(test):
             call_semba(test)
             call_ugrfdtd(test) 
 
+        State(test)   
+
     def copy_and_clean(test):
         try:
             shutil.rmtree(
@@ -76,8 +78,7 @@ def launch(test):
             set() and case_filters._size <= test._filters._size):
             test.new_folder(pathlib.Path(path).parent)
             call_executable(test)
-            State(test) #
-            compare(test) # improve these two modules
+            compare(test)
             copy_and_clean(test)
         else : 
             pass   
