@@ -20,11 +20,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from subprocess import Popen, PIPE
 import os  
+from subprocess import Popen, PIPE
 from sembabbt.state import State
-from sembabbt.test  import Test
-
 
 
 def call_semba(test):
@@ -41,12 +39,6 @@ def call_semba(test):
         )
         process.communicate()    
 
-       #------------------Uncomment to display SEMBA's std output--------------#
-       #                                                                       #
-       #subprocess.run([(State.semba_path).as_posix(),"-i",test._files["Dat"]])#
-       #                                                                       #
-       #-----------------------------------------------------------------------#
-        
     except RuntimeError:"Unable to launch semba"
 
 def call_ugrfdtd(test):

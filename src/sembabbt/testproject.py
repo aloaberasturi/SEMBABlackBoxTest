@@ -21,12 +21,12 @@
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
 from sembabbt.exec_info import ExecInfo
+from sembabbt.filters   import Filters 
 from sembabbt.folder    import Folder
-from sembabbt.filters   import Filters
 import shutil
 
 
-class Test():
+class TestProject():
     def __init__(self, **kwargs): 
         self._exec_info  = ExecInfo(
             kwargs["input_path"],
@@ -45,7 +45,7 @@ class Test():
         self._can_call_ugrfdtd = False
     
        
-    def new_folder(self, path):
+    def update_folder(self, path):
         self._folder = Folder(path)
         case_ugr = Folder(self._folder._path / "ugrfdtd")
         if case_ugr._files["Nfde"]:
@@ -55,8 +55,8 @@ class Test():
         temp_f.add_subfolders(ugrfdtd = temp_ugr)
         self._folder.add_subfolders(ugrfdtd = case_ugr, Temp = temp_f)
         self.copy_executables()
-        Test.copy_data(self._folder, temp_f, "Dat")
-        Test.copy_data(case_ugr, temp_ugr, "Nfde")
+        TestProject.copy_data(self._folder, temp_f, "Dat")
+        TestProject.copy_data(case_ugr, temp_ugr, "Nfde")
         self._logfile = open(self._folder._subfolders["Temp"]._path / 
             (self._folder._path.name + ".log"), "w")
 

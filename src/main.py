@@ -20,8 +20,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with OpenSEMBA. If not, see <http://www.gnu.org/licenses/>.
 
-from sembabbt.launcher import launch
-from sembabbt.test     import Test
+from sembabbt.launcher    import launch
+from sembabbt.testproject import TestProject
 
 kwargs = {
     "size"         : 181381,
@@ -35,7 +35,7 @@ kwargs = {
 }
     
 
-launch(Test(**kwargs)) 
+launch(TestProject(**kwargs)) 
 
 
 
