@@ -23,11 +23,11 @@
 import json
 import shutil
 import pathlib
-from sembabbt.filters        import Filters
-from sembabbt.callers        import call_semba, call_ugrfdtd
-from sembabbt.state          import State
-from sembabbt.comparator     import compare
-from sembabbt.folder         import Folder
+from sembabbt.callers    import call_semba, call_ugrfdtd
+from sembabbt.state      import State
+from sembabbt.comparator import compare
+from sembabbt.filters    import Filters
+from sembabbt.folder     import Folder
 
 
 def launch(test): 
@@ -76,7 +76,7 @@ def launch(test):
             json_file.close()   
         if (set(case_filters._keywords) &  set(test._filters._keywords) != 
             set() and case_filters._size <= test._filters._size):
-            test.new_folder(pathlib.Path(path).parent)
+            test.update_folder(pathlib.Path(path).parent)
             call_executable(test)
             compare(test)
             copy_and_clean(test)
