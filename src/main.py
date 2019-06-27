@@ -25,11 +25,11 @@ from sembabbt.testproject import TestProject
 
 kwargs = {
     "size"         : 181381,
-    "comp_mode"    : "Equal", 
+    "comp_mode"    : "Equal", # the program is oblivious to this argument yet
     "keywords"     : ["pec"], 
     "input_path"   : "/home/alejandra/workspace/sembabbt/data",
     "output_path"  : "/home/alejandra/Desktop/",
-    "exec_mode"    : "normal",
+    "exec_mode"    : "normal", # the program is oblivious to this argument yet
     "semba_path"   : "/home/alejandra/workspace/sembabbt/bin/semba",
     "ugrfdtd_path" : "/home/alejandra/workspace/sembabbt/bin/ugrfdtd" 
 }
