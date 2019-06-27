@@ -26,7 +26,7 @@ from sembabbt.test     import Test
 kwargs = {
     "size"         : 181381,
     "comp_mode"    : "Equal", 
-    "keywords"     : ["pec", "culo", "pedo", "pis"], 
+    "keywords"     : ["pec"], 
     "input_path"   : "/home/alejandra/workspace/sembabbt/data",
     "output_path"  : "/home/alejandra/Desktop/",
     "exec_mode"    : "normal",
